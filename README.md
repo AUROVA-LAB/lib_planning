@@ -47,8 +47,11 @@ And link the libraries to the program
 Struct:
 
 ``` struct Pose{ ```
+
 ```	  vector<double> coordinates; ```
+
 ```	  vector<vector<double> > matrix; ```
+
 ``` };```
 
 
@@ -62,8 +65,11 @@ Constructor:
 ```	Graph(string url, vector<vector<double> > matrix,string typeDistance, double radiusDistance) ```
   
   url: A string where the file .xml is
+  
   matrix: Covariance matrix
+  
   typeDistance: Can be "M" or "E". "M" means mahalanobis distance and "E" means Euclidean distance
+  
   radiusDistance: This value indicates the distance to consider an intermediate position of the trajectory as reached
   
 Method getNextPose:
