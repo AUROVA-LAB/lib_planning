@@ -12,19 +12,15 @@ This package requires of the following system libraries and packages
 
 Installation:
 
-``` git clone https://github.com/AUROVA-LAB/lib_planning ``` 
-
-``` cd lib_planning/ ```
-
-``` mkdir build```
-
-``` cd build```
-
-``` cmake .. ```
-
-```make```
-
-```sudo make install```
+```shell
+git clone https://github.com/AUROVA-LAB/lib_planning
+cd lib_planning/
+mkdir build
+cd build
+cmake .. 
+make
+sudo make install
+```
 
 ## How to include it
 
@@ -34,9 +30,10 @@ To use this library in an other library or application, it is necessary add in t
 
 And Eigen's dependence is necessary:
 
-``` find_package (Eigen3 3.3 REQUIRED NO_MODULE) ```
-
-``` include_directories(${Eigen3_INCLUDE_DIRS}) ```
+``` 
+find_package (Eigen3 3.3 REQUIRED NO_MODULE)
+include_directories(${Eigen3_INCLUDE_DIRS})
+```
 
 And link the libraries to the program
 
@@ -44,15 +41,14 @@ And link the libraries to the program
 
 ### How to use it
 
-Struct:
+#### Struct:
 
-``` struct Pose{ ```
-
-```	  vector<double> coordinates; ```
-
-```	  vector<vector<double> > matrix; ```
-
-``` };```
+```c++
+struct Pose{ 
+  vector<double> coordinates; 
+  vector<vector<double> > matrix; 
+};
+```
 
 
 coordinates: Vector with coordinates x,y,z,yaw
@@ -60,9 +56,11 @@ coordinates: Vector with coordinates x,y,z,yaw
 matrix: Covariance matrix (4x4)
 
 
-Constructor: 
+#### Constructor: 
 
-```	Graph(string url, vector<vector<double> > matrix,string typeDistance, double radiusDistance) ```
+```c++	
+Graph(string url, vector<vector<double> > matrix,string typeDistance, double radiusDistance) 
+```
   
   url: A string where the file .xml is
   
@@ -72,9 +70,11 @@ Constructor:
   
   radiusDistance: This value indicates the distance to consider an intermediate position of the trajectory as reached
   
-Method getNextPose:
+#### Method getNextPose:
 
-``` Pose getNextPose(Pose myPosition, Pose endGoal)	```	
+```c++ 
+Pose getNextPose(Pose myPosition, Pose endGoal)	
+```	
 
   myPosition: Pose where the robot is
   
@@ -83,8 +83,10 @@ Method getNextPose:
   return next pose of the trajectory
 
 
-Method newMatrix:
+#### Method newMatrix:
 
-``` vector<vector<double> > static newMatrix(double x, double y, double z, double yaw) ```
+```c++ 
+vector<vector<double> > static newMatrix(double x, double y, double z, double yaw) 
+```
 
   x,y,z,yaw: Diagonal values in the matrix (4x4)
