@@ -10,7 +10,11 @@ This package requires of the following system libraries and packages
 
 ## Compilation and installation
 
-CMake Build Procedure:
+Installation:
+
+``` git clone https://github.com/AUROVA-LAB/lib_planning ``` 
+
+``` cd lib_planning/ ```
 
 ``` mkdir build```
 
@@ -20,7 +24,7 @@ CMake Build Procedure:
 
 ```make```
 
-```make install```
+```sudo make install```
 
 ## How to use it
 
