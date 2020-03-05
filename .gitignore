@@ -1,0 +1,8 @@
+#Folders to exclude
+
+build/
+Debug/
+
+# Code to exclude
+
+main.cpp
