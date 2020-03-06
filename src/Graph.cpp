@@ -3,6 +3,7 @@
 Graph::Graph(string url, vector<vector<double> > matrix,string typeDistance, double radiusDistance) {
 	xmlRead(url, matrix);
 	graph.setDistances(typeDistance);
+	graph.setRadiusVehicle(radiusDistance);
 }
 
 Graph::~Graph() {
