@@ -66,11 +66,11 @@ double Node::calculateMahalanobisDistance(Node node){
 	Matrix4d matrixQ;
 	Matrix4d matrixZ;
 
-	for (int i = 0; i < node.getCoordinates().size()-1; i++)
+	for (int i = 0; i < node.getCoordinates().size(); i++)
 	{
 		vectorX(i)= node.getCoordinates()[i];
 	}
-	for (int i = 0; i < this->getCoordinates().size()-1; i++)
+	for (int i = 0; i < this->getCoordinates().size(); i++)
 	{
 		vectorG(i)= this->getCoordinates()[i];
 
