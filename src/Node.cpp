@@ -1,18 +1,39 @@
 #include "../includes/Node.h"
 
-Node::Node(vector<double> coordinates, vector<vector<double> > covarianceMatrix) : Position(coordinates,covarianceMatrix) {}
+Node::Node(vector<double> coordinates, vector<vector<double> > covarianceMatrix) : Position(coordinates,covarianceMatrix) {
+	this->id=-1;
+	this->cost=0;
+	this->distance=0;
+	this->seen=false;
+}
+
+Node::Node(vector<double> coordinates, vector<vector<double> > covarianceMatrix, double cost) : Position(coordinates,covarianceMatrix) {
+	this->id=-1;
+	this->cost=cost;
+	this->distance=0;
+	this->seen=false;
+}
 
 Node::Node(Position pos) : Position(pos){
+	this->id=-1;
+	this->cost=0;
+	this->distance=0;
+	this->seen=false;
 }
 
 Node::Node(long id,vector<double> coordinates, vector<vector<double> > covarianceMatrix) : Position(coordinates,covarianceMatrix) {
 	this->id=id;
-
+	this->cost=0;
+	this->distance=0;
+	this->seen=false;
 }
 
 
 Node::Node() : Position(){
-
+	this->id=-1;
+	this->cost=0;
+	this->distance=0;
+	this->seen=false;
 }
 
 Node::~Node() {

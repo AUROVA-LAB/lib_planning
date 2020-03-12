@@ -15,12 +15,21 @@ vector<double> Util::newVector(){
 	return newVector;
 }
 
+vector<double> Util::newVector(double x, double y, double z, double yaw){
+	vector<double> newVector;
+	newVector.push_back(x);
+	newVector.push_back(y);
+	newVector.push_back(z);
+	newVector.push_back(yaw);
+	return newVector;
+}
+
 vector<vector<double> > Util::newMatrix(){
 	vector<vector<double> > newVector(4);
 	for(int i=0; i<4;i++){
 		if(i==0)
 		{
-			newVector[i].push_back(0.1);
+			newVector[i].push_back(1);
 			newVector[i].push_back(0);
 			newVector[i].push_back(0);
 			newVector[i].push_back(0);
@@ -28,7 +37,7 @@ vector<vector<double> > Util::newMatrix(){
 		else if(i==1)
 		{
 			newVector[i].push_back(0);
-			newVector[i].push_back(0.1);
+			newVector[i].push_back(1);
 			newVector[i].push_back(0);
 			newVector[i].push_back(0);
 		}
@@ -44,7 +53,7 @@ vector<vector<double> > Util::newMatrix(){
 			newVector[i].push_back(0);
 			newVector[i].push_back(0);
 			newVector[i].push_back(0);
-			newVector[i].push_back(180);
+			newVector[i].push_back(30);
 		}
 	}
 

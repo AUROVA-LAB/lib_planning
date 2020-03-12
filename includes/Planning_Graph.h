@@ -135,7 +135,7 @@ private:
 	/**
 	 * Calculate the distance to the goal
 	 */
-	double calculateDistanceNodes(Node initNode, Node endNode);
+	double calculateDijkstra(Node initNode, Node endNode);
 
 
 public:
@@ -154,11 +154,19 @@ public:
 	/**
 	 * Add a new node
 	 */
+	void addNode(double x, double y, double z, double cost);
+	/**
+	 * Add a new node
+	 */
 	void addNode(long id,vector<double> coordinates,vector<vector<double> >  matrix);
 	/**
 	 * Set link between nodes using ids
 	 */
 	void addLinkBetweenNodesById(long id1,long id2);
+	/**
+	 * Set link between nodes using poses
+	 */
+	void addLinkBetweenNodes(double x1, double y1, double z1, double x2, double y2, double z2);
 	/**
 	 * Set link between nodes using poses
 	 */

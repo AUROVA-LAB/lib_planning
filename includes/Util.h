@@ -14,6 +14,7 @@ public:
 	Util();
 	vector<vector<double> > static newMatrix();
 	vector<double> static newVector();
+	vector<double> static newVector(double x, double y, double z, double yaw);
 	vector<double> static LLToUTM(double lat, double lon);
 
 };

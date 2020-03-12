@@ -10,27 +10,38 @@
 #include <vector>
 using namespace std;
 using namespace Eigen;
-class Node : public Position {
+class Node: public Position {
 
 public:
 	Node();
 	Node(Position pos);
 	Node(vector<double> coordinates, vector<vector<double> > covarianceMatrix);
-	Node(long id,vector<double> coordinates, vector<vector<double> > covarianceMatrix);
+	Node(vector<double> coordinates, vector<vector<double> > covarianceMatrix,
+			double cost);
+	Node(long id, vector<double> coordinates,
+			vector<vector<double> > covarianceMatrix);
 
 	~Node();
 
 	vector<Link*> links;
-	//Distance in the path
+	/**
+	 * Used in the dijsktra algorithm to determine the distance to the node
+	 */
 	double distance;
-	//To discover best path
+	/**
+	 * Used in the dijsktra algorithm to determine if it has been evaluated
+	 */
 	bool seen;
 
 	long id;
+	/**
+	 * If the node is near an obstacle, add an additional cost
+	 */
+	double cost;
 
 	void addLink(Link &link);
 	vector<Link*> getLinks();
-	bool operator==(Node& node) const;
+	bool operator==(Node &node) const;
 	bool equals(Node node);
 	bool equalCoordinatesXYZ(vector<double> coordinates);
 	long getId();
