@@ -5,8 +5,8 @@
 #include "Link.h"
 #include "Util.h"
 
-#include <Eigen/Cholesky>
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Cholesky>
+#include <eigen3/Eigen/Dense>
 #include <vector>
 #include <bits/stdc++.h>
 #include <iostream>

@@ -3,8 +3,8 @@
 
 #include "Position.h"
 #include "Link.h"
-#include <Eigen/Cholesky>
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Cholesky>
+#include <eigen3/Eigen/Dense>
 #include <bits/stdc++.h>
 #include <string>
 #include <vector>

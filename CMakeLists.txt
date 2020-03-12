@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.5.1)
 
 project(planning VERSION 1.0)
-find_package (Eigen3 3.3 REQUIRED NO_MODULE)
-include_directories(${Eigen3_INCLUDE_DIRS})
+FIND_PACKAGE(Eigen3 REQUIRED)
+INCLUDE_DIRECTORIES(${EIGEN_INCLUDE_DIR})
 include(GNUInstallDirs)
 
 add_library(planning SHARED
@@ -15,7 +15,7 @@ add_library(planning SHARED
     src/Util.cpp
 )
 
-target_link_libraries(planning Eigen3::Eigen ${GTEST_LIBRARIES} pthread )
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${EIGEN_LIBRARIES})
 
 set_target_properties(planning PROPERTIES VERSION ${PROJECT_VERSION})
 
