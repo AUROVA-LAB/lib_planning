@@ -420,10 +420,10 @@ double Planning_Graph::calculateDijkstra(Node initNode, Node endNode) {
 	for (int i = 0; i < this->nodes.size(); i++) {
 		path.push_back(&this->nodes[i]);
 		path[i]->seen = false;
-		if (nodes[i] == initNode) {
+		if (this->nodes[i] == initNode) {
 			path[i]->distance = 0;
 			selectedNode = i;
-			nextNodeToEvaluate = nodes[i];
+			nextNodeToEvaluate = this->nodes[i];
 		} else {
 			path[i]->distance = DBL_MAX;
 		}
@@ -456,7 +456,7 @@ double Planning_Graph::calculateDijkstra(Node initNode, Node endNode) {
 		// Get next Node to evaluate
 		allNodesSeen = true;
 		double newDistance = DBL_MAX;
-		for (int i = 0; i < nodes.size(); i++) {
+		for (int i = 0; i < this->nodes.size(); i++) {
 			if (path[i]->seen == false && path[i]->distance < newDistance) {
 				allNodesSeen = false;
 				selectedNode = i;

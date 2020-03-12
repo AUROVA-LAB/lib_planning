@@ -1,4 +1,3 @@
-
 #ifndef INCLUDES_GRAPH_H_
 #define INCLUDES_GRAPH_H_
 
@@ -12,20 +11,22 @@
 using namespace std;
 using namespace rapidxml;
 
-struct Pose{
-	vector<double> coordinates;
-	vector<vector<double> > matrix;
+struct Pose {
+  vector<double> coordinates;
+  vector<vector<double> > matrix;
 };
 
 class Graph {
 protected:
-	void xmlRead(string url, vector<vector<double> > matrix);
-	Planning_Graph graph;
+  void xmlRead(string url, vector<vector<double> > matrix);
+  Planning_Graph graph;
 public:
-	Graph(string url, vector<vector<double> > matrix,string typeDistance, double radiusDistance);
-	virtual ~Graph();
-	Pose getNextPose(Pose myPosition, Pose endGoal);
-	vector<vector<double> > static newMatrix(double x, double y, double z, double yaw);
+  Graph(string url, vector<vector<double> > matrix, string typeDistance,
+      double radiusDistance);
+  virtual ~Graph();
+  Pose getNextPose(Pose myPosition, Pose endGoal);
+  vector<vector<double> > static newMatrix(double x, double y, double z,
+      double yaw);
 
 };
 
