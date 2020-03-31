@@ -31,13 +31,15 @@ To use this library in an other library or application, it is necessary add in t
 And Eigen's dependence is necessary:
 
 ``` 
-find_package (Eigen3 3.3 REQUIRED NO_MODULE)
-include_directories(${Eigen3_INCLUDE_DIRS})
+FIND_PACKAGE(Eigen3 REQUIRED)
+INCLUDE_DIRECTORIES(${EIGEN_INCLUDE_DIR})
 ```
 
 And link the libraries to the program
 
-``` TARGET_LINK_LIBRARIES(<executable name> Eigen3::Eigen planning) ```
+``` 
+TARGET_LINK_LIBRARIES(<executable name> planning) 
+```
 
 ### How to use it
 
