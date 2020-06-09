@@ -1,4 +1,4 @@
-# Install script for directory: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config
+# Install script for directory: /home/trabajo/eclipse-workspace/lib_planning/tests/config
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/trabajo/eclipse-workspace/lib_planning/tests/config/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
