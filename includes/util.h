@@ -1,7 +1,7 @@
 #ifndef INCLUDES_UTIL_H_
 #define INCLUDES_UTIL_H_
 
-#include "../includes/latlong_utm.h"
+#include "latlong_utm.h"
 #include <vector>
 #include <iostream>
 
