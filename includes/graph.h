@@ -60,7 +60,6 @@ public:
   vector<vector<double> > static newMatrix(double x, double y, double z,
       double yaw);
 
-
   /**
    * Write a graph in a Xml file
    */
@@ -79,6 +78,17 @@ public:
    * Returns the graph as a struct
    */
   vector<StNodes> getStructGraph();
+
+  /**
+   * Sets algorithm A* to be used
+   */
+  void setAStarAlgorithm();
+
+  /**
+   * Sets algorithm Dijkstra to be used
+   */
+  void setDijkstraAlgorithm();
+
 
 
   PlanningGraph getPlanningGraph();

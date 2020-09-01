@@ -15,6 +15,11 @@ using namespace std;
 using namespace Eigen;
 
 class PlanningGraph {
+public:
+  /**
+  * The algorithm used
+  */
+  Util::Algorithm typeAlgortihm_;
 
 private:
 
@@ -22,6 +27,11 @@ private:
    * Nodes saved on the map
    */
   vector<Node> nodes_;
+
+  /**
+  * The algorithm used
+  */
+  //Util::Algorithm typeAlgortihm_;
 
   /**
    * Links between nodes
@@ -134,11 +144,24 @@ private:
   Link* findLinkPointer(long id);
 
   /**
-   * Calculate the distance to the goal
+   * Calculate the distance to the goal using Dijkstra
    */
   double calculateDijkstra(Node initNode, Node endNode);
-
 public:
+  /**
+   * Calculate the distance to the goal using A*
+   */
+  double calculateAStar(Node initNode, Node endNode);
+
+  /**
+   * Returns the heuristic used in the A * algorithm
+   */
+  double calculateAStarHDistance(Node initNode, Node endNode);
+
+
+
+//public:
+
 
   PlanningGraph();
   ~PlanningGraph();
@@ -188,6 +211,12 @@ public:
    * Set if is used Mahalanobis or Euclidean distance
    */
   void setDistances(string type);
+
+  /**
+   * Set algorithm
+   */
+  void setAlgorithm(Util::Algorithm algorithm);
+
 
   double getRadiusVehicle();
   void setRadiusVehicle(double radius);

@@ -10,41 +10,51 @@ PlanningGraph::PlanningGraph() {
   this->minimumDegreesNodes_ = 45;
   this->typeDistance_ = "E";
   this->lastNodePassed_ = false;
+  this->typeAlgortihm_ = Util::Dijkstra;
 }
 
 PlanningGraph::~PlanningGraph() {
 }
 
-
-
-
 Node PlanningGraph::evaluateNextNode(Position initPos) {
+  const clock_t begin_time = clock();
 
   Node nextNode, finalNode;
   double distance = INT_MAX, minDistance = INT_MAX;
   Node finalGoalNode(this->finalGoal_);
   vector<Node> endNodes;
-  Node n2 = getCloserNode(this->finalGoal_);
-  if (finalGoalNode.equals(n2))
-  {
-    endNodes.push_back(finalGoalNode);
-  } else
-  {
-    endNodes.push_back(n2);
-  }
-  vector<Node> initNodes = getCloserNodes(initPos);
+  std::cout << "Tiempo dentro 0.1 (s) "
+      << float(clock() - begin_time) / CLOCKS_PER_SEC << endl;
 
-  for (unsigned int i = 0; i < initNodes.size(); i++)
-  {
-    for (unsigned int j = 0; j < endNodes.size(); j++)
-    {
+  Node lastNodePath = getCloserNode(this->finalGoal_);
+
+  std::cout << "Tiempo dentro 0.2 (s) "
+      << float(clock() - begin_time) / CLOCKS_PER_SEC << endl;
+
+  if (finalGoalNode.equals(lastNodePath)) {
+    endNodes.push_back(finalGoalNode);
+  } else {
+    endNodes.push_back(lastNodePath);
+  }
+
+  std::cout << "Tiempo dentro 0.3 (s) "
+      << float(clock() - begin_time) / CLOCKS_PER_SEC << endl;
+
+  vector<Node> initNodes = getCloserNodes(initPos);
+  std::cout << "Tiempo dentro 0.4 (s) "
+      << float(clock() - begin_time) / CLOCKS_PER_SEC << endl;
+
+  for (unsigned int i = 0; i < initNodes.size(); i++) {
+    for (unsigned int j = 0; j < endNodes.size(); j++) {
       distance = getDistanceNodePosition(initPos, initNodes[i]);
-      if (distance > this->radiusVehicle_)
-      {
+      if (distance > this->radiusVehicle_) {
         distance += getDistanceNodePosition(this->finalGoal_, endNodes[j]);
-        distance += calculateDijkstra(initNodes[i], endNodes[j]);
-        if (distance < minDistance)
-        {
+        if (this->typeAlgortihm_ == Util::AStar) {
+          distance += calculateDijkstra(initNodes[i], endNodes[j]);
+        } else if (this->typeAlgortihm_ == Util::Dijkstra) {
+          distance += calculateDijkstra(initNodes[i], endNodes[j]);
+        }
+        if (distance < minDistance) {
           nextNode = initNodes[i];
           finalNode = endNodes[j];
           minDistance = distance;
@@ -52,29 +62,37 @@ Node PlanningGraph::evaluateNextNode(Position initPos) {
       }
     }
   }
+  std::cout << "Tiempo dentro 1 (s) "
+      << float(clock() - begin_time) / CLOCKS_PER_SEC << endl;
 
   // Update with the most favorable path
-  calculateDijkstra(nextNode, finalNode);
-  this->lastNodeGraph_=finalNode;
+  if (this->typeAlgortihm_ == Util::AStar) {
+    calculateAStar(nextNode, finalNode);
+  } else if (this->typeAlgortihm_ == Util::Dijkstra) {
+    calculateDijkstra(nextNode, finalNode);
+  }
+  this->lastNodeGraph_ = finalNode;
+  std::cout << "Tiempo dentro 2 (s) "
+      << float(clock() - begin_time) / CLOCKS_PER_SEC << endl;
 
   // Check if the closest position is the goal
   Node endNode(this->finalGoal_);
   double distanceToEndPos = getDistanceNodePosition(initPos, endNode);
-  double endNodeDistance = getDistanceNodePosition(initPos,
-      getCloserNode(this->finalGoal_));
-  Node lastNodePath = getCloserNode(this->finalGoal_);
+  double endNodeDistance = getDistanceNodePosition(initPos,lastNodePath);
+
+
   bool aux = nextNode.equals(lastNodePath);
   bool aux2 = endNodeDistance >= distanceToEndPos;
 
-  if (endNodeDistance < this->radiusVehicle_ || (aux2 && aux))
-  {
+  if (endNodeDistance < this->radiusVehicle_ || (aux2 && aux)) {
     this->lastNodePassed_ = true;
   }
   // If the last node has already been reached it will go to the goal
-  if (this->lastNodePassed_)
-  {
+  if (this->lastNodePassed_) {
     nextNode = endNode;
   }
+  std::cout << "Tiempo dentro 3 (s) "
+      << float(clock() - begin_time) / CLOCKS_PER_SEC << endl;
 
   return nextNode;
 }
@@ -82,21 +100,16 @@ Node PlanningGraph::evaluateNextNode(Position initPos) {
 bool PlanningGraph::existLinkBetweenNodes(Node node1, Node node2) {
   bool exist = false;
   Node n1, n2;
-  for (unsigned int i = 0; i < this->nodes_.size(); i++)
-  {
-    if (node1.equals(this->nodes_[i]))
-    {
+  for (unsigned int i = 0; i < this->nodes_.size(); i++) {
+    if (node1.equals(this->nodes_[i])) {
       n1 = this->nodes_[i];
-    } else if (node2.equals(this->nodes_[i]))
-    {
+    } else if (node2.equals(this->nodes_[i])) {
       n2 = this->nodes_[i];
     }
   }
-  for (unsigned int i = 0; i < n1.getLinks().size(); i++)
-  {
+  for (unsigned int i = 0; i < n1.getLinks().size(); i++) {
     if (n1.getLinks()[i]->nodes_[0]->equals(n2)
-        || n1.getLinks()[i]->nodes_[1]->equals(n2))
-    {
+        || n1.getLinks()[i]->nodes_[1]->equals(n2)) {
       exist = true;
     }
   }
@@ -105,24 +118,20 @@ bool PlanningGraph::existLinkBetweenNodes(Node node1, Node node2) {
 
 void PlanningGraph::dynamicPositionsToNodes() {
 
-  if (this->dynamicPositions_.size() > 2)
-  {
+  if (this->dynamicPositions_.size() > 2) {
     int i = this->dynamicPositions_.size() - 2;
     bool close = false;
     Node n1(this->dynamicPositions_[i - 1]);
     Node n2(this->dynamicPositions_[i]);
     Node n3(this->dynamicPositions_[i + 1]);
-    if (this->nodes_.size() > 0)
-    {
+    if (this->nodes_.size() > 0) {
       Node closerNode = getCloserNode(this->dynamicPositions_[i]);
       double distanceNode = closerNode.calculateEuclideanDistance(n2);
       close = (distanceNode <= this->minimumRadiusNodes_);
-      if (close)
-      {
-        if (this->lastNodeVisited_.isValid() && !closerNode.equals(this->lastNodeVisited_))
-        {
-          if (!existLinkBetweenNodes(closerNode, this->lastNodeVisited_))
-          {
+      if (close) {
+        if (this->lastNodeVisited_.isValid()
+            && !closerNode.equals(this->lastNodeVisited_)) {
+          if (!existLinkBetweenNodes(closerNode, this->lastNodeVisited_)) {
             addLinkBetweenNodes(this->lastNodeVisited_.getCoordinates(),
                 closerNode.getCoordinates());
           }
@@ -132,14 +141,13 @@ void PlanningGraph::dynamicPositionsToNodes() {
     }
 
     double orientation = calculateSense(n1, n2, n3);
-    if (!close  && (orientation >= this->minimumDegreesNodes_
-            || orientation <= (-this->minimumDegreesNodes_)))
-    {
+    if (!close
+        && (orientation >= this->minimumDegreesNodes_
+            || orientation <= (-this->minimumDegreesNodes_))) {
       Node newNode(this->dynamicPositions_[i].getCoordinates(),
           this->dynamicPositions_[i].getMatrix());
       addNode(newNode);
-      if (this->lastNodeVisited_.isValid())
-      {
+      if (this->lastNodeVisited_.isValid()) {
         addLinkBetweenNodes(this->lastNodeVisited_.getCoordinates(),
             newNode.getCoordinates());
       }
@@ -187,17 +195,14 @@ double PlanningGraph::calculateDijkstra(Node initNode, Node endNode) {
   vector<Node*> path;
 
   //Initialize values
-  for (unsigned int i = 0; i < this->nodes_.size(); i++)
-  {
+  for (unsigned int i = 0; i < this->nodes_.size(); i++) {
     path.push_back(&this->nodes_[i]);
     path[i]->seen_ = false;
-    if (this->nodes_[i] == initNode)
-    {
+    if (this->nodes_[i] == initNode) {
       path[i]->distance_ = 0;
       selectedNode = i;
       nextNodeToEvaluate = this->nodes_[i];
-    } else
-    {
+    } else {
       path[i]->distance_ = DBL_MAX;
     }
   }
@@ -217,23 +222,20 @@ double PlanningGraph::calculateDijkstra(Node initNode, Node endNode) {
       } else {
         childNode = nextNodeToEvaluate.getLinks()[i]->nodes_[0];
       }
+      // If the node is near an obstacle, add an additional cost
+      double cost = childNode->cost_;
+      newDistance += cost;
 
-      if (childNode->distance_ > newDistance)
-      {
-        // If the node is near an obstacle, add an additional cost
-        double cost = childNode->cost_;
-
-        childNode->distance_ = newDistance + cost;
+      if (newDistance < childNode->distance_) {
+        childNode->distance_ = newDistance;
       }
     }
 
     // Get next Node to evaluate
     allNodesSeen = true;
     double newDistance = DBL_MAX;
-    for (unsigned int i = 0; i < this->nodes_.size(); i++)
-    {
-      if (path[i]->seen_ == false && path[i]->distance_ < newDistance)
-      {
+    for (unsigned int i = 0; i < this->nodes_.size(); i++) {
+      if (path[i]->seen_ == false && path[i]->distance_ < newDistance) {
         allNodesSeen = false;
         selectedNode = i;
         nextNodeToEvaluate = *path[i];
@@ -255,6 +257,86 @@ double PlanningGraph::calculateDijkstra(Node initNode, Node endNode) {
   return totalDistance;
 }
 
+double PlanningGraph::calculateAStarHDistance(Node initNode, Node endNode) {
+  // Use the distance between two nodes to calculate H
+  return getDistanceNodePosition(initNode, endNode);
+}
+
+double PlanningGraph::calculateAStar(Node initNode, Node endNode) {
+  Node currentNode = initNode;
+  Node previusNode = initNode;
+  Node *childNode;
+  vector<Node*> path;
+  vector<Node*> deadEndPath;
+  vector<Node*> neighbours;
+  bool finalNode = false;
+  double totalDistance = -1;
+  this->bestPath_.clear();
+
+  for (unsigned int i = 0; i < this->nodes_.size(); i++) {
+    path.push_back(&this->nodes_[i]);
+    path[i]->seen_ = false;
+    if (this->nodes_[i] == initNode) {
+      path[i]->distance_ = 0;
+      path[i]->seen_ = true;
+      currentNode = this->nodes_[i];
+      this->bestPath_.push_back(*path[i]);
+    } else {
+      path[i]->distance_ = DBL_MAX;
+    }
+  }
+
+  // A* algorithm
+  while (!finalNode) {
+    neighbours.clear();
+    for (unsigned int i = 0; i < currentNode.getLinks().size(); i++) {
+      double distanceG = currentNode.getLinks()[i]->distance_;
+      double newDistance = currentNode.distance_;
+      if (*currentNode.getLinks()[i]->nodes_[0] == currentNode) {
+        childNode = currentNode.getLinks()[i]->nodes_[1];
+      } else {
+        childNode = currentNode.getLinks()[i]->nodes_[0];
+      }
+      // If the node is near an obstacle, add an additional cost
+      double cost = childNode->cost_;
+      Position childPos(childNode->getCoordinates(), childNode->getMatrix());
+      double distanceH = calculateAStarHDistance(childPos, endNode);
+      newDistance += cost + distanceG + distanceH;
+      childNode->distance_ = newDistance;
+      neighbours.push_back(childNode);
+
+    }
+
+    // Select the best next node
+    double minDistance = DBL_MAX;
+    for (unsigned int i = 0; i < neighbours.size(); i++) {
+      neighbours[i]->seen_ = true;
+      if (neighbours[i]->distance_ < minDistance) {
+        currentNode = *neighbours[i];
+        minDistance = neighbours[i]->distance_;
+      }
+    }
+    this->bestPath_.push_back(currentNode);
+
+    if (currentNode.equals(endNode)) {
+      finalNode = true;
+    }
+  }
+
+  this->bestPath_.clear();
+
+  // Get the distance to the final Node
+  for (unsigned int i = 0; i < path.size(); i++) {
+    if (endNode == *path[i]) {
+      totalDistance = path[i]->distance_;
+    }
+    this->bestPath_.push_back(*path[i]);
+  }
+
+  return totalDistance;
+
+}
+
 void PlanningGraph::addLinkBetweenNodes(vector<double> coordinates1,
     vector<double> coordinates2) {
 
@@ -270,7 +352,8 @@ void PlanningGraph::addLinkBetweenNodes(vector<double> coordinates1,
   }
 
   // Connect the nodes
-  if (pos1 != -1 && pos2 != -1 && !existLinkBetweenNodes(this->nodes_[pos1],this->nodes_[pos2])) {
+  if (pos1 != -1 && pos2 != -1
+      && !existLinkBetweenNodes(this->nodes_[pos1], this->nodes_[pos2])) {
     addLink();
     Link *l1 = &this->links_[this->links_.size() - 1];
     l1->nodes_.push_back(&this->nodes_[pos1]);
@@ -301,7 +384,8 @@ void PlanningGraph::addLinkBetweenNodesById(long id1, long id2) {
   }
 
   // Connect the nodes
-  if (pos1 != -1 && pos2 != -1 && !existLinkBetweenNodes(this->nodes_[pos1],this->nodes_[pos2])) {
+  if (pos1 != -1 && pos2 != -1
+      && !existLinkBetweenNodes(this->nodes_[pos1], this->nodes_[pos2])) {
     addLink();
     Link *l1 = &this->links_[this->links_.size() - 1];
     l1->nodes_.push_back(&this->nodes_[pos1]);
@@ -317,7 +401,6 @@ void PlanningGraph::addLinkBetweenNodesById(long id1, long id2) {
     l1->setDistance(this->typeDistance_);
   }
 }
-
 
 void PlanningGraph::addNode(vector<double> coordinates,
     vector<vector<double> > matrix) {
@@ -361,7 +444,6 @@ Link* PlanningGraph::findLinkPointer(long id) {
   }
   return l;
 }
-
 
 Node PlanningGraph::getNextNode(Position initPos) {
   Node nextNode;
@@ -410,14 +492,47 @@ vector<Node> PlanningGraph::getCloserNodes(Position pos) {
   bool insideNode = false;
   Node n;
   vector<Node> connectedNodes;
-  // Check if the robot is inside a node
-  for (unsigned int i = 0; i < this->nodes_.size(); i++) {
-    double distance = getDistanceNodePosition(pos, this->nodes_[i]);
-    if (distance < this->radiusVehicle_) {
+
+  Node n1, n2;
+  double distance1 = getDistanceNodePosition(pos, this->nodes_[0]);
+  double distance2 = getDistanceNodePosition(pos, this->nodes_[1]);
+
+  if (distance1 < distance2) {
+    n1 = this->nodes_[0];
+    n2 = this->nodes_[1];
+  } else {
+    n2 = this->nodes_[0];
+    n1 = this->nodes_[1];
+  }
+  if (distance1 < this->radiusVehicle_) {
+    insideNode = true;
+    n = this->nodes_[0];
+  } else if(distance2 < this->radiusVehicle_) {
+    insideNode = true;
+    n = this->nodes_[1];
+  }
+  unsigned int i = 2;
+  // Search all nodes and return the two closest
+  while ( i < this->nodes_.size() && !insideNode ) {
+    double newDistance = getDistanceNodePosition(pos, this->nodes_[i]);
+    // Check if the robot is inside a node
+    if (newDistance < this->radiusVehicle_) {
       insideNode = true;
       n = this->nodes_[i];
     }
+    if (newDistance < distance1) {
+      n2 = n1;
+      distance2 = distance1;
+      n1 = this->nodes_[i];
+      distance1 = newDistance;
+    } else if (newDistance < distance2) {
+      n2 = this->nodes_[i];
+      distance2 = newDistance;
+    }
+    i++;
   }
+  connectedNodes.push_back(n1);
+  connectedNodes.push_back(n2);
 
   // If the robot is inside the radius of the node, look for the connected nodes
   if (insideNode) {
@@ -429,90 +544,115 @@ vector<Node> PlanningGraph::getCloserNodes(Position pos) {
       }
     }
     // If the robot is not inside the radius of the node, look for the closest nodes
-  } else {
-    Node n1, n2;
-    double distance1 = getDistanceNodePosition(pos, this->nodes_[0]);
-    double distance2 = getDistanceNodePosition(pos, this->nodes_[1]);
-
-    if (distance1 < distance2) {
-      n1 = this->nodes_[0];
-      n2 = this->nodes_[1];
-    } else {
-      n2 = this->nodes_[0];
-      n1 = this->nodes_[1];
-    }
-
-    // Search all nodes and return the two closest
-    for (unsigned int i = 2; i < this->nodes_.size(); i++) {
-      double newDistance = getDistanceNodePosition(pos, this->nodes_[i]);
-      if (newDistance < distance1) {
-        n2 = n1;
-        distance2 = distance1;
-        n1 = this->nodes_[i];
-        distance1 = newDistance;
-      } else if (newDistance < distance2) {
-        n2 = this->nodes_[i];
-        distance2 = newDistance;
-      }
-    }
-    connectedNodes.push_back(n1);
-    connectedNodes.push_back(n2);
   }
   return connectedNodes;
 }
 
-vector<Node> PlanningGraph::bestPathNodes(vector<Node> allNodes){
+/*vector<Node> PlanningGraph::getCloserNodes(Position pos) {
+ bool insideNode = false;
+ Node n;
+ vector<Node> connectedNodes;
+ // Check if the robot is inside a node
+ for (unsigned int i = 0; i < this->nodes_.size(); i++) {
+ double distance = getDistanceNodePosition(pos, this->nodes_[i]);
+ if (distance < this->radiusVehicle_) {
+ insideNode = true;
+ n = this->nodes_[i];
+ }
+ }
+
+ // If the robot is inside the radius of the node, look for the connected nodes
+ if (insideNode) {
+ for (unsigned int j = 0; j < n.links_.size(); j++) {
+ if (*n.links_[j]->nodes_[0] == n) {
+ connectedNodes.push_back(*n.links_[j]->nodes_[1]);
+ } else {
+ connectedNodes.push_back(*n.links_[j]->nodes_[0]);
+ }
+ }
+ // If the robot is not inside the radius of the node, look for the closest nodes
+ } else {
+ Node n1, n2;
+ double distance1 = getDistanceNodePosition(pos, this->nodes_[0]);
+ double distance2 = getDistanceNodePosition(pos, this->nodes_[1]);
+
+ if (distance1 < distance2) {
+ n1 = this->nodes_[0];
+ n2 = this->nodes_[1];
+ } else {
+ n2 = this->nodes_[0];
+ n1 = this->nodes_[1];
+ }
+
+ // Search all nodes and return the two closest
+ for (unsigned int i = 2; i < this->nodes_.size(); i++) {
+ double newDistance = getDistanceNodePosition(pos, this->nodes_[i]);
+ if (newDistance < distance1) {
+ n2 = n1;
+ distance2 = distance1;
+ n1 = this->nodes_[i];
+ distance1 = newDistance;
+ } else if (newDistance < distance2) {
+ n2 = this->nodes_[i];
+ distance2 = newDistance;
+ }
+ }
+ connectedNodes.push_back(n1);
+ connectedNodes.push_back(n2);
+ }
+ return connectedNodes;
+ }*/
+
+vector<Node> PlanningGraph::bestPathNodes(vector<Node> allNodes) {
   vector<Node> minPath;
 
   // Copy all nodes
-  for(unsigned int i=0; i<allNodes.size();i++)
-  {
-    if(this->lastNodeGraph_.equals(allNodes[i]))
-    {
+  for (unsigned int i = 0; i < allNodes.size(); i++) {
+    if (this->lastNodeGraph_.equals(allNodes[i])) {
       minPath.push_back(allNodes[i]);
     }
   }
   // Get all the nodes it has to go through starting with the last one
-  while(minPath[0].distance_!=0){
-    Node nextNode=allNodes[0];
+  while (minPath[0].distance_ != 0) {
+    Node nextNode = allNodes[0];
     Node auxNode;
 
     // Find the node that gets the best path
-    for(unsigned int i=0;i<allNodes[0].getLinks().size();i++)
-    {
-      if(allNodes[0].equals(*allNodes[0].getLinks()[i]->getNodes()[0]))
-      {
-        auxNode=*allNodes[0].getLinks()[i]->getNodes()[1];
-      }else
-      {
-        auxNode=*allNodes[0].getLinks()[i]->getNodes()[0];
+    for (unsigned int i = 0; i < allNodes[0].getLinks().size(); i++) {
+      if (allNodes[0].equals(*allNodes[0].getLinks()[i]->getNodes()[0])) {
+        auxNode = *allNodes[0].getLinks()[i]->getNodes()[1];
+      } else {
+        auxNode = *allNodes[0].getLinks()[i]->getNodes()[0];
       }
 
-      if(auxNode.distance_<nextNode.distance_)
-      {
-        nextNode=auxNode;
+      if (auxNode.distance_ < nextNode.distance_) {
+        nextNode = auxNode;
       }
     }
-    minPath.insert(minPath.begin(),nextNode);
+    minPath.insert(minPath.begin(), nextNode);
   }
   Node lastNodeGoal(this->finalGoal_);
-  if(!this->lastNodeGraph_.equals(lastNodeGoal))
-  {
+  if (!this->lastNodeGraph_.equals(lastNodeGoal)) {
     minPath.push_back(lastNodeGoal);
   }
   return minPath;
 }
 
-vector<Node> PlanningGraph::getPathNodes(Position initPos){
+vector<Node> PlanningGraph::getPathNodes(Position initPos) {
   Node actualPosition(initPos);
   if (this->nodes_.size() > 0) {
     evaluateNextNode(initPos);
   } else {
     this->nodes_.push_back(this->finalGoal_);
   }
-  return bestPathNodes(this->bestPath_);
+  vector<Node> bestPathOfNodes;
+  if (this->typeAlgortihm_ == Util::Dijkstra) {
+    bestPathNodes(this->bestPath_);
+  } else if (this->typeAlgortihm_ == Util::AStar) {
+    bestPathOfNodes = this->bestPath_;
+  }
+  return bestPathOfNodes;
 }
-
 
 void PlanningGraph::addDynamicPosition(vector<double> coordinates,
     vector<vector<double> > matrix) {
@@ -560,13 +700,17 @@ vector<Node> PlanningGraph::getNodes() {
   return this->nodes_;
 }
 
-vector<Node*> PlanningGraph::getNodesPointers(){
+vector<Node*> PlanningGraph::getNodesPointers() {
   vector<Node*> nodesPointers;
-  for(unsigned int i=0;i<this->nodes_.size();i++){
+  for (unsigned int i = 0; i < this->nodes_.size(); i++) {
     Node *node = &this->nodes_[i];
     nodesPointers.push_back(node);
   }
   return nodesPointers;
+}
+
+void PlanningGraph::setAlgorithm(Util::Algorithm algorithm) {
+  this->typeAlgortihm_ = algorithm;
 }
 
 vector<Link> PlanningGraph::getLinks() {
