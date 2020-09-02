@@ -1,1 +1,0 @@
-/usr/bin/c++      CMakeFiles/util_test.dir/home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.cpp.o  -o util_test -rdynamic -Wl,-Bstatic -lgtest -Wl,-Bdynamic -lpthread 

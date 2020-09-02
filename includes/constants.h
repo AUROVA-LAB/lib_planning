@@ -3,7 +3,7 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#include "./LatLongToUTM.h"
+#include "../includes/latlong_utm.h"
 
 const double PI = 3.14159265;
 const double FOURTHPI = PI / 4;

@@ -6,13 +6,13 @@ INCLUDE_DIRECTORIES(${EIGEN_INCLUDE_DIR})
 include(GNUInstallDirs)
 
 add_library(planning SHARED
-    src/Graph.cpp
-    src/LatLongToUTM.cpp
-    src/Link.cpp
-    src/Node.cpp
-    src/Planning_Graph.cpp
-    src/Position.cpp
-    src/Util.cpp
+    src/graph.cpp
+    src/latlong_utm.cpp
+    src/link.cpp
+    src/node.cpp
+    src/planning_graph.cpp
+    src/position.cpp
+    src/util.cpp
 )
 
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${EIGEN_LIBRARIES})
