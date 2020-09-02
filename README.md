@@ -185,3 +185,22 @@ vector<vector<double> > static newMatrix(double x, double y, double z, double ya
 ```
 
   - x,y,z,yaw: Diagonal values in the matrix (4x4)
+  
+
+
+#### Method setAStarAlgorithm:
+
+```c++ 
+  void setAStarAlgorithm();
+```	
+
+Set Dijkstra as the algorithm to use
+
+
+#### Method getPlanningGraph:
+
+```c++ 
+  void setDijkstraAlgorithm();
+```	
+
+Set Dijkstra as the algorithm to use
