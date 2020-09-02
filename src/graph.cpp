@@ -181,6 +181,7 @@ vector<Pose> Graph::getPathPoses(Pose myPose, Pose endGoal) {
     Position myPosition(myPose.coordinates, myPose.matrix);
     Position finalGoal(endGoal.coordinates, endGoal.matrix);
     this->planning_graph_.setfinalGoal(finalGoal);
+
     vector<Node> nodes = this->planning_graph_.getPathNodes(myPosition);
 
     // Set a coodinate Z value
@@ -391,8 +392,13 @@ void Graph::loadStructGraph(vector<StNodes> st_nodes)
       this->planning_graph_.addLinkBetweenNodesById(id,st_nodes[i].nodesConnected[j]);
     }
   }
+}
 
-  ;
+void Graph::setAStarAlgorithm(){
+  planning_graph_.setAlgorithm(Util::AStar);
+}
+void Graph::setDijkstraAlgorithm(){
+  planning_graph_.setAlgorithm(Util::Dijkstra);
 }
 
 

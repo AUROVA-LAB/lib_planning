@@ -14,6 +14,17 @@ public:
   Util();
 
   /**
+   * Possible algorithms
+   */
+  enum Algorithm
+  {
+    AStar,
+    Dijkstra
+  };
+
+  static Algorithm algorithm; // this is legal
+
+  /**
    * Create a 4x4 matrix
    */
   vector<vector<double> > static newMatrix();
