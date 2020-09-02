@@ -383,13 +383,12 @@ void Graph::loadStructGraph(vector<StNodes> st_nodes)
     vector<vector<double> > mx = st_nodes[i].matrix;
     long id = st_nodes[i].id;
     this->planning_graph_.addNode(id, coord, mx);
-  }
-  // Load the links
-  for(unsigned int i=0; i<st_nodes.size(); i++)
-  {
-    long id = st_nodes[i].id;
+
+    // Load the links
     for(unsigned int j=0; j<st_nodes[i].nodesConnected.size();j++){
-      this->planning_graph_.addLinkBetweenNodesById(id,st_nodes[i].nodesConnected[j]);
+      if(st_nodes[i].nodesConnected[j] < i){
+        this->planning_graph_.addLinkBetweenNodesById(id,st_nodes[i].nodesConnected[j]);
+      }
     }
   }
 }
