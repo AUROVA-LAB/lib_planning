@@ -1,8 +1,11 @@
-#include "../src/Util.cpp"
-#include "../src/Link.cpp"
-#include "../src/Node.cpp"
-#include "../src/LatLongToUTM.cpp"
-#include "../src/Position.cpp"
+#include "../src/util.cpp"
+#include "../src/link.cpp"
+#include "../src/node.cpp"
+#include "../src/planning_graph.cpp"
+#include "../src/graph.cpp"
+#include "../src/position.cpp"
+#include "../src/latlong_utm.cpp"
+
 
 #include <gtest/gtest.h>
 

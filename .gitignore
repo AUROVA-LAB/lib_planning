@@ -6,3 +6,4 @@ Debug/
 # Code to exclude
 
 main.cpp
+*.osm

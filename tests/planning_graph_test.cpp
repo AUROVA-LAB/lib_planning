@@ -1,9 +1,10 @@
-#include "../src/Link.cpp"
-#include "../src/Planning_Graph.cpp"
-#include "../src/Node.cpp"
-#include "../src/Position.cpp"
-#include "../src/Util.cpp"
-#include "../src/LatLongToUTM.cpp"
+#include "../src/util.cpp"
+#include "../src/link.cpp"
+#include "../src/planning_graph.cpp"
+#include "../src/node.cpp"
+#include "../src/position.cpp"
+#include "../src/latlong_utm.cpp"
+
 
 #include <gtest/gtest.h>
 
@@ -19,7 +20,7 @@ vector<double> newVector(double x, double y, double z, double yaw){
 
 TEST(PlanningGraphTest, addNodes)
 { 
-	Planning_Graph graph;
+	PlanningGraph graph;
 	vector<double> coordinates = Util::newVector();
 	vector<vector<double> > matrix = Util::newMatrix();
 	graph.addNode(coordinates,matrix);
@@ -32,7 +33,7 @@ TEST(PlanningGraphTest, addNodes)
  
 TEST(PlanningGraphTest, addNodes2)
 {
-	Planning_Graph graph;
+	PlanningGraph graph;
 	vector<double> coordinates = Util::newVector();
 	vector<vector<double> > matrix = Util::newMatrix();
 	graph.addNode(coordinates,matrix);
@@ -51,7 +52,7 @@ TEST(PlanningGraphTest, addNodes2)
 
 TEST(PlanningGraphTest, equalsNodes)
 {
-	Planning_Graph graph;
+	PlanningGraph graph;
 	vector<double> coordinates = Util::newVector();
 	vector<vector<double> > matrix = Util::newMatrix();
 	graph.addNode(coordinates,matrix);
@@ -91,7 +92,7 @@ TEST(PlanningGraphTest, equalsNodes)
 
 TEST(PlanningGraphTest, addLink)
 {
-	Planning_Graph graph;
+	PlanningGraph graph;
 	vector<double> coordinates = Util::newVector();
 	vector<vector<double> > matrix = Util::newMatrix();
 	graph.addNode(coordinates,matrix);
@@ -111,7 +112,7 @@ TEST(PlanningGraphTest, addLink)
 
 TEST(PlanningGraphTest, addLink2)
 {
-	Planning_Graph graph;
+	PlanningGraph graph;
 
 	for(int i=0; i<10; i++){
 		graph.addNode(newVector(i,i,0,0), Util::newMatrix());
@@ -146,7 +147,7 @@ TEST(PlanningGraphTest, addLink2)
 
 TEST(PlanningGraphTest, correctPointers)
 {
-	Planning_Graph graph;
+	PlanningGraph graph;
 	vector<double> coordinates = Util::newVector();
 	vector<vector<double> > matrix = Util::newMatrix();
 	//graph.addNode(coordinates,matrix);
@@ -181,7 +182,7 @@ TEST(PlanningGraphTest, correctPointers)
 
 TEST(PlanningGraphTest, dinamycNodes)
 {
-	Planning_Graph graph;
+	PlanningGraph graph;
 
 	graph.addNode(newVector(5,5,0,0), Util::newMatrix());
 	int x=5,y=5,z=0,yaw=0;
