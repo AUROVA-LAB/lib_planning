@@ -19,7 +19,8 @@
  */
 
 void Ellipsoid::LLtoUTM(int ReferenceEllipsoid, const double Lat,
-    const double Long, double &UTMNorthing, double &UTMEasting, char *UTMZone) {
+    const double Long, double &UTMNorthing, double &UTMEasting, char *UTMZone)
+{
 //converts lat/long to UTM coords.  Equations from USGS Bulletin 1532 
 //East Longitudes are positive, West longitudes are negative. 
 //North latitudes are positive, South latitudes are negative
@@ -48,7 +49,8 @@ void Ellipsoid::LLtoUTM(int ReferenceEllipsoid, const double Lat,
     ZoneNumber = 32;
 
   // Special zones for Svalbard
-  if (Lat >= 72.0 && Lat < 84.0) {
+  if (Lat >= 72.0 && Lat < 84.0)
+  {
     if (LongTemp >= 0.0 && LongTemp < 9.0)
       ZoneNumber = 31;
     else if (LongTemp >= 9.0 && LongTemp < 21.0)
@@ -99,7 +101,8 @@ void Ellipsoid::LLtoUTM(int ReferenceEllipsoid, const double Lat,
     UTMNorthing += 10000000.0; //10000000 meter offset for southern hemisphere
 }
 
-char Ellipsoid::UTMLetterDesignator(double Lat) {
+char Ellipsoid::UTMLetterDesignator(double Lat)
+{
 //This routine determines the correct UTM letter designator for the given latitude
 //returns 'Z' if latitude is outside the UTM limits of 84N to 80S
   //Written by Chuck Gantz- chuck.gantz@globalstar.com
@@ -152,7 +155,8 @@ char Ellipsoid::UTMLetterDesignator(double Lat) {
 }
 
 void Ellipsoid::UTMtoLL(int ReferenceEllipsoid, const double UTMNorthing,
-    const double UTMEasting, const char *UTMZone, double &Lat, double &Long) {
+    const double UTMEasting, const char *UTMZone, double &Lat, double &Long)
+{
 //converts UTM coords to lat/long.  Equations from USGS Bulletin 1532 
 //East Longitudes are positive, West longitudes are negative. 
 //North latitudes are positive, South latitudes are negative
@@ -178,7 +182,8 @@ void Ellipsoid::UTMtoLL(int ReferenceEllipsoid, const double UTMNorthing,
   ZoneNumber = strtoul(UTMZone, &ZoneLetter, 10);
   if ((*ZoneLetter - 'N') >= 0)
     NorthernHemisphere = 1; //point is in northern hemisphere
-  else {
+  else
+  {
     NorthernHemisphere = 0; //point is in southern hemisphere
     y -= 10000000.0; //remove 10,000,000 meter offset used for southern hemisphere
   }

@@ -14,11 +14,12 @@
 using namespace std;
 using namespace Eigen;
 
-class PlanningGraph {
+class PlanningGraph
+{
 public:
   /**
-  * The algorithm used
-  */
+   * The algorithm used
+   */
   Util::Algorithm typeAlgortihm_;
 
 private:
@@ -29,10 +30,9 @@ private:
   vector<Node> nodes_;
 
   /**
-  * The algorithm used
-  */
+   * The algorithm used
+   */
   //Util::Algorithm typeAlgortihm_;
-
   /**
    * Links between nodes
    */
@@ -158,10 +158,7 @@ public:
    */
   double calculateAStarHDistance(Node initNode, Node endNode);
 
-
-
 //public:
-
 
   PlanningGraph();
   ~PlanningGraph();
@@ -217,7 +214,6 @@ public:
    */
   void setAlgorithm(Util::Algorithm algorithm);
 
-
   double getRadiusVehicle();
   void setRadiusVehicle(double radius);
   double getMinimumRadiusNodes();
@@ -264,7 +260,6 @@ public:
    * Returns only the path nodes
    */
   vector<Node> bestPathNodes(vector<Node> allNodes);
-
 
 };
 

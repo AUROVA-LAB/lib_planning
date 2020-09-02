@@ -1,22 +1,25 @@
 #include "../includes/graph.h"
 
 Graph::Graph(string url, vector<vector<double> > matrix, string typeDistance,
-    double radiusDistance) {
+    double radiusDistance)
+{
   xmlReadLatLong(url, matrix);
   this->planning_graph_.setDistances(typeDistance);
   this->planning_graph_.setRadiusVehicle(radiusDistance);
 }
 
-Graph::Graph(string typeDistance, double radiusDistance) {
+Graph::Graph(string typeDistance, double radiusDistance)
+{
   this->planning_graph_.setDistances(typeDistance);
   this->planning_graph_.setRadiusVehicle(radiusDistance);
 }
 
-
-Graph::~Graph() {
+Graph::~Graph()
+{
 }
 
-void Graph::xmlReadLatLong(string url, vector<vector<double> > matrix) {
+void Graph::xmlReadLatLong(string url, vector<vector<double> > matrix)
+{
 
   // Check if the file exists
   if ((access(url.c_str(), F_OK) != -1))
@@ -42,9 +45,11 @@ void Graph::xmlReadLatLong(string url, vector<vector<double> > matrix) {
     xml_node<> *node = root_node->first_node("node");
 
     // Load the nodes using the keyword node
-    while (nextValue) {
+    while (nextValue)
+    {
       // Ignore nodes with tag
-      while (node->next_sibling("node") && node->first_node("tag")) {
+      while (node->next_sibling("node") && node->first_node("tag"))
+      {
         node = node->next_sibling();
       }
       if (!node->next_sibling("node"))
@@ -62,8 +67,7 @@ void Graph::xmlReadLatLong(string url, vector<vector<double> > matrix) {
             this->planning_graph_.addNode(id, coord, matrix);
           }
         }
-      }
-      else
+      } else
       {
         lat = atof(node->first_attribute("lat")->value());
         lon = atof(node->first_attribute("lon")->value());
@@ -82,14 +86,16 @@ void Graph::xmlReadLatLong(string url, vector<vector<double> > matrix) {
     while (nextValue)
     {
       id = atof(way->first_attribute("id")->value());
-      if (!way->next_sibling("way")) {
+      if (!way->next_sibling("way"))
+      {
         nextValue = false;
       }
       xml_node<> *nd = way->first_node("nd");
       nextValue2 = true;
       idNodo1 = -1;
       idNodo2 = -1;
-      while (nextValue2) {
+      while (nextValue2)
+      {
         if (idNodo1 == -1)
         {
           idNodo1 = atof(nd->first_attribute("ref")->value());
@@ -117,11 +123,12 @@ void Graph::xmlReadLatLong(string url, vector<vector<double> > matrix) {
   }
 }
 
-
 vector<vector<double> > Graph::newMatrix(double x, double y, double z,
-    double yaw) {
+    double yaw)
+{
   vector<vector<double> > newVector(4);
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 4; i++)
+  {
     if (i == 0)
     {
       newVector[i].push_back(x);
@@ -152,10 +159,11 @@ vector<vector<double> > Graph::newMatrix(double x, double y, double z,
   return newVector;
 }
 
-Pose Graph::getNextPose(Pose myPose, Pose endGoal) {
+Pose Graph::getNextPose(Pose myPose, Pose endGoal)
+{
   Pose nextPose;
   // Check if the input values are valid
-  if(!myPose.coordinates.empty() && !endGoal.coordinates.empty())
+  if (!myPose.coordinates.empty() && !endGoal.coordinates.empty())
   {
     Position myPosition(myPose.coordinates, myPose.matrix);
     Position finalGoal(endGoal.coordinates, endGoal.matrix);
@@ -173,10 +181,11 @@ Pose Graph::getNextPose(Pose myPose, Pose endGoal) {
   return nextPose;
 }
 
-vector<Pose> Graph::getPathPoses(Pose myPose, Pose endGoal) {
+vector<Pose> Graph::getPathPoses(Pose myPose, Pose endGoal)
+{
   vector<Pose> path;
   // Check if the input values are valid
-  if(!myPose.coordinates.empty() && !endGoal.coordinates.empty())
+  if (!myPose.coordinates.empty() && !endGoal.coordinates.empty())
   {
     Position myPosition(myPose.coordinates, myPose.matrix);
     Position finalGoal(endGoal.coordinates, endGoal.matrix);
@@ -200,16 +209,17 @@ vector<Pose> Graph::getPathPoses(Pose myPose, Pose endGoal) {
   return path;
 }
 
-PlanningGraph Graph::getPlanningGraph(){
+PlanningGraph Graph::getPlanningGraph()
+{
   return planning_graph_;
 }
 
-
-void Graph::xmlWrite(string fileName, int precision){
+void Graph::xmlWrite(string fileName, int precision)
+{
 
   vector<Node*> nodes = this->planning_graph_.getNodesPointers();
   // Set identifiers to each node to identify it
-  for(unsigned long i=0; i<this->planning_graph_.getNodes().size(); i++)
+  for (unsigned long i = 0; i < this->planning_graph_.getNodes().size(); i++)
   {
     nodes[i]->setId(i);
   }
@@ -219,28 +229,46 @@ void Graph::xmlWrite(string fileName, int precision){
   osmFile << "<osm version='1.0' >" << endl;
   osmFile << "<bounds />" << endl;
   osmFile << std::fixed << std::setprecision(precision);
-  for(unsigned int i=0;i<nodes.size();i++){
-      osmFile << "<node id='"<<nodes[i]->getId()<<"' x='"<<nodes[i]->getX()<<"' y='"<<nodes[i]->getY()<<"' z='"<<nodes[i]->getZ()<<"' yaw='"<<nodes[i]->getYaw()<<"'>" << endl;
-      osmFile << "<matrix xx='"<<nodes[i]->getMatrix()[0][0]<<"' xy='"<<nodes[i]->getMatrix()[0][1]<<"' xz='"<<nodes[i]->getMatrix()[0][2]<<"' xyaw='"<<nodes[i]->getMatrix()[0][3]
-              << "' yx='"<<nodes[i]->getMatrix()[1][0]<<"' yy='"<<nodes[i]->getMatrix()[1][1]<<"' yz='"<<nodes[i]->getMatrix()[1][2]<<"' yyaw='"<<nodes[i]->getMatrix()[1][3]
-              << "' zx='"<<nodes[i]->getMatrix()[2][0]<<"' zy='"<<nodes[i]->getMatrix()[2][1]<<"' zz='"<<nodes[i]->getMatrix()[2][2]<<"' zyaw='"<<nodes[i]->getMatrix()[2][3]
-              << "' yawx='"<<nodes[i]->getMatrix()[3][0]<<"' yawy='"<<nodes[i]->getMatrix()[3][1]<<"' yawz='"<<nodes[i]->getMatrix()[3][2]<<"' yawyaw='"<<nodes[i]->getMatrix()[3][3]
-                  <<"'/>" << endl;
-      osmFile << "</node>" << endl;
+  for (unsigned int i = 0; i < nodes.size(); i++)
+  {
+    osmFile << "<node id='" << nodes[i]->getId() << "' x='" << nodes[i]->getX()
+        << "' y='" << nodes[i]->getY() << "' z='" << nodes[i]->getZ()
+        << "' yaw='" << nodes[i]->getYaw() << "'>" << endl;
+    osmFile << "<matrix xx='" << nodes[i]->getMatrix()[0][0] << "' xy='"
+        << nodes[i]->getMatrix()[0][1] << "' xz='"
+        << nodes[i]->getMatrix()[0][2] << "' xyaw='"
+        << nodes[i]->getMatrix()[0][3] << "' yx='"
+        << nodes[i]->getMatrix()[1][0] << "' yy='"
+        << nodes[i]->getMatrix()[1][1] << "' yz='"
+        << nodes[i]->getMatrix()[1][2] << "' yyaw='"
+        << nodes[i]->getMatrix()[1][3] << "' zx='"
+        << nodes[i]->getMatrix()[2][0] << "' zy='"
+        << nodes[i]->getMatrix()[2][1] << "' zz='"
+        << nodes[i]->getMatrix()[2][2] << "' zyaw='"
+        << nodes[i]->getMatrix()[2][3] << "' yawx='"
+        << nodes[i]->getMatrix()[3][0] << "' yawy='"
+        << nodes[i]->getMatrix()[3][1] << "' yawz='"
+        << nodes[i]->getMatrix()[3][2] << "' yawyaw='"
+        << nodes[i]->getMatrix()[3][3] << "'/>" << endl;
+    osmFile << "</node>" << endl;
   }
   vector<Link> links = this->planning_graph_.getLinks();
 
-  for(unsigned int i=0;i<links.size();i++){
+  for (unsigned int i = 0; i < links.size(); i++)
+  {
     osmFile << "<way id='" << i << "'>" << endl;
-    for(unsigned int j=0; j<links[i].getNodes().size(); j++){
-      osmFile << "<nd ref='"<< links[i].getNodes()[j]->getId() <<"'/>" << endl;
+    for (unsigned int j = 0; j < links[i].getNodes().size(); j++)
+    {
+      osmFile << "<nd ref='" << links[i].getNodes()[j]->getId() << "'/>"
+          << endl;
     }
     osmFile << "</way>" << endl;
   }
   osmFile << "</osm>" << endl;
 }
 
-void Graph::xmlReadUTM(string url){
+void Graph::xmlReadUTM(string url)
+{
 
   // Check if the file exists
   if ((access(url.c_str(), F_OK) != -1))
@@ -264,7 +292,8 @@ void Graph::xmlReadUTM(string url){
     xml_node<> *node = root_node->first_node("node");
 
     // Load the nodes using the keyword node
-    while (nextValue) {
+    while (nextValue)
+    {
       vector<double> coord;
       vector<vector<double> > matrix(4);
       id = atof(node->first_attribute("id")->value());
@@ -305,7 +334,8 @@ void Graph::xmlReadUTM(string url){
     while (nextValue)
     {
       id = atof(way->first_attribute("id")->value());
-      if (!way->next_sibling("way")) {
+      if (!way->next_sibling("way"))
+      {
         nextValue = false;
       }
       xml_node<> *nd = way->first_node("nd");
@@ -313,7 +343,8 @@ void Graph::xmlReadUTM(string url){
       idNodo1 = -1;
       idNodo2 = -1;
 
-      while (nextValue2) {
+      while (nextValue2)
+      {
         if (idNodo1 == -1)
         {
           idNodo1 = atof(nd->first_attribute("ref")->value());
@@ -341,31 +372,32 @@ void Graph::xmlReadUTM(string url){
   }
 }
 
-vector<StNodes> Graph::getStructGraph(){
+vector<StNodes> Graph::getStructGraph()
+{
   vector<StNodes> st_nodes;
   vector<Node*> allNodes = this->planning_graph_.getNodesPointers();
   // Set identifiers to each node to identify it
-  for(unsigned long i=0; i<this->planning_graph_.getNodes().size(); i++)
+  for (unsigned long i = 0; i < this->planning_graph_.getNodes().size(); i++)
   {
     allNodes[i]->setId(i);
   }
 
   // Transform each node to Struct
-  for(unsigned int i=0; i<allNodes.size(); i++)
+  for (unsigned int i = 0; i < allNodes.size(); i++)
   {
     StNodes st_node;
     st_node.id = allNodes[i]->getId();
     st_node.coordinates = allNodes[i]->getCoordinates();
     st_node.matrix = allNodes[i]->getMatrix();
-    for(unsigned int j=0; j<allNodes[i]->getLinks().size(); j++)
+    for (unsigned int j = 0; j < allNodes[i]->getLinks().size(); j++)
     {
       long idNode;
-      if(allNodes[i]->getLinks()[j]->getNodes()[0]->equals(*allNodes[i]))
+      if (allNodes[i]->getLinks()[j]->getNodes()[0]->equals(*allNodes[i]))
       {
-        idNode=allNodes[i]->getLinks()[j]->getNodes()[1]->getId();
-      }else
+        idNode = allNodes[i]->getLinks()[j]->getNodes()[1]->getId();
+      } else
       {
-        idNode=allNodes[i]->getLinks()[j]->getNodes()[0]->getId();
+        idNode = allNodes[i]->getLinks()[j]->getNodes()[0]->getId();
       }
       st_node.nodesConnected.push_back(idNode);
     }
@@ -377,7 +409,7 @@ vector<StNodes> Graph::getStructGraph(){
 void Graph::loadStructGraph(vector<StNodes> st_nodes)
 {
   // Load the nodes
-  for(unsigned int i=0; i<st_nodes.size(); i++)
+  for (unsigned int i = 0; i < st_nodes.size(); i++)
   {
     vector<double> coord = st_nodes[i].coordinates;
     vector<vector<double> > mx = st_nodes[i].matrix;
@@ -385,19 +417,23 @@ void Graph::loadStructGraph(vector<StNodes> st_nodes)
     this->planning_graph_.addNode(id, coord, mx);
 
     // Load the links
-    for(unsigned int j=0; j<st_nodes[i].nodesConnected.size();j++){
-      if(st_nodes[i].nodesConnected[j] < i){
-        this->planning_graph_.addLinkBetweenNodesById(id,st_nodes[i].nodesConnected[j]);
+    for (unsigned int j = 0; j < st_nodes[i].nodesConnected.size(); j++)
+    {
+      if (st_nodes[i].nodesConnected[j] < i)
+      {
+        this->planning_graph_.addLinkBetweenNodesById(id,
+            st_nodes[i].nodesConnected[j]);
       }
     }
   }
 }
 
-void Graph::setAStarAlgorithm(){
+void Graph::setAStarAlgorithm()
+{
   planning_graph_.setAlgorithm(Util::AStar);
 }
-void Graph::setDijkstraAlgorithm(){
+void Graph::setDijkstraAlgorithm()
+{
   planning_graph_.setAlgorithm(Util::Dijkstra);
 }
-
 

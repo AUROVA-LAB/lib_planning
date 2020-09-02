@@ -10,7 +10,8 @@
 #include <vector>
 using namespace std;
 using namespace Eigen;
-class Node: public Position {
+class Node: public Position
+{
 
 public:
 
@@ -43,7 +44,6 @@ public:
       vector<vector<double> > covarianceMatrix);
 
   ~Node();
-
 
   /**
    * Set a link to the node

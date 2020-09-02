@@ -8,7 +8,8 @@ using namespace std;
 
 class Node;
 
-class Link {
+class Link
+{
 private:
 
 public:

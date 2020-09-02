@@ -14,19 +14,22 @@ using namespace rapidxml;
 /**
  * Position from coordinates and the covariance matrix
  */
-struct Pose {
+struct Pose
+{
   vector<double> coordinates;
   vector<vector<double> > matrix;
 };
 
-struct StNodes {
+struct StNodes
+{
   long id;
   vector<double> coordinates;
   vector<vector<double> > matrix;
   vector<long> nodesConnected;
 };
 
-class Graph {
+class Graph
+{
 private:
   /**
    * Graph to calculate the shortest path
@@ -34,7 +37,7 @@ private:
   PlanningGraph planning_graph_;
 public:
 
-  Graph(string typeDistance,double radiusDistance);
+  Graph(string typeDistance, double radiusDistance);
   Graph(string url, vector<vector<double> > matrix, string typeDistance,
       double radiusDistance);
   virtual ~Graph();
@@ -88,8 +91,6 @@ public:
    * Sets algorithm Dijkstra to be used
    */
   void setDijkstraAlgorithm();
-
-
 
   PlanningGraph getPlanningGraph();
 

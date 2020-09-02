@@ -5,12 +5,15 @@
 #ifndef LATLONGCONV
 #define LATLONGCONV
 
-class Ellipsoid {
+class Ellipsoid
+{
 public:
-  Ellipsoid() {
+  Ellipsoid()
+  {
   }
   ;
-  Ellipsoid(int Id, char *name, double radius, double ecc) {
+  Ellipsoid(int Id, char *name, double radius, double ecc)
+  {
     id = Id;
     ellipsoidName = name;
     EquatorialRadius = radius;

@@ -4,7 +4,8 @@
 
 using namespace std;
 
-class Position {
+class Position
+{
 protected:
 
   vector<double> coordinates_;

@@ -1,12 +1,15 @@
 #include "../includes/util.h"
 
-Util::~Util() {
+Util::~Util()
+{
 }
 
-Util::Util() {
+Util::Util()
+{
 }
 
-vector<double> Util::newVector() {
+vector<double> Util::newVector()
+{
   vector<double> newVector;
   newVector.push_back(0);
   newVector.push_back(0);
@@ -15,7 +18,8 @@ vector<double> Util::newVector() {
   return newVector;
 }
 
-vector<double> Util::newVector(double x, double y, double z, double yaw) {
+vector<double> Util::newVector(double x, double y, double z, double yaw)
+{
   vector<double> newVector;
   newVector.push_back(x);
   newVector.push_back(y);
@@ -24,25 +28,31 @@ vector<double> Util::newVector(double x, double y, double z, double yaw) {
   return newVector;
 }
 
-vector<vector<double> > Util::newMatrix() {
+vector<vector<double> > Util::newMatrix()
+{
   vector<vector<double> > newVector(4);
-  for (int i = 0; i < 4; i++) {
-    if (i == 0) {
+  for (int i = 0; i < 4; i++)
+  {
+    if (i == 0)
+    {
       newVector[i].push_back(1);
       newVector[i].push_back(0);
       newVector[i].push_back(0);
       newVector[i].push_back(0);
-    } else if (i == 1) {
+    } else if (i == 1)
+    {
       newVector[i].push_back(0);
       newVector[i].push_back(1);
       newVector[i].push_back(0);
       newVector[i].push_back(0);
-    } else if (i == 2) {
+    } else if (i == 2)
+    {
       newVector[i].push_back(0);
       newVector[i].push_back(0);
       newVector[i].push_back(100000000000);
       newVector[i].push_back(0);
-    } else if (i == 3) {
+    } else if (i == 3)
+    {
       newVector[i].push_back(0);
       newVector[i].push_back(0);
       newVector[i].push_back(0);
@@ -53,7 +63,8 @@ vector<vector<double> > Util::newMatrix() {
   return newVector;
 }
 
-vector<double> Util::LLToUTM(double lat, double lon) {
+vector<double> Util::LLToUTM(double lat, double lon)
+{
   Ellipsoid a;
   double UtmY;
   double UtmX;
