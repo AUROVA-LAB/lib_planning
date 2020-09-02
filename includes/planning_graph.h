@@ -142,12 +142,12 @@ private:
    * Get the link pointer using an identifier
    */
   Link* findLinkPointer(long id);
+public:
 
   /**
    * Calculate the distance to the goal using Dijkstra
    */
   double calculateDijkstra(Node initNode, Node endNode);
-public:
   /**
    * Calculate the distance to the goal using A*
    */
