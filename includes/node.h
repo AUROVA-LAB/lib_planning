@@ -26,6 +26,11 @@ public:
   bool seen_;
 
   /**
+  **
+  */
+  double h_;
+
+  /**
    * Node identifier
    */
   long id_;

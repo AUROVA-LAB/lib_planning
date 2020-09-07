@@ -39,11 +39,6 @@ private:
   vector<Link> links_;
 
   /**
-   * They are the positions that the robot goes through
-   */
-  vector<Position> dynamicPositions_;
-
-  /**
    * Final goal
    */
   Position finalGoal_;
@@ -134,11 +129,6 @@ private:
   bool existLinkBetweenNodes(Node node1, Node node2);
 
   /**
-   * Convert saved positions to nodes
-   */
-  void dynamicPositionsToNodes();
-
-  /**
    * Get the link pointer using an identifier
    */
   Link* findLinkPointer(long id);
@@ -147,11 +137,11 @@ public:
   /**
    * Calculate the distance to the goal using Dijkstra
    */
-  double calculateDijkstra(Node initNode, Node endNode);
+  double calculateDijkstra(Node initNode, Node endNode, vector<Node> &bestpath);
   /**
    * Calculate the distance to the goal using A*
    */
-  double calculateAStar(Node initNode, Node endNode);
+  double calculateAStar(Node initNode, Node endNode, vector<Node> &bestpath);
 
   /**
    * Returns the heuristic used in the A * algorithm
@@ -194,11 +184,6 @@ public:
    */
   void addLinkBetweenNodes(vector<double> coordinates1,
       vector<double> coordinates2);
-  /**
-   * Saves a position
-   */
-  void addDynamicPosition(vector<double> coordinates,
-      vector<vector<double> > matrix);
 
   /**
    * Set the final goal

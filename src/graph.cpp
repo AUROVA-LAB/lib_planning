@@ -184,6 +184,7 @@ Pose Graph::getNextPose(Pose myPose, Pose endGoal)
 vector<Pose> Graph::getPathPoses(Pose myPose, Pose endGoal)
 {
   vector<Pose> path;
+
   // Check if the input values are valid
   if (!myPose.coordinates.empty() && !endGoal.coordinates.empty())
   {
