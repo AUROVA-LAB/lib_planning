@@ -112,6 +112,8 @@ double Node::calculateMahalanobisDistance(Node node)
   Matrix4d matrixP;
   Matrix4d matrixQ;
   Matrix4d matrixZ;
+  Vector4d vectorAux;
+
 
   for (unsigned int i = 0; i < node.getCoordinates().size(); i++)
   {
@@ -132,8 +134,9 @@ double Node::calculateMahalanobisDistance(Node node)
   }
 
   vectorZ = vectorG - vectorX;
-  matrixZ = matrixP * matrixQ * matrixP.transpose();
-  double aux = (vectorZ.transpose() * matrixZ.inverse() * vectorZ).value();
+  matrixZ.noalias() = matrixP * matrixQ * matrixP.transpose();
+  vectorAux.noalias() = matrixZ.inverse() * vectorZ;
+  double aux = (vectorZ.transpose() * vectorAux).value();
   double mahalanobisDistance = sqrt(aux);
 
   return mahalanobisDistance;

@@ -227,8 +227,8 @@ double PlanningGraph::calculateAStarHDistance(Node initNode, Node endNode)
 double PlanningGraph::calculateAStar(Node initNode, Node endNode,
     vector<Node> &bestpath)
 {
-  Node currentNode, *childNode;
-  currentNode = initNode;
+  Node *currentNode, *childNode;
+  currentNode = &initNode;
   vector<Node> closeList;
   vector<Node*> openList;
   int ej=0;
@@ -253,43 +253,43 @@ double PlanningGraph::calculateAStar(Node initNode, Node endNode,
   while (!openList.empty())
   {
     int pos = 0;
-    currentNode = *openList[pos];
+    currentNode = openList[pos];
     for (unsigned int i = 1; i < openList.size(); i++)
     {
-      double f1 = openList[i]->h_;
-      double f2 = currentNode.h_;
+      double f1 = openList[i]->h_ + openList[i]->cost_;
+      double f2 = currentNode->h_ + currentNode->cost_;
       if ( f1 < f2)
       {
-        currentNode = *openList[i];
+        currentNode = openList[i];
         pos = i;
       }
     }
-    closeList.push_back(currentNode);
-    bestpath.insert(bestpath.begin(), currentNode);
-    currentNode.seen_ = true;
+    closeList.push_back(*currentNode);
+    bestpath.insert(bestpath.begin(), *currentNode);
+    currentNode->seen_ = true;
     openList.erase(openList.begin() + pos);
 
-    if (currentNode.equals(endNode))
+    if (currentNode->equals(endNode))
     {
-      return currentNode.distance_;
+      return currentNode->distance_;
     }
 
     // Select the childs of the current node
-    for (unsigned int i = 0; i < currentNode.getLinks().size(); i++)
+    for (unsigned int i = 0; i < currentNode->getLinks().size(); i++)
     {
-      if (currentNode.getLinks()[i]->nodes_[0]->equals(currentNode))
+      if (currentNode->getLinks()[i]->nodes_[0]->equals(*currentNode))
       {
-        childNode = currentNode.getLinks()[i]->nodes_[1];
+        childNode = currentNode->getLinks()[i]->nodes_[1];
       } else
       {
-        childNode = currentNode.getLinks()[i]->nodes_[0];
+        childNode = currentNode->getLinks()[i]->nodes_[0];
       }
 
       if (!childNode->seen_)
       {
         // Set the distances to use A* to each child node
         Position childPos(childNode->getCoordinates(), childNode->getMatrix());
-        double newChildDistanceG = currentNode.getLinks()[i]->distance_ + currentNode.distance_;
+        double newChildDistanceG = currentNode->getLinks()[i]->distance_ + currentNode->distance_;
 
         // If it is equal to DBL_MAX means that is a new node
         if (childNode->distance_ != DBL_MAX)
