@@ -38,9 +38,11 @@ Node PlanningGraph::evaluateNextNode(Position initPos)
     {
       distance += getDistanceNodePosition(this->finalGoal_, lastNodePath);
       bestpath.clear();
+
       if (this->typeAlgortihm_ == Util::AStar)
       {
         distance += calculateAStar(initNodes[i], lastNodePath, bestpath);
+
       } else if (this->typeAlgortihm_ == Util::Dijkstra)
       {
         distance += calculateDijkstra(initNodes[i], lastNodePath, bestpath);
@@ -223,15 +225,11 @@ double PlanningGraph::calculateAStarHDistance(Node initNode, Node endNode)
   return getDistanceNodePosition(initNode, endNode);
 }
 
-
 double PlanningGraph::calculateAStar(Node initNode, Node endNode,
     vector<Node> &bestpath)
 {
   Node *currentNode, *childNode;
-  currentNode = &initNode;
-  vector<Node> closeList;
   vector<Node*> openList;
-  int ej=0;
 
   for (unsigned int i = 0; i < this->nodes_.size(); i++)
   {
@@ -240,11 +238,12 @@ double PlanningGraph::calculateAStar(Node initNode, Node endNode,
       this->nodes_[i].distance_ = 0;
       this->nodes_[i].seen_ = true;
       this->nodes_[i].distance_ = 0;
-      this->nodes_[i].h_ = 0;
+      Position childPos(this->nodes_[i].getCoordinates(), this->nodes_[i].getMatrix());
+      this->nodes_[i].h_ = calculateAStarHDistance(childPos, endNode);
       openList.push_back(&this->nodes_[i]);
     } else
     {
-      this->nodes_[i].distance_ = DBL_MAX;
+      this->nodes_[i].distance_ = -1;
       this->nodes_[i].h_ = DBL_MAX;
       this->nodes_[i].seen_ = false;
     }
@@ -252,21 +251,20 @@ double PlanningGraph::calculateAStar(Node initNode, Node endNode,
 
   while (!openList.empty())
   {
+
     int pos = 0;
     currentNode = openList[pos];
     for (unsigned int i = 1; i < openList.size(); i++)
     {
-      double f1 = openList[i]->h_ + openList[i]->cost_;
-      double f2 = currentNode->h_ + currentNode->cost_;
+      double f1 = openList[i]->h_ + openList[i]->cost_;//openList[i]->distance_ + openList[i]->h_ + openList[i]->cost_;
+      double f2 = currentNode->h_ + currentNode->cost_;//currentNode->distance_ + currentNode->h_ + currentNode->cost_;
       if ( f1 < f2)
       {
         currentNode = openList[i];
         pos = i;
       }
     }
-    closeList.push_back(*currentNode);
-    bestpath.insert(bestpath.begin(), *currentNode);
-    currentNode->seen_ = true;
+    bestpath.push_back(*currentNode);
     openList.erase(openList.begin() + pos);
 
     if (currentNode->equals(endNode))
@@ -288,24 +286,26 @@ double PlanningGraph::calculateAStar(Node initNode, Node endNode,
       if (!childNode->seen_)
       {
         // Set the distances to use A* to each child node
-        Position childPos(childNode->getCoordinates(), childNode->getMatrix());
-        double newChildDistanceG = currentNode->getLinks()[i]->distance_ + currentNode->distance_;
+        double distanceBetweenNodes = currentNode->getLinks()[i]->distance_;
+        double newDistance = distanceBetweenNodes + currentNode->distance_;
 
         // If it is equal to DBL_MAX means that is a new node
-        if (childNode->distance_ != DBL_MAX)
+        if (childNode->distance_ >= 0)
         {
-          if(newChildDistanceG < childNode->distance_ ){
-            childNode->distance_ = newChildDistanceG;
+          if(newDistance < childNode->distance_){
+            childNode->distance_ = newDistance;
           }
         }
         else
         {
-          childNode->distance_ = newChildDistanceG;
+          Position childPos(childNode->getCoordinates(), childNode->getMatrix());
           childNode->h_ = calculateAStarHDistance(childPos, endNode);
+          childNode->distance_ = newDistance;
           openList.push_back(childNode);
         }
       }
     }
+    currentNode->seen_ = true;
   }
   return -1;
 }
@@ -543,8 +543,6 @@ vector<Node> PlanningGraph::getCloserNodes(Position pos)
     }
     i++;
   }
-  connectedNodes.push_back(n1);
-  connectedNodes.push_back(n2);
 
 // If the robot is inside the radius of the node, look for the connected nodes
   if (insideNode)
@@ -560,6 +558,9 @@ vector<Node> PlanningGraph::getCloserNodes(Position pos)
       }
     }
     // If the robot is not inside the radius of the node, look for the closest nodes
+  }else{
+    connectedNodes.push_back(n1);
+    connectedNodes.push_back(n2);
   }
   return connectedNodes;
 }
@@ -570,7 +571,6 @@ vector<Node> PlanningGraph::bestPathNodes(vector<Node> allNodes)
   Node nextNode;
 
   Node lastNodeGoal(this->finalGoal_);
-// Copy all nodes
   for (unsigned int i = 0; i < allNodes.size(); i++)
   {
     if (this->lastNodeGraph_.equals(allNodes[i]))
@@ -584,6 +584,7 @@ vector<Node> PlanningGraph::bestPathNodes(vector<Node> allNodes)
   {
 
     Node auxNode;
+    Node minNode;
 
     // Find the node that gets the best path
     for (unsigned int i = 0; i < nextNode.getLinks().size(); i++)
@@ -595,13 +596,16 @@ vector<Node> PlanningGraph::bestPathNodes(vector<Node> allNodes)
       {
         auxNode = *nextNode.getLinks()[i]->getNodes()[0];
       }
-
-      if (auxNode.distance_ < nextNode.distance_)
+      if(i==0 || minNode.distance_ == -1){
+        minNode = auxNode;
+      }
+      if (auxNode.distance_ < minNode.distance_ && auxNode.distance_ >=0 )
       {
-        nextNode = auxNode;
+        minNode = auxNode;
       }
     }
-    minPath.insert(minPath.begin(), nextNode);
+    minPath.insert(minPath.begin(), minNode);
+    nextNode = minNode;
   }
 
   if (!this->lastNodeGraph_.equals(lastNodeGoal))
@@ -622,7 +626,7 @@ vector<Node> PlanningGraph::getPathNodes(Position initPos)
     this->nodes_.push_back(this->finalGoal_);
   }
   vector<Node> bestPathOfNodes;
-  if (this->bestPath_.size() != 0)
+  if (this->bestPath_.size() > 1)
   {
     if (this->typeAlgortihm_ == Util::Dijkstra)
     {
@@ -633,9 +637,7 @@ vector<Node> PlanningGraph::getPathNodes(Position initPos)
     }
   } else
   {
-    Node init(initPos);
     Node end(this->finalGoal_);
-    bestPathOfNodes.push_back(init);
     bestPathOfNodes.push_back(end);
   }
   return bestPathOfNodes;

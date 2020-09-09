@@ -30,10 +30,6 @@ private:
   vector<Node> nodes_;
 
   /**
-   * The algorithm used
-   */
-  //Util::Algorithm typeAlgortihm_;
-  /**
    * Links between nodes
    */
   vector<Link> links_;

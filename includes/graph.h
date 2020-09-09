@@ -30,12 +30,12 @@ struct StNodes
 
 class Graph
 {
-private:
+public:
   /**
    * Graph to calculate the shortest path
    */
   PlanningGraph planning_graph_;
-public:
+
 
   Graph(string typeDistance, double radiusDistance);
   Graph(string url, vector<vector<double> > matrix, string typeDistance,
