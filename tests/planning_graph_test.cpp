@@ -180,54 +180,6 @@ TEST(PlanningGraphTest, correctPointers)
     ASSERT_TRUE(graph.getLinks()[0].getNodes()[1]->getLinks()[0]->getNodes()[1]->equals(node2));
 }
 
-TEST(PlanningGraphTest, dinamycNodes)
-{
-	PlanningGraph graph;
-
-	graph.addNode(newVector(5,5,0,0), Util::newMatrix());
-	int x=5,y=5,z=0,yaw=0;
-	for (int i=0; i<25;i++){
-		if(i<=5 && i!=0) {
-			y++;
-		}
-		if(i>5 && i<=10){
-			x++;
-		}
-		if(i>10 && i<=15){
-			y--;
-		}
-		if(i>15){
-			x--;
-		}
-
-		Node n1(newVector(x,y,z,yaw), Util::newMatrix());
-		Node n2(newVector(x,y,z,yaw), Util::newMatrix());
-		graph.addDynamicPosition(newVector(x,y,z,yaw), Util::newMatrix());
-	}
-	
-	Position pos0(newVector(5,5,z,yaw),Util::newMatrix());
-	Position pos1(newVector(5,10,z,yaw),Util::newMatrix());
-	Position pos2(newVector(10,10,z,yaw),Util::newMatrix());
-	Position pos3(newVector(10,5,z,yaw),Util::newMatrix());
-
-	Node node0(pos0);
-	Node node1(pos1);
-	Node node2(pos2);
-	Node node3(pos3);
-
-    ASSERT_TRUE(graph.getNodes()[0].equals(node0));
-	ASSERT_TRUE(graph.getNodes()[1].equals(node1));
-	ASSERT_TRUE(graph.getNodes()[2].equals(node2));
-	ASSERT_TRUE(graph.getNodes()[3].equals(node3));
-	ASSERT_TRUE(graph.getNodes()[0].getLinks()[0]->getNodes()[0]->equals(node0));
-	ASSERT_TRUE(graph.getNodes()[0].getLinks()[0]->getNodes()[1]->equals(node1));
-	ASSERT_TRUE(graph.getNodes()[0].getLinks()[1]->getNodes()[1]->equals(node0));
-	ASSERT_TRUE(graph.getNodes()[0].getLinks()[1]->getNodes()[0]->equals(node3));
-    ASSERT_TRUE(graph.getNodes()[1].getLinks()[1]->getNodes()[1]->equals(node2));
-    ASSERT_TRUE(graph.getNodes()[2].getLinks()[0]->getNodes()[1]->equals(node2));
-	ASSERT_TRUE(graph.getNodes()[2].getLinks()[1]->getNodes()[1]->equals(node3));
-}
-
 
 int main(int argc, char **argv) 
 {
