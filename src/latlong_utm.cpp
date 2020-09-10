@@ -170,21 +170,16 @@ void Ellipsoid::UTMtoLL(int ReferenceEllipsoid, const double UTMNorthing,
   double e1 = (1 - sqrt(1 - eccSquared)) / (1 + sqrt(1 - eccSquared));
   double N1, T1, C1, R1, D, M;
   double LongOrigin;
-  double mu, phi1, phi1Rad;
+  double mu, phi1Rad;
   double x, y;
   int ZoneNumber;
   char *ZoneLetter;
-  int NorthernHemisphere; //1 for northern hemispher, 0 for southern
 
   x = UTMEasting - 500000.0; //remove 500,000 meter offset for longitude
   y = UTMNorthing;
 
   ZoneNumber = strtoul(UTMZone, &ZoneLetter, 10);
-  if ((*ZoneLetter - 'N') >= 0)
-    NorthernHemisphere = 1; //point is in northern hemisphere
-  else
-  {
-    NorthernHemisphere = 0; //point is in southern hemisphere
+  if ((*ZoneLetter - 'N') < 0){
     y -= 10000000.0; //remove 10,000,000 meter offset used for southern hemisphere
   }
 
@@ -201,7 +196,6 @@ void Ellipsoid::UTMtoLL(int ReferenceEllipsoid, const double UTMNorthing,
   phi1Rad = mu + (3 * e1 / 2 - 27 * e1 * e1 * e1 / 32) * sin(2 * mu)
       + (21 * e1 * e1 / 16 - 55 * e1 * e1 * e1 * e1 / 32) * sin(4 * mu)
       + (151 * e1 * e1 * e1 / 96) * sin(6 * mu);
-  phi1 = phi1Rad * rad2deg;
 
   N1 = a / sqrt(1 - eccSquared * sin(phi1Rad) * sin(phi1Rad));
   T1 = tan(phi1Rad) * tan(phi1Rad);

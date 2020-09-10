@@ -22,7 +22,7 @@ public:
    */
   Util::Algorithm typeAlgortihm_;
 
-private:
+
 
   /**
    * Nodes saved on the map

@@ -256,8 +256,8 @@ double PlanningGraph::calculateAStar(Node initNode, Node endNode,
     currentNode = openList[pos];
     for (unsigned int i = 1; i < openList.size(); i++)
     {
-      double f1 = openList[i]->h_ + openList[i]->cost_;//openList[i]->distance_ + openList[i]->h_ + openList[i]->cost_;
-      double f2 = currentNode->h_ + currentNode->cost_;//currentNode->distance_ + currentNode->h_ + currentNode->cost_;
+      double f1 = openList[i]->h_ + openList[i]->cost_;
+      double f2 = currentNode->h_ + currentNode->cost_;
       if ( f1 < f2)
       {
         currentNode = openList[i];
@@ -628,13 +628,7 @@ vector<Node> PlanningGraph::getPathNodes(Position initPos)
   vector<Node> bestPathOfNodes;
   if (this->bestPath_.size() > 1)
   {
-    if (this->typeAlgortihm_ == Util::Dijkstra)
-    {
-      bestPathOfNodes = bestPathNodes(this->bestPath_);
-    } else if (this->typeAlgortihm_ == Util::AStar)
-    {
-      bestPathOfNodes = bestPathNodes(this->bestPath_);
-    }
+    bestPathOfNodes = bestPathNodes(this->bestPath_);
   } else
   {
     Node end(this->finalGoal_);

@@ -7,6 +7,7 @@ Node::Node(vector<double> coordinates, vector<vector<double> > covarianceMatrix)
   this->cost_ = 0;
   this->distance_ = 0;
   this->seen_ = false;
+  this->h_ = 0;
 }
 
 Node::Node(vector<double> coordinates, vector<vector<double> > covarianceMatrix,
@@ -16,6 +17,7 @@ Node::Node(vector<double> coordinates, vector<vector<double> > covarianceMatrix,
   this->cost_ = cost;
   this->distance_ = 0;
   this->seen_ = false;
+  this->h_ = 0;
 }
 
 Node::Node(Position pos) : Position(pos)
@@ -24,6 +26,7 @@ Node::Node(Position pos) : Position(pos)
   this->cost_ = 0;
   this->distance_ = 0;
   this->seen_ = false;
+  this->h_ = 0;
 }
 
 Node::Node(long id, vector<double> coordinates,
@@ -34,6 +37,7 @@ Node::Node(long id, vector<double> coordinates,
   this->cost_ = 0;
   this->distance_ = 0;
   this->seen_ = false;
+  this->h_ = 0;
 }
 
 Node::Node() : Position()
@@ -42,6 +46,7 @@ Node::Node() : Position()
   this->cost_ = 0;
   this->distance_ = 0;
   this->seen_ = false;
+  this->h_ = 0;
 }
 
 Node::~Node()

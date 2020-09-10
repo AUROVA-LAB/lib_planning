@@ -10,14 +10,19 @@ class Ellipsoid
 public:
   Ellipsoid()
   {
+    char array[1];
+    this->id = -1;
+    this->ellipsoidName = array;
+    this->EquatorialRadius = -1;
+    this->eccentricitySquared = -1;
   }
   ;
   Ellipsoid(int Id, char *name, double radius, double ecc)
   {
-    id = Id;
-    ellipsoidName = name;
-    EquatorialRadius = radius;
-    eccentricitySquared = ecc;
+    this->id = Id;
+    this->ellipsoidName = name;
+    this->EquatorialRadius = radius;
+    this->eccentricitySquared = ecc;
   }
 
   int id;
