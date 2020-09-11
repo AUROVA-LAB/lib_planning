@@ -86,6 +86,7 @@ void Graph::xmlReadLatLong(string url, vector<vector<double> > matrix)
     while (nextValue)
     {
       id = atof(way->first_attribute("id")->value());
+      // Check if it is the last
       if (!way->next_sibling("way"))
       {
         nextValue = false;
@@ -94,6 +95,8 @@ void Graph::xmlReadLatLong(string url, vector<vector<double> > matrix)
       nextValue2 = true;
       idNodo1 = -1;
       idNodo2 = -1;
+
+      // Connect all the nodes of a path
       while (nextValue2)
       {
         if (idNodo1 == -1)

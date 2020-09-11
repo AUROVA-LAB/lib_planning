@@ -438,6 +438,7 @@ Node PlanningGraph::getNextNode(Position initPos)
 
 vector<Node> PlanningGraph::getPathNodes(Position initPos)
 {
+  // Evaluate the possibilities
   Node actualPosition(initPos);
   if (this->nodes_.size() > 0)
   {
@@ -446,7 +447,10 @@ vector<Node> PlanningGraph::getPathNodes(Position initPos)
   {
     this->nodes_.push_back(this->finalGoal_);
   }
+
   vector<Node> bestPathOfNodes;
+
+  // Returns only the nodes of the best path
   if (this->bestPath_.size() > 1)
   {
     bestPathOfNodes = bestPathNodes(this->bestPath_);
@@ -455,6 +459,7 @@ vector<Node> PlanningGraph::getPathNodes(Position initPos)
     Node end(this->finalGoal_);
     bestPathOfNodes.push_back(end);
   }
+
   return bestPathOfNodes;
 }
 
@@ -463,6 +468,7 @@ vector<Node> PlanningGraph::bestPathNodes(vector<Node> allNodes)
   vector<Node> minPath;
   Node nextNode;
 
+  // Initialize the values
   Node lastNodeGoal(this->finalGoal_);
   for (unsigned int i = 0; i < allNodes.size(); i++)
   {
