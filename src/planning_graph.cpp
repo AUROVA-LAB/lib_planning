@@ -319,7 +319,6 @@ double PlanningGraph::calculateAStar(Node initNode, Node endNode,
   return -1;
 }
 
-
 Node PlanningGraph::getCloserNode(Position pos)
 {
 
@@ -342,7 +341,6 @@ Node PlanningGraph::getCloserNode(Position pos)
   return this->nodes_[n1];
 }
 
-// Get the two closest nodes
 vector<Node> PlanningGraph::getCloserNodes(Position pos)
 {
   bool insideNode = false;
@@ -353,6 +351,7 @@ vector<Node> PlanningGraph::getCloserNodes(Position pos)
   double distance1 = getDistanceNodePosition(pos, this->nodes_[0]);
   double distance2 = getDistanceNodePosition(pos, this->nodes_[1]);
 
+  // Initialize the values
   if (distance1 < distance2)
   {
     n1 = this->nodes_[0];
@@ -361,19 +360,21 @@ vector<Node> PlanningGraph::getCloserNodes(Position pos)
   {
     n1 = this->nodes_[1];
     n2 = this->nodes_[0];
+    double aux = distance2;
+    distance2=distance1;
+    distance1=aux;
   }
+
   if (distance1 < this->radiusVehicle_)
   {
     insideNode = true;
-    n = this->nodes_[0];
-  } else if (distance2 < this->radiusVehicle_)
-  {
-    insideNode = true;
-    n = this->nodes_[1];
+    n = n1;
   }
+
   unsigned int i = 2;
-// Search all nodes and return the two closest
-  while (i < this->nodes_.size() && !insideNode)
+
+  // Search all nodes and return the two closest
+  while (i < this->nodes_.size())
   {
     double newDistance = getDistanceNodePosition(pos, this->nodes_[i]);
 
@@ -397,7 +398,7 @@ vector<Node> PlanningGraph::getCloserNodes(Position pos)
     i++;
   }
 
-// If the robot is inside the radius of the node, look for the connected nodes
+  // If the robot is inside the radius of the node, find the connected nodes
   if (insideNode)
   {
     for (unsigned int j = 0; j < n.links_.size(); j++)
@@ -410,8 +411,8 @@ vector<Node> PlanningGraph::getCloserNodes(Position pos)
         connectedNodes.push_back(*n.links_[j]->nodes_[0]);
       }
     }
-    // If the robot is not inside the radius of the node, look for the closest nodes
-  } else
+  }
+  else
   {
     connectedNodes.push_back(n1);
     connectedNodes.push_back(n2);
@@ -426,8 +427,9 @@ Node PlanningGraph::getNextNode(Position initPos)
   if (this->nodes_.size() > 0)
   {
     nextNode = evaluateNextNode(initPos);
+    vector<Node> bestPathOfNodes = bestPathNodes(this->bestPath_);
     nextNode.setYaw(
-        calculateSense(actualPosition, nextNode, evaluateNextNode(nextNode)));
+        calculateSense(actualPosition, nextNode, bestPathOfNodes[1]));
   } else
   {
     nextNode = this->finalGoal_;
@@ -507,7 +509,6 @@ vector<Node> PlanningGraph::bestPathNodes(vector<Node> allNodes)
   }
   return minPath;
 }
-
 
 double PlanningGraph::getDistanceNodePosition(Position pos, Node node)
 {
@@ -597,8 +598,6 @@ void PlanningGraph::addLinkBetweenNodesById(long id1, long id2)
     l1->setDistance(this->typeDistance_);
   }
 }
-
-
 
 void PlanningGraph::addNode(vector<double> coordinates,
     vector<vector<double> > matrix)

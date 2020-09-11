@@ -493,3 +493,553 @@ Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_1d4ad/fast'
 make: *** [cmTC_1d4ad/fast] Error 2
 
 
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b6a43/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b6a43.dir/build.make CMakeFiles/cmTC_b6a43.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b6a43.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_b6a43.dir/CheckSymbolExists.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_b6a43
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b6a43.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_b6a43.dir/CheckSymbolExists.c.o  -o cmTC_b6a43 -rdynamic 
+CMakeFiles/cmTC_b6a43.dir/CheckSymbolExists.c.o: En la función `main':
+CheckSymbolExists.c:(.text+0x16): referencia a `pthread_create' sin definir
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_b6a43.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_b6a43'
+make[1]: *** [cmTC_b6a43] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_b6a43/fast'
+make: *** [cmTC_b6a43/fast] Error 2
+
+File /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c5cb2/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c5cb2.dir/build.make CMakeFiles/cmTC_c5cb2.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c5cb2.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_c5cb2.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_c5cb2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c5cb2.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_c5cb2.dir/CheckFunctionExists.c.o  -o cmTC_c5cb2 -rdynamic -lpthreads 
+/usr/bin/ld: no se puede encontrar -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_c5cb2.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_c5cb2'
+make[1]: *** [cmTC_c5cb2] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_c5cb2/fast'
+make: *** [cmTC_c5cb2/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4d144/fast"
+/usr/bin/make -f CMakeFiles/cmTC_4d144.dir/build.make CMakeFiles/cmTC_4d144.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4d144.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_4d144.dir/CheckSymbolExists.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_4d144
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4d144.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_4d144.dir/CheckSymbolExists.c.o  -o cmTC_4d144 -rdynamic 
+CMakeFiles/cmTC_4d144.dir/CheckSymbolExists.c.o: En la función `main':
+CheckSymbolExists.c:(.text+0x16): referencia a `pthread_create' sin definir
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_4d144.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_4d144'
+make[1]: *** [cmTC_4d144] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_4d144/fast'
+make: *** [cmTC_4d144/fast] Error 2
+
+File /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_447e3/fast"
+/usr/bin/make -f CMakeFiles/cmTC_447e3.dir/build.make CMakeFiles/cmTC_447e3.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_447e3.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_447e3.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_447e3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_447e3.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_447e3.dir/CheckFunctionExists.c.o  -o cmTC_447e3 -rdynamic -lpthreads 
+/usr/bin/ld: no se puede encontrar -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_447e3.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_447e3'
+make[1]: *** [cmTC_447e3] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_447e3/fast'
+make: *** [cmTC_447e3/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_79149/fast"
+/usr/bin/make -f CMakeFiles/cmTC_79149.dir/build.make CMakeFiles/cmTC_79149.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_79149.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_79149.dir/CheckSymbolExists.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_79149
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_79149.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_79149.dir/CheckSymbolExists.c.o  -o cmTC_79149 -rdynamic 
+CMakeFiles/cmTC_79149.dir/CheckSymbolExists.c.o: En la función `main':
+CheckSymbolExists.c:(.text+0x16): referencia a `pthread_create' sin definir
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_79149.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_79149'
+make[1]: *** [cmTC_79149] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_79149/fast'
+make: *** [cmTC_79149/fast] Error 2
+
+File /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_896c2/fast"
+/usr/bin/make -f CMakeFiles/cmTC_896c2.dir/build.make CMakeFiles/cmTC_896c2.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_896c2.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_896c2.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_896c2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_896c2.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_896c2.dir/CheckFunctionExists.c.o  -o cmTC_896c2 -rdynamic -lpthreads 
+/usr/bin/ld: no se puede encontrar -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_896c2.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_896c2'
+make[1]: *** [cmTC_896c2] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_896c2/fast'
+make: *** [cmTC_896c2/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b2cfc/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b2cfc.dir/build.make CMakeFiles/cmTC_b2cfc.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b2cfc.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_b2cfc.dir/CheckSymbolExists.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_b2cfc
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b2cfc.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_b2cfc.dir/CheckSymbolExists.c.o  -o cmTC_b2cfc -rdynamic 
+CMakeFiles/cmTC_b2cfc.dir/CheckSymbolExists.c.o: En la función `main':
+CheckSymbolExists.c:(.text+0x16): referencia a `pthread_create' sin definir
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_b2cfc.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_b2cfc'
+make[1]: *** [cmTC_b2cfc] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_b2cfc/fast'
+make: *** [cmTC_b2cfc/fast] Error 2
+
+File /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_44233/fast"
+/usr/bin/make -f CMakeFiles/cmTC_44233.dir/build.make CMakeFiles/cmTC_44233.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_44233.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_44233.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_44233
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_44233.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_44233.dir/CheckFunctionExists.c.o  -o cmTC_44233 -rdynamic -lpthreads 
+/usr/bin/ld: no se puede encontrar -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_44233.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_44233'
+make[1]: *** [cmTC_44233] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_44233/fast'
+make: *** [cmTC_44233/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_25289/fast"
+/usr/bin/make -f CMakeFiles/cmTC_25289.dir/build.make CMakeFiles/cmTC_25289.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_25289.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_25289.dir/CheckSymbolExists.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_25289
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_25289.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_25289.dir/CheckSymbolExists.c.o  -o cmTC_25289 -rdynamic 
+CMakeFiles/cmTC_25289.dir/CheckSymbolExists.c.o: En la función `main':
+CheckSymbolExists.c:(.text+0x16): referencia a `pthread_create' sin definir
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_25289.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_25289'
+make[1]: *** [cmTC_25289] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_25289/fast'
+make: *** [cmTC_25289/fast] Error 2
+
+File /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9bc98/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9bc98.dir/build.make CMakeFiles/cmTC_9bc98.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9bc98.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_9bc98.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_9bc98
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9bc98.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_9bc98.dir/CheckFunctionExists.c.o  -o cmTC_9bc98 -rdynamic -lpthreads 
+/usr/bin/ld: no se puede encontrar -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_9bc98.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_9bc98'
+make[1]: *** [cmTC_9bc98] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_9bc98/fast'
+make: *** [cmTC_9bc98/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_cf363/fast"
+/usr/bin/make -f CMakeFiles/cmTC_cf363.dir/build.make CMakeFiles/cmTC_cf363.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_cf363.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_cf363.dir/CheckSymbolExists.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_cf363
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cf363.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_cf363.dir/CheckSymbolExists.c.o  -o cmTC_cf363 -rdynamic 
+CMakeFiles/cmTC_cf363.dir/CheckSymbolExists.c.o: En la función `main':
+CheckSymbolExists.c:(.text+0x16): referencia a `pthread_create' sin definir
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_cf363.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_cf363'
+make[1]: *** [cmTC_cf363] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_cf363/fast'
+make: *** [cmTC_cf363/fast] Error 2
+
+File /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_189bc/fast"
+/usr/bin/make -f CMakeFiles/cmTC_189bc.dir/build.make CMakeFiles/cmTC_189bc.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_189bc.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_189bc.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_189bc
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_189bc.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_189bc.dir/CheckFunctionExists.c.o  -o cmTC_189bc -rdynamic -lpthreads 
+/usr/bin/ld: no se puede encontrar -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_189bc.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_189bc'
+make[1]: *** [cmTC_189bc] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_189bc/fast'
+make: *** [cmTC_189bc/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_55177/fast"
+/usr/bin/make -f CMakeFiles/cmTC_55177.dir/build.make CMakeFiles/cmTC_55177.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_55177.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_55177.dir/CheckSymbolExists.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_55177
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_55177.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_55177.dir/CheckSymbolExists.c.o  -o cmTC_55177 -rdynamic 
+CMakeFiles/cmTC_55177.dir/CheckSymbolExists.c.o: En la función `main':
+CheckSymbolExists.c:(.text+0x16): referencia a `pthread_create' sin definir
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_55177.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_55177'
+make[1]: *** [cmTC_55177] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_55177/fast'
+make: *** [cmTC_55177/fast] Error 2
+
+File /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1cc34/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1cc34.dir/build.make CMakeFiles/cmTC_1cc34.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1cc34.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_1cc34.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_1cc34
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1cc34.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_1cc34.dir/CheckFunctionExists.c.o  -o cmTC_1cc34 -rdynamic -lpthreads 
+/usr/bin/ld: no se puede encontrar -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_1cc34.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_1cc34'
+make[1]: *** [cmTC_1cc34] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_1cc34/fast'
+make: *** [cmTC_1cc34/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0668f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0668f.dir/build.make CMakeFiles/cmTC_0668f.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0668f.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_0668f.dir/CheckSymbolExists.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_0668f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0668f.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_0668f.dir/CheckSymbolExists.c.o  -o cmTC_0668f -rdynamic 
+CMakeFiles/cmTC_0668f.dir/CheckSymbolExists.c.o: En la función `main':
+CheckSymbolExists.c:(.text+0x16): referencia a `pthread_create' sin definir
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_0668f.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_0668f'
+make[1]: *** [cmTC_0668f] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_0668f/fast'
+make: *** [cmTC_0668f/fast] Error 2
+
+File /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5b18f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5b18f.dir/build.make CMakeFiles/cmTC_5b18f.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5b18f.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_5b18f.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_5b18f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5b18f.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_5b18f.dir/CheckFunctionExists.c.o  -o cmTC_5b18f -rdynamic -lpthreads 
+/usr/bin/ld: no se puede encontrar -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_5b18f.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_5b18f'
+make[1]: *** [cmTC_5b18f] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_5b18f/fast'
+make: *** [cmTC_5b18f/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_249bc/fast"
+/usr/bin/make -f CMakeFiles/cmTC_249bc.dir/build.make CMakeFiles/cmTC_249bc.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_249bc.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_249bc.dir/CheckSymbolExists.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_249bc
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_249bc.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_249bc.dir/CheckSymbolExists.c.o  -o cmTC_249bc -rdynamic 
+CMakeFiles/cmTC_249bc.dir/CheckSymbolExists.c.o: En la función `main':
+CheckSymbolExists.c:(.text+0x16): referencia a `pthread_create' sin definir
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_249bc.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_249bc'
+make[1]: *** [cmTC_249bc] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_249bc/fast'
+make: *** [cmTC_249bc/fast] Error 2
+
+File /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c5aee/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c5aee.dir/build.make CMakeFiles/cmTC_c5aee.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c5aee.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_c5aee.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_c5aee
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c5aee.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_c5aee.dir/CheckFunctionExists.c.o  -o cmTC_c5aee -rdynamic -lpthreads 
+/usr/bin/ld: no se puede encontrar -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_c5aee.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_c5aee'
+make[1]: *** [cmTC_c5aee] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_c5aee/fast'
+make: *** [cmTC_c5aee/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_56f63/fast"
+/usr/bin/make -f CMakeFiles/cmTC_56f63.dir/build.make CMakeFiles/cmTC_56f63.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_56f63.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_56f63.dir/CheckSymbolExists.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_56f63
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_56f63.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_56f63.dir/CheckSymbolExists.c.o  -o cmTC_56f63 -rdynamic 
+CMakeFiles/cmTC_56f63.dir/CheckSymbolExists.c.o: En la función `main':
+CheckSymbolExists.c:(.text+0x16): referencia a `pthread_create' sin definir
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_56f63.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_56f63'
+make[1]: *** [cmTC_56f63] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_56f63/fast'
+make: *** [cmTC_56f63/fast] Error 2
+
+File /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_2f597/fast"
+/usr/bin/make -f CMakeFiles/cmTC_2f597.dir/build.make CMakeFiles/cmTC_2f597.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2f597.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_2f597.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_2f597
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2f597.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_2f597.dir/CheckFunctionExists.c.o  -o cmTC_2f597 -rdynamic -lpthreads 
+/usr/bin/ld: no se puede encontrar -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_2f597.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_2f597'
+make[1]: *** [cmTC_2f597] Error 1
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_2f597/fast'
+make: *** [cmTC_2f597/fast] Error 2
+
+
