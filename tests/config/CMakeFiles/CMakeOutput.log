@@ -580,3 +580,227 @@ Linking C executable cmTC_329ab
 make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
 
 
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c1dc8/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c1dc8.dir/build.make CMakeFiles/cmTC_c1dc8.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c1dc8.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_c1dc8.dir/CheckIncludeFile.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_c1dc8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c1dc8.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_c1dc8.dir/CheckIncludeFile.c.o  -o cmTC_c1dc8 -rdynamic 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5c54a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5c54a.dir/build.make CMakeFiles/cmTC_5c54a.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5c54a.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_5c54a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_5c54a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5c54a.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_5c54a.dir/CheckFunctionExists.c.o  -o cmTC_5c54a -rdynamic -lpthread 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5cecd/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5cecd.dir/build.make CMakeFiles/cmTC_5cecd.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5cecd.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_5cecd.dir/CheckIncludeFile.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_5cecd
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5cecd.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_5cecd.dir/CheckIncludeFile.c.o  -o cmTC_5cecd -rdynamic 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_24095/fast"
+/usr/bin/make -f CMakeFiles/cmTC_24095.dir/build.make CMakeFiles/cmTC_24095.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_24095.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_24095.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_24095
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_24095.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_24095.dir/CheckFunctionExists.c.o  -o cmTC_24095 -rdynamic -lpthread 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6d727/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6d727.dir/build.make CMakeFiles/cmTC_6d727.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6d727.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_6d727.dir/CheckIncludeFile.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_6d727
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6d727.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_6d727.dir/CheckIncludeFile.c.o  -o cmTC_6d727 -rdynamic 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_da549/fast"
+/usr/bin/make -f CMakeFiles/cmTC_da549.dir/build.make CMakeFiles/cmTC_da549.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_da549.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_da549.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_da549
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_da549.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_da549.dir/CheckFunctionExists.c.o  -o cmTC_da549 -rdynamic -lpthread 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_3c350/fast"
+/usr/bin/make -f CMakeFiles/cmTC_3c350.dir/build.make CMakeFiles/cmTC_3c350.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_3c350.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_3c350.dir/CheckIncludeFile.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_3c350
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3c350.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_3c350.dir/CheckIncludeFile.c.o  -o cmTC_3c350 -rdynamic 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b0063/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b0063.dir/build.make CMakeFiles/cmTC_b0063.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b0063.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_b0063.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_b0063
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b0063.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_b0063.dir/CheckFunctionExists.c.o  -o cmTC_b0063 -rdynamic -lpthread 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d8fc5/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d8fc5.dir/build.make CMakeFiles/cmTC_d8fc5.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d8fc5.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_d8fc5.dir/CheckIncludeFile.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_d8fc5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d8fc5.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_d8fc5.dir/CheckIncludeFile.c.o  -o cmTC_d8fc5 -rdynamic 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6c8a3/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6c8a3.dir/build.make CMakeFiles/cmTC_6c8a3.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6c8a3.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_6c8a3.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_6c8a3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6c8a3.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_6c8a3.dir/CheckFunctionExists.c.o  -o cmTC_6c8a3 -rdynamic -lpthread 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_676d6/fast"
+/usr/bin/make -f CMakeFiles/cmTC_676d6.dir/build.make CMakeFiles/cmTC_676d6.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_676d6.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_676d6.dir/CheckIncludeFile.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_676d6
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_676d6.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_676d6.dir/CheckIncludeFile.c.o  -o cmTC_676d6 -rdynamic 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b0851/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b0851.dir/build.make CMakeFiles/cmTC_b0851.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b0851.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_b0851.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_b0851
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b0851.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_b0851.dir/CheckFunctionExists.c.o  -o cmTC_b0851 -rdynamic -lpthread 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5df10/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5df10.dir/build.make CMakeFiles/cmTC_5df10.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5df10.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_5df10.dir/CheckIncludeFile.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_5df10
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5df10.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_5df10.dir/CheckIncludeFile.c.o  -o cmTC_5df10 -rdynamic 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4d480/fast"
+/usr/bin/make -f CMakeFiles/cmTC_4d480.dir/build.make CMakeFiles/cmTC_4d480.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4d480.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_4d480.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_4d480
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4d480.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_4d480.dir/CheckFunctionExists.c.o  -o cmTC_4d480 -rdynamic -lpthread 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6de0b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6de0b.dir/build.make CMakeFiles/cmTC_6de0b.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6de0b.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_6de0b.dir/CheckIncludeFile.c.o   -c /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_6de0b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6de0b.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_6de0b.dir/CheckIncludeFile.c.o  -o cmTC_6de0b -rdynamic 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_c5c61/fast"
+/usr/bin/make -f CMakeFiles/cmTC_c5c61.dir/build.make CMakeFiles/cmTC_c5c61.dir/build
+make[1]: se entra en el directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c5c61.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_c5c61.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_c5c61
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c5c61.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_c5c61.dir/CheckFunctionExists.c.o  -o cmTC_c5c61 -rdynamic -lpthread 
+make[1]: se sale del directorio '/home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/CMakeTmp'
+
+

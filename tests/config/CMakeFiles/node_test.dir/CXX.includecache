@@ -59,6 +59,8 @@ vector
 -
 bits/stdc++.h
 -
+../includes/util.h
+/home/aurova-linux/eclipse-workspace/lib_planning/includes/util.h
 
 /home/aurova-linux/eclipse-workspace/lib_planning/includes/node.h
 eigen3/Eigen/Cholesky

@@ -57,7 +57,7 @@ public:
   /**
    * Set the type of distance calculated (Euclidean "E",Mahalanobis "M")
    */
-  string typeDistance_;
+  Util::Distances typeDistance_;
 
   /**
    * Ìf it has been in the closest node
@@ -124,10 +124,6 @@ public:
    */
   bool existLinkBetweenNodes(Node node1, Node node2);
 
-  /**
-   * Get the link pointer using an identifier
-   */
-  Link* findLinkPointer(long id);
 public:
 
   /**
@@ -188,7 +184,7 @@ public:
   /**
    * Set if is used Mahalanobis or Euclidean distance
    */
-  void setDistances(string type);
+  void setDistances(Util::Distances type);
 
   /**
    * Set algorithm

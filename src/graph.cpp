@@ -1,6 +1,6 @@
 #include "../includes/graph.h"
 
-Graph::Graph(string url, vector<vector<double> > matrix, string typeDistance,
+Graph::Graph(string url, vector<vector<double> > matrix, Util::Distances typeDistance,
     double radiusDistance)
 {
   xmlReadLatLong(url, matrix);
@@ -8,7 +8,7 @@ Graph::Graph(string url, vector<vector<double> > matrix, string typeDistance,
   this->planning_graph_.setRadiusVehicle(radiusDistance);
 }
 
-Graph::Graph(string typeDistance, double radiusDistance)
+Graph::Graph(Util::Distances typeDistance, double radiusDistance)
 {
   this->planning_graph_.setDistances(typeDistance);
   this->planning_graph_.setRadiusVehicle(radiusDistance);

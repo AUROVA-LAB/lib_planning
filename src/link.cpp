@@ -49,12 +49,12 @@ float Link::getEuclideanDistance()
 {
   return this->euclideanDistance_;
 }
-void Link::setDistance(string type)
+void Link::setDistance(Util::Distances type)
 {
-  if (type == "E")
+  if (type == Util::Euclidean)
   {
     this->distance_ = this->euclideanDistance_;
-  } else if (type == "M")
+  } else if (type == Util::Mahalanobis)
   {
     this->distance_ = this->mahalanobisDistance_;
   }

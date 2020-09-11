@@ -123,11 +123,7 @@ double Node::calculateMahalanobisDistance(Node node)
   for (unsigned int i = 0; i < node.getCoordinates().size(); i++)
   {
     vectorX(i) = node.getCoordinates()[i];
-  }
-  for (unsigned int i = 0; i < this->getCoordinates().size(); i++)
-  {
     vectorG(i) = this->getCoordinates()[i];
-
   }
   for (unsigned int i = 0; i < node.getMatrix().size(); i++)
   {
