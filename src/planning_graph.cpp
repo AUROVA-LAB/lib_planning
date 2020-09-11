@@ -361,8 +361,8 @@ vector<Node> PlanningGraph::getCloserNodes(Position pos)
     n1 = this->nodes_[1];
     n2 = this->nodes_[0];
     double aux = distance2;
-    distance2=distance1;
-    distance1=aux;
+    distance2 = distance1;
+    distance1 = aux;
   }
 
   if (distance1 < this->radiusVehicle_)
@@ -374,7 +374,7 @@ vector<Node> PlanningGraph::getCloserNodes(Position pos)
   unsigned int i = 2;
 
   // Search all nodes and return the two closest
-  while (i < this->nodes_.size())
+  while (i < this->nodes_.size() && !insideNode)
   {
     double newDistance = getDistanceNodePosition(pos, this->nodes_[i]);
 
@@ -411,8 +411,7 @@ vector<Node> PlanningGraph::getCloserNodes(Position pos)
         connectedNodes.push_back(*n.links_[j]->nodes_[0]);
       }
     }
-  }
-  else
+  } else
   {
     connectedNodes.push_back(n1);
     connectedNodes.push_back(n2);
