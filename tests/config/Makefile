@@ -48,18 +48,18 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/trabajo/eclipse-workspace/lib_planning/tests/config
+CMAKE_SOURCE_DIR = /home/aurova-linux/eclipse-workspace/lib_planning/tests/config
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/trabajo/eclipse-workspace/lib_planning/tests/config
+CMAKE_BINARY_DIR = /home/aurova-linux/eclipse-workspace/lib_planning/tests/config
 
 #=============================================================================
 # Targets provided globally by CMake.
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/usr/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/trabajo/eclipse-workspace/lib_planning/tests/config/CMakeFiles /home/trabajo/eclipse-workspace/lib_planning/tests/config/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/trabajo/eclipse-workspace/lib_planning/tests/config/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/aurova-linux/eclipse-workspace/lib_planning/tests/config/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -162,113 +162,113 @@ node_test/fast:
 	$(MAKE) -f CMakeFiles/node_test.dir/build.make CMakeFiles/node_test.dir/build
 .PHONY : node_test/fast
 
-home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.o: home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.cpp.o
+home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.o: home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.cpp.o
 
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.o
-
-# target to build an object file
-home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.cpp.o:
-	$(MAKE) -f CMakeFiles/graph_test.dir/build.make CMakeFiles/graph_test.dir/home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.cpp.o
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.cpp.o
-
-home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.i: home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.cpp.i
-
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.i
-
-# target to preprocess a source file
-home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.cpp.i:
-	$(MAKE) -f CMakeFiles/graph_test.dir/build.make CMakeFiles/graph_test.dir/home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.cpp.i
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.cpp.i
-
-home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.s: home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.cpp.s
-
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.s
-
-# target to generate assembly for a file
-home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.cpp.s:
-	$(MAKE) -f CMakeFiles/graph_test.dir/build.make CMakeFiles/graph_test.dir/home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.cpp.s
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.cpp.s
-
-home/trabajo/eclipse-workspace/lib_planning/tests/node_test.o: home/trabajo/eclipse-workspace/lib_planning/tests/node_test.cpp.o
-
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/node_test.o
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.o
 
 # target to build an object file
-home/trabajo/eclipse-workspace/lib_planning/tests/node_test.cpp.o:
-	$(MAKE) -f CMakeFiles/node_test.dir/build.make CMakeFiles/node_test.dir/home/trabajo/eclipse-workspace/lib_planning/tests/node_test.cpp.o
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/node_test.cpp.o
+home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.cpp.o:
+	$(MAKE) -f CMakeFiles/graph_test.dir/build.make CMakeFiles/graph_test.dir/home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.cpp.o
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.cpp.o
 
-home/trabajo/eclipse-workspace/lib_planning/tests/node_test.i: home/trabajo/eclipse-workspace/lib_planning/tests/node_test.cpp.i
+home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.i: home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.cpp.i
 
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/node_test.i
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.i
 
 # target to preprocess a source file
-home/trabajo/eclipse-workspace/lib_planning/tests/node_test.cpp.i:
-	$(MAKE) -f CMakeFiles/node_test.dir/build.make CMakeFiles/node_test.dir/home/trabajo/eclipse-workspace/lib_planning/tests/node_test.cpp.i
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/node_test.cpp.i
+home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.cpp.i:
+	$(MAKE) -f CMakeFiles/graph_test.dir/build.make CMakeFiles/graph_test.dir/home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.cpp.i
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.cpp.i
 
-home/trabajo/eclipse-workspace/lib_planning/tests/node_test.s: home/trabajo/eclipse-workspace/lib_planning/tests/node_test.cpp.s
+home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.s: home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.cpp.s
 
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/node_test.s
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.s
 
 # target to generate assembly for a file
-home/trabajo/eclipse-workspace/lib_planning/tests/node_test.cpp.s:
-	$(MAKE) -f CMakeFiles/node_test.dir/build.make CMakeFiles/node_test.dir/home/trabajo/eclipse-workspace/lib_planning/tests/node_test.cpp.s
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/node_test.cpp.s
+home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.cpp.s:
+	$(MAKE) -f CMakeFiles/graph_test.dir/build.make CMakeFiles/graph_test.dir/home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.cpp.s
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.cpp.s
 
-home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.o: home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.o
+home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.o: home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.cpp.o
 
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.o
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.o
 
 # target to build an object file
-home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.o:
-	$(MAKE) -f CMakeFiles/planning_graph_test.dir/build.make CMakeFiles/planning_graph_test.dir/home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.o
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.o
+home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.cpp.o:
+	$(MAKE) -f CMakeFiles/node_test.dir/build.make CMakeFiles/node_test.dir/home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.cpp.o
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.cpp.o
 
-home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.i: home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.i
+home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.i: home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.cpp.i
 
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.i
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.i
 
 # target to preprocess a source file
-home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.i:
-	$(MAKE) -f CMakeFiles/planning_graph_test.dir/build.make CMakeFiles/planning_graph_test.dir/home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.i
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.i
+home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.cpp.i:
+	$(MAKE) -f CMakeFiles/node_test.dir/build.make CMakeFiles/node_test.dir/home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.cpp.i
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.cpp.i
 
-home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.s: home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.s
+home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.s: home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.cpp.s
 
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.s
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.s
 
 # target to generate assembly for a file
-home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.s:
-	$(MAKE) -f CMakeFiles/planning_graph_test.dir/build.make CMakeFiles/planning_graph_test.dir/home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.s
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.s
+home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.cpp.s:
+	$(MAKE) -f CMakeFiles/node_test.dir/build.make CMakeFiles/node_test.dir/home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.cpp.s
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.cpp.s
 
-home/trabajo/eclipse-workspace/lib_planning/tests/util_test.o: home/trabajo/eclipse-workspace/lib_planning/tests/util_test.cpp.o
+home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.o: home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.o
 
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/util_test.o
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.o
 
 # target to build an object file
-home/trabajo/eclipse-workspace/lib_planning/tests/util_test.cpp.o:
-	$(MAKE) -f CMakeFiles/util_test.dir/build.make CMakeFiles/util_test.dir/home/trabajo/eclipse-workspace/lib_planning/tests/util_test.cpp.o
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/util_test.cpp.o
+home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.o:
+	$(MAKE) -f CMakeFiles/planning_graph_test.dir/build.make CMakeFiles/planning_graph_test.dir/home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.o
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.o
 
-home/trabajo/eclipse-workspace/lib_planning/tests/util_test.i: home/trabajo/eclipse-workspace/lib_planning/tests/util_test.cpp.i
+home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.i: home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.i
 
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/util_test.i
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.i
 
 # target to preprocess a source file
-home/trabajo/eclipse-workspace/lib_planning/tests/util_test.cpp.i:
-	$(MAKE) -f CMakeFiles/util_test.dir/build.make CMakeFiles/util_test.dir/home/trabajo/eclipse-workspace/lib_planning/tests/util_test.cpp.i
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/util_test.cpp.i
+home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.i:
+	$(MAKE) -f CMakeFiles/planning_graph_test.dir/build.make CMakeFiles/planning_graph_test.dir/home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.i
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.i
 
-home/trabajo/eclipse-workspace/lib_planning/tests/util_test.s: home/trabajo/eclipse-workspace/lib_planning/tests/util_test.cpp.s
+home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.s: home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.s
 
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/util_test.s
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.s
 
 # target to generate assembly for a file
-home/trabajo/eclipse-workspace/lib_planning/tests/util_test.cpp.s:
-	$(MAKE) -f CMakeFiles/util_test.dir/build.make CMakeFiles/util_test.dir/home/trabajo/eclipse-workspace/lib_planning/tests/util_test.cpp.s
-.PHONY : home/trabajo/eclipse-workspace/lib_planning/tests/util_test.cpp.s
+home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.s:
+	$(MAKE) -f CMakeFiles/planning_graph_test.dir/build.make CMakeFiles/planning_graph_test.dir/home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.s
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.cpp.s
+
+home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.o: home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.cpp.o
+
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.o
+
+# target to build an object file
+home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.cpp.o:
+	$(MAKE) -f CMakeFiles/util_test.dir/build.make CMakeFiles/util_test.dir/home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.cpp.o
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.cpp.o
+
+home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.i: home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.cpp.i
+
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.i
+
+# target to preprocess a source file
+home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.cpp.i:
+	$(MAKE) -f CMakeFiles/util_test.dir/build.make CMakeFiles/util_test.dir/home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.cpp.i
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.cpp.i
+
+home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.s: home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.cpp.s
+
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.s
+
+# target to generate assembly for a file
+home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.cpp.s:
+	$(MAKE) -f CMakeFiles/util_test.dir/build.make CMakeFiles/util_test.dir/home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.cpp.s
+.PHONY : home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.cpp.s
 
 # Help Target
 help:
@@ -282,18 +282,18 @@ help:
 	@echo "... util_test"
 	@echo "... graph_test"
 	@echo "... node_test"
-	@echo "... home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.o"
-	@echo "... home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.i"
-	@echo "... home/trabajo/eclipse-workspace/lib_planning/tests/graph_test.s"
-	@echo "... home/trabajo/eclipse-workspace/lib_planning/tests/node_test.o"
-	@echo "... home/trabajo/eclipse-workspace/lib_planning/tests/node_test.i"
-	@echo "... home/trabajo/eclipse-workspace/lib_planning/tests/node_test.s"
-	@echo "... home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.o"
-	@echo "... home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.i"
-	@echo "... home/trabajo/eclipse-workspace/lib_planning/tests/planning_graph_test.s"
-	@echo "... home/trabajo/eclipse-workspace/lib_planning/tests/util_test.o"
-	@echo "... home/trabajo/eclipse-workspace/lib_planning/tests/util_test.i"
-	@echo "... home/trabajo/eclipse-workspace/lib_planning/tests/util_test.s"
+	@echo "... home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.o"
+	@echo "... home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.i"
+	@echo "... home/aurova-linux/eclipse-workspace/lib_planning/tests/graph_test.s"
+	@echo "... home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.o"
+	@echo "... home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.i"
+	@echo "... home/aurova-linux/eclipse-workspace/lib_planning/tests/node_test.s"
+	@echo "... home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.o"
+	@echo "... home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.i"
+	@echo "... home/aurova-linux/eclipse-workspace/lib_planning/tests/planning_graph_test.s"
+	@echo "... home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.o"
+	@echo "... home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.i"
+	@echo "... home/aurova-linux/eclipse-workspace/lib_planning/tests/util_test.s"
 .PHONY : help
 
 

@@ -7,11 +7,32 @@
 
 using namespace std;
 
-class Util {
+class Util
+{
 private:
 public:
   virtual ~Util();
   Util();
+
+  /**
+   * Possible algorithms
+   */
+  enum Algorithm
+  {
+    AStar, Dijkstra
+  };
+
+  static Algorithm algorithm;
+
+  /**
+   * Possible distances
+   */
+  enum Distances
+  {
+    Mahalanobis, Euclidean
+  };
+
+  static Distances typeDistance;
 
   /**
    * Create a 4x4 matrix

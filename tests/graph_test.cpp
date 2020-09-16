@@ -13,7 +13,7 @@
 TEST(GraphTest, nextPose)
 {
     string file="./testFiles/map.osm";
-    string typeDistance = "M";
+    Util::Distances typeDistance = Util::Mahalanobis;
     double radiusDistance = 2;
 	Graph g(file,Util::newMatrix(),typeDistance,radiusDistance);
     double arr0[] = {718046.54061376222,4251256.470624933,0,0};
@@ -66,7 +66,7 @@ TEST(GraphTest, nextPose)
 TEST(GraphTest, nextPoseBadReference)
 {
     string file="./testFiles/mapWithBadReference.osm";
-    string typeDistance = "M";
+    Util::Distances typeDistance = Util::Mahalanobis;
     double radiusDistance = 2;
 	Graph g(file,Graph::newMatrix(1,1,10000000,90),typeDistance,radiusDistance);
     double arr0[] = {718046.54061376222,4251256.470624933,0,0};
@@ -108,7 +108,7 @@ TEST(GraphTest, nextPoseBadReference)
 TEST(GraphTest, graphStub1)
 {
     string file="./testFiles/mapWithBadReference.osm";
-    string typeDistance = "M";
+    Util::Distances typeDistance = Util::Mahalanobis;
     double radiusDistance = 2;
 	Graph gs(file,Util::newMatrix(),typeDistance,radiusDistance);
     PlanningGraph pg = gs.getPlanningGraph();
@@ -126,7 +126,7 @@ TEST(GraphTest, graphStub1)
 TEST(GraphTest, getPathPoses)
 {
     string file="./testFiles/map.osm";
-    string typeDistance = "M";
+    Util::Distances typeDistance = Util::Mahalanobis;
     double radiusDistance = 2;
 	Graph g(file,Util::newMatrix(),typeDistance,radiusDistance);
     double arr0[] = {718046.54061376222,4251256.470624933,0,0};
@@ -158,9 +158,11 @@ TEST(GraphTest, getPathPoses)
     p6.coordinates=pose6;
     p6.matrix=Util::newMatrix();
     result = g.getPathPoses(p1,p4);
-    ASSERT_EQ(pose2[0],result[0].coordinates[0]);
-    ASSERT_EQ(pose2[1],result[0].coordinates[1]);
-    ASSERT_EQ(pose2[2],result[0].coordinates[2]);
+    ASSERT_EQ(3,result.size());
+    ASSERT_EQ(pose5[0],result[0].coordinates[0]);
+    ASSERT_EQ(pose5[1],result[0].coordinates[1]);
+    ASSERT_EQ(pose5[2],result[0].coordinates[2]);
+
     /*result = g.getPathPoses(p2,p4);
     ASSERT_EQ(pose3[0],result[1].coordinates[0]);
     ASSERT_EQ(pose3[1],result[1].coordinates[1]);
@@ -179,7 +181,7 @@ TEST(GraphTest, getPathPoses)
 TEST(GraphTest, readAndWriteXML)
 {
     string file="./testFiles/map.osm";
-    string typeDistance = "M";
+    Util::Distances typeDistance = Util::Mahalanobis;
     double radiusDistance = 2;
 	Graph gs(file,Util::newMatrix(),typeDistance,radiusDistance);
     string xmlToWrite = "./testFiles/writeXmlMap.osm";
@@ -201,7 +203,7 @@ TEST(GraphTest, readAndWriteXML)
 TEST(GraphTest, readAndWriteStruct)
 {
     string file="./testFiles/map.osm";
-    string typeDistance = "M";
+    Util::Distances typeDistance = Util::Mahalanobis;
     double radiusDistance = 2;
 	Graph gs(file,Util::newMatrix(),typeDistance,radiusDistance);
 

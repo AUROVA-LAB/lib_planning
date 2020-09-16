@@ -19,7 +19,8 @@
  */
 
 void Ellipsoid::LLtoUTM(int ReferenceEllipsoid, const double Lat,
-    const double Long, double &UTMNorthing, double &UTMEasting, char *UTMZone) {
+    const double Long, double &UTMNorthing, double &UTMEasting, char *UTMZone)
+{
 //converts lat/long to UTM coords.  Equations from USGS Bulletin 1532 
 //East Longitudes are positive, West longitudes are negative. 
 //North latitudes are positive, South latitudes are negative
@@ -48,7 +49,8 @@ void Ellipsoid::LLtoUTM(int ReferenceEllipsoid, const double Lat,
     ZoneNumber = 32;
 
   // Special zones for Svalbard
-  if (Lat >= 72.0 && Lat < 84.0) {
+  if (Lat >= 72.0 && Lat < 84.0)
+  {
     if (LongTemp >= 0.0 && LongTemp < 9.0)
       ZoneNumber = 31;
     else if (LongTemp >= 9.0 && LongTemp < 21.0)
@@ -99,7 +101,8 @@ void Ellipsoid::LLtoUTM(int ReferenceEllipsoid, const double Lat,
     UTMNorthing += 10000000.0; //10000000 meter offset for southern hemisphere
 }
 
-char Ellipsoid::UTMLetterDesignator(double Lat) {
+char Ellipsoid::UTMLetterDesignator(double Lat)
+{
 //This routine determines the correct UTM letter designator for the given latitude
 //returns 'Z' if latitude is outside the UTM limits of 84N to 80S
   //Written by Chuck Gantz- chuck.gantz@globalstar.com
@@ -152,7 +155,8 @@ char Ellipsoid::UTMLetterDesignator(double Lat) {
 }
 
 void Ellipsoid::UTMtoLL(int ReferenceEllipsoid, const double UTMNorthing,
-    const double UTMEasting, const char *UTMZone, double &Lat, double &Long) {
+    const double UTMEasting, const char *UTMZone, double &Lat, double &Long)
+{
 //converts UTM coords to lat/long.  Equations from USGS Bulletin 1532 
 //East Longitudes are positive, West longitudes are negative. 
 //North latitudes are positive, South latitudes are negative
@@ -166,20 +170,16 @@ void Ellipsoid::UTMtoLL(int ReferenceEllipsoid, const double UTMNorthing,
   double e1 = (1 - sqrt(1 - eccSquared)) / (1 + sqrt(1 - eccSquared));
   double N1, T1, C1, R1, D, M;
   double LongOrigin;
-  double mu, phi1, phi1Rad;
+  double mu, phi1Rad;
   double x, y;
   int ZoneNumber;
   char *ZoneLetter;
-  int NorthernHemisphere; //1 for northern hemispher, 0 for southern
 
   x = UTMEasting - 500000.0; //remove 500,000 meter offset for longitude
   y = UTMNorthing;
 
   ZoneNumber = strtoul(UTMZone, &ZoneLetter, 10);
-  if ((*ZoneLetter - 'N') >= 0)
-    NorthernHemisphere = 1; //point is in northern hemisphere
-  else {
-    NorthernHemisphere = 0; //point is in southern hemisphere
+  if ((*ZoneLetter - 'N') < 0){
     y -= 10000000.0; //remove 10,000,000 meter offset used for southern hemisphere
   }
 
@@ -196,7 +196,6 @@ void Ellipsoid::UTMtoLL(int ReferenceEllipsoid, const double UTMNorthing,
   phi1Rad = mu + (3 * e1 / 2 - 27 * e1 * e1 * e1 / 32) * sin(2 * mu)
       + (21 * e1 * e1 / 16 - 55 * e1 * e1 * e1 * e1 / 32) * sin(4 * mu)
       + (151 * e1 * e1 * e1 / 96) * sin(6 * mu);
-  phi1 = phi1Rad * rad2deg;
 
   N1 = a / sqrt(1 - eccSquared * sin(phi1Rad) * sin(phi1Rad));
   T1 = tan(phi1Rad) * tan(phi1Rad);

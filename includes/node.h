@@ -10,19 +10,25 @@
 #include <vector>
 using namespace std;
 using namespace Eigen;
-class Node: public Position {
+class Node: public Position
+{
 
 public:
 
   vector<Link*> links_;
   /**
-   * Used in the dijsktra algorithm to determine the distance to the node
+   * Used in the dijsktra and A* algorithm to determine the distance to the node
    */
   double distance_;
   /**
-   * Used in the dijsktra algorithm to determine if it has been evaluated
+   * Used in the dijsktra and A* algorithm to determine if it has been evaluated
    */
   bool seen_;
+
+  /**
+   * Used in the A* algorithm to determine the distance to the final node
+   */
+  double h_;
 
   /**
    * Node identifier
@@ -34,6 +40,15 @@ public:
    */
   double cost_;
 
+  /**
+   * Coordinates expressed in the vector of the eigen library
+   */
+  Vector4d coordinatesEigen_;
+  /**
+   * Coordinates expressed in the matrix of the eigen library
+   */
+  Matrix4d covarianceMatrixEigen_;
+
   Node();
   Node(Position pos);
   Node(vector<double> coordinates, vector<vector<double> > covarianceMatrix);
@@ -44,11 +59,23 @@ public:
 
   ~Node();
 
+  void initEigenValues(vector<double> v, vector<vector<double> > m);
 
   /**
    * Set a link to the node
    */
   void addLink(Link &link);
+
+  vector<Link*> getLinks();
+  bool operator==(Node &node) const;
+  bool equals(Node node);
+  bool equalCoordinatesXYZ(vector<double> coordinates);
+  long getId();
+  void setId(long id);
+  Vector4d getEigenCoordinates();
+  Matrix4d getEigenMatrix();
+
+  string toString();
 
   /**
    * Calculate the euclidean distance
@@ -59,14 +86,6 @@ public:
    * Calculate the mahalanobis distance
    */
   double calculateMahalanobisDistance(Node node);
-  vector<Link*> getLinks();
-  bool operator==(Node &node) const;
-  bool equals(Node node);
-  bool equalCoordinatesXYZ(vector<double> coordinates);
-  long getId();
-  void setId(long id);
-
-  string toString();
 };
 
 #endif
