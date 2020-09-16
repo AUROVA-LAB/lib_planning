@@ -3,12 +3,15 @@
 #include <iostream>
 #include <vector>
 #include <bits/stdc++.h>
+#include "../includes/util.h"
+
 
 using namespace std;
 
 class Node;
 
-class Link {
+class Link
+{
 private:
 
 public:
@@ -48,7 +51,7 @@ public:
   void addNodes(Node *n1, Node *n2);
   float getDistance();
   long getId();
-  void setDistance(string type);
+  void setDistance(Util::Distances type);
   float getMahalanobisDistance();
   void setMahalanobisDistance(float distance);
   float getEuclideanDistance();

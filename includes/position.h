@@ -1,10 +1,14 @@
 #ifndef INCLUDES_POSITION_H_
 #define INCLUDES_POSITION_H_
 #include <vector>
+#include <eigen3/Eigen/Cholesky>
+#include <eigen3/Eigen/Dense>
 
 using namespace std;
+using namespace Eigen;
 
-class Position {
+class Position
+{
 protected:
 
   vector<double> coordinates_;
@@ -13,9 +17,7 @@ protected:
 public:
   Position();
   Position(const Position &p);
-  Position(vector<double> coordinates,
-      vector<vector<double> > covarianceMatrix);
-  Position(vector<double> coordinates);
+  Position(vector<double> coordinates, vector<vector<double> > covarianceMatrix);
   ~Position();
 
   double getX() const;

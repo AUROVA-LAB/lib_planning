@@ -7,7 +7,8 @@
 
 using namespace std;
 
-class Util {
+class Util
+{
 private:
 public:
   virtual ~Util();
@@ -18,11 +19,20 @@ public:
    */
   enum Algorithm
   {
-    AStar,
-    Dijkstra
+    AStar, Dijkstra
   };
 
-  static Algorithm algorithm; // this is legal
+  static Algorithm algorithm;
+
+  /**
+   * Possible distances
+   */
+  enum Distances
+  {
+    Mahalanobis, Euclidean
+  };
+
+  static Distances typeDistance;
 
   /**
    * Create a 4x4 matrix

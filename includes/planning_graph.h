@@ -14,14 +14,14 @@
 using namespace std;
 using namespace Eigen;
 
-class PlanningGraph {
+class PlanningGraph
+{
 public:
-  /**
-  * The algorithm used
-  */
-  Util::Algorithm typeAlgortihm_;
 
-private:
+  /**
+   * The algorithm used
+   */
+  Util::Algorithm typeAlgortihm_;
 
   /**
    * Nodes saved on the map
@@ -29,19 +29,9 @@ private:
   vector<Node> nodes_;
 
   /**
-  * The algorithm used
-  */
-  //Util::Algorithm typeAlgortihm_;
-
-  /**
    * Links between nodes
    */
   vector<Link> links_;
-
-  /**
-   * They are the positions that the robot goes through
-   */
-  vector<Position> dynamicPositions_;
 
   /**
    * Final goal
@@ -66,7 +56,7 @@ private:
   /**
    * Set the type of distance calculated (Euclidean "E",Mahalanobis "M")
    */
-  string typeDistance_;
+  Util::Distances typeDistance_;
 
   /**
    * Ìf it has been in the closest node
@@ -88,15 +78,6 @@ private:
    */
   vector<Node> bestPath_;
 
-  /**
-   * Create a link to join nodes
-   */
-  void addLink();
-
-  /**
-   * To initialize a default matrix
-   */
-  vector<vector<double> > newMatrix();
   /**
    * To initialize a default vector
    */
@@ -133,35 +114,23 @@ private:
    */
   bool existLinkBetweenNodes(Node node1, Node node2);
 
-  /**
-   * Convert saved positions to nodes
-   */
-  void dynamicPositionsToNodes();
-
-  /**
-   * Get the link pointer using an identifier
-   */
-  Link* findLinkPointer(long id);
 public:
 
   /**
    * Calculate the distance to the goal using Dijkstra
    */
-  double calculateDijkstra(Node initNode, Node endNode);
+  double calculateDijkstra(Node initNode, Node endNode, vector<Node> &bestpath);
   /**
    * Calculate the distance to the goal using A*
    */
-  double calculateAStar(Node initNode, Node endNode);
+  double calculateAStar(Node initNode, Node endNode, vector<Node> &bestpath);
 
   /**
    * Returns the heuristic used in the A * algorithm
    */
   double calculateAStarHDistance(Node initNode, Node endNode);
 
-
-
 //public:
-
 
   PlanningGraph();
   ~PlanningGraph();
@@ -169,20 +138,29 @@ public:
   /**
    * Add a new node
    */
-  void addNode(vector<double> coordinates, vector<vector<double> > matrix);
+  void addNode(Node n);
+
   /**
    * Add a new node
    */
-  void addNode(Node n);
+  void addNode(vector<double> coordinates, vector<vector<double> > matrix);
+
   /**
    * Add a new node
    */
   void addNode(double x, double y, double z, double cost);
+
   /**
    * Add a new node
    */
   void addNode(long id, vector<double> coordinates,
       vector<vector<double> > matrix);
+
+  /**
+   * Create a link to join nodes
+   */
+  void addLink();
+
   /**
    * Set link between nodes using ids
    */
@@ -197,11 +175,6 @@ public:
    */
   void addLinkBetweenNodes(vector<double> coordinates1,
       vector<double> coordinates2);
-  /**
-   * Saves a position
-   */
-  void addDynamicPosition(vector<double> coordinates,
-      vector<vector<double> > matrix);
 
   /**
    * Set the final goal
@@ -210,13 +183,7 @@ public:
   /**
    * Set if is used Mahalanobis or Euclidean distance
    */
-  void setDistances(string type);
-
-  /**
-   * Set algorithm
-   */
-  void setAlgorithm(Util::Algorithm algorithm);
-
+  void setDistances(Util::Distances type);
 
   double getRadiusVehicle();
   void setRadiusVehicle(double radius);
@@ -261,10 +228,15 @@ public:
   int getNumberNodes();
 
   /**
+   * Set algorithm
+   */
+  void setAlgorithm(Util::Algorithm algorithm);
+
+
+  /**
    * Returns only the path nodes
    */
   vector<Node> bestPathNodes(vector<Node> allNodes);
-
 
 };
 
