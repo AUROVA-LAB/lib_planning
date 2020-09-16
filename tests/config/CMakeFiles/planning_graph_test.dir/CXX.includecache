@@ -63,6 +63,10 @@ fstream
 /home/aurova-linux/eclipse-workspace/lib_planning/includes/position.h
 vector
 -
+eigen3/Eigen/Cholesky
+-
+eigen3/Eigen/Dense
+-
 
 /home/aurova-linux/eclipse-workspace/lib_planning/includes/util.h
 ../includes/latlong_utm.h

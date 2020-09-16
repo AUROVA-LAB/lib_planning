@@ -1,5 +1,7 @@
 #include "../includes/node.h"
 
+
+
 Node::Node(vector<double> coordinates, vector<vector<double> > covarianceMatrix) : Position(
     coordinates, covarianceMatrix)
 {
@@ -8,6 +10,8 @@ Node::Node(vector<double> coordinates, vector<vector<double> > covarianceMatrix)
   this->distance_ = 0;
   this->seen_ = false;
   this->h_ = 0;
+  initEigenValues(coordinates, covarianceMatrix);
+
 }
 
 Node::Node(vector<double> coordinates, vector<vector<double> > covarianceMatrix,
@@ -18,6 +22,8 @@ Node::Node(vector<double> coordinates, vector<vector<double> > covarianceMatrix,
   this->distance_ = 0;
   this->seen_ = false;
   this->h_ = 0;
+  initEigenValues(coordinates, covarianceMatrix);
+
 }
 
 Node::Node(Position pos) : Position(pos)
@@ -27,6 +33,8 @@ Node::Node(Position pos) : Position(pos)
   this->distance_ = 0;
   this->seen_ = false;
   this->h_ = 0;
+  initEigenValues(pos.getCoordinates(), pos.getMatrix());
+
 }
 
 Node::Node(long id, vector<double> coordinates,
@@ -38,6 +46,8 @@ Node::Node(long id, vector<double> coordinates,
   this->distance_ = 0;
   this->seen_ = false;
   this->h_ = 0;
+  initEigenValues(coordinates, covarianceMatrix);
+
 }
 
 Node::Node() : Position()
@@ -51,6 +61,17 @@ Node::Node() : Position()
 
 Node::~Node()
 {
+}
+
+void Node::initEigenValues(vector<double> v, vector<vector<double> > m){
+  for (unsigned int i = 0; i < v.size(); i++)
+  {
+    this->coordinatesEigen_(i) = v[i];
+    for (unsigned int j = 0; j < m[i].size(); j++)
+    {
+      this->covarianceMatrixEigen_(i, j) = m[i][j];
+    }
+  }
 }
 
 vector<Link*> Node::getLinks()
@@ -119,21 +140,10 @@ double Node::calculateMahalanobisDistance(Node node)
   Matrix4d matrixZ;
   Vector4d vectorAux;
 
-
-  for (unsigned int i = 0; i < node.getCoordinates().size(); i++)
-  {
-    vectorX(i) = node.getCoordinates()[i];
-    vectorG(i) = this->getCoordinates()[i];
-
-  }
-  for (unsigned int i = 0; i < node.getMatrix().size(); i++)
-  {
-    for (unsigned int j = 0; j < node.getMatrix()[i].size(); j++)
-    {
-      matrixP(i, j) = node.getMatrix()[i][j];
-      matrixQ(i, j) = this->getMatrix()[i][j];
-    }
-  }
+  vectorX = node.getEigenCoordinates();
+  vectorG = this->getEigenCoordinates();
+  matrixP = node.getEigenMatrix();
+  matrixQ = this->getEigenMatrix();
 
   vectorZ = vectorG - vectorX;
   matrixZ.noalias() = matrixP * matrixQ * matrixP.transpose();
@@ -142,6 +152,16 @@ double Node::calculateMahalanobisDistance(Node node)
   double mahalanobisDistance = sqrt(aux);
 
   return mahalanobisDistance;
+}
+
+Vector4d Node::getEigenCoordinates()
+{
+  return this->coordinatesEigen_;
+}
+
+Matrix4d Node::getEigenMatrix()
+{
+  return this->covarianceMatrixEigen_;
 }
 
 string Node::toString()

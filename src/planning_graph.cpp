@@ -260,8 +260,8 @@ double PlanningGraph::calculateAStar(Node initNode, Node endNode,
     // Get the next node to evaluate
     for (unsigned int i = 1; i < openList.size(); i++)
     {
-      double f1 = openList[i]->h_ + openList[i]->cost_;
-      double f2 = currentNode->h_ + currentNode->cost_;
+      double f1 = openList[i]->distance_ + openList[i]->h_ + openList[i]->cost_;
+      double f2 = currentNode->distance_ + currentNode->h_ + currentNode->cost_;
       if (f1 < f2)
       {
         currentNode = openList[i];

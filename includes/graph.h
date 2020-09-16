@@ -36,10 +36,9 @@ public:
    */
   PlanningGraph planning_graph_;
 
-
   Graph(Util::Distances typeDistance, double radiusDistance);
-  Graph(string url, vector<vector<double> > matrix, Util::Distances typeDistance,
-      double radiusDistance);
+  Graph(string url, vector<vector<double> > matrix,
+      Util::Distances typeDistance, double radiusDistance);
   virtual ~Graph();
 
   /**
@@ -92,6 +91,9 @@ public:
    */
   void setDijkstraAlgorithm();
 
+  /**
+   * Return the variable planning_graph_
+   */
   PlanningGraph getPlanningGraph();
 
 };

@@ -17,12 +17,11 @@ using namespace Eigen;
 class PlanningGraph
 {
 public:
+
   /**
    * The algorithm used
    */
   Util::Algorithm typeAlgortihm_;
-
-
 
   /**
    * Nodes saved on the map
@@ -79,15 +78,6 @@ public:
    */
   vector<Node> bestPath_;
 
-  /**
-   * Create a link to join nodes
-   */
-  void addLink();
-
-  /**
-   * To initialize a default matrix
-   */
-  vector<vector<double> > newMatrix();
   /**
    * To initialize a default vector
    */
@@ -148,20 +138,29 @@ public:
   /**
    * Add a new node
    */
-  void addNode(vector<double> coordinates, vector<vector<double> > matrix);
+  void addNode(Node n);
+
   /**
    * Add a new node
    */
-  void addNode(Node n);
+  void addNode(vector<double> coordinates, vector<vector<double> > matrix);
+
   /**
    * Add a new node
    */
   void addNode(double x, double y, double z, double cost);
+
   /**
    * Add a new node
    */
   void addNode(long id, vector<double> coordinates,
       vector<vector<double> > matrix);
+
+  /**
+   * Create a link to join nodes
+   */
+  void addLink();
+
   /**
    * Set link between nodes using ids
    */
@@ -185,11 +184,6 @@ public:
    * Set if is used Mahalanobis or Euclidean distance
    */
   void setDistances(Util::Distances type);
-
-  /**
-   * Set algorithm
-   */
-  void setAlgorithm(Util::Algorithm algorithm);
 
   double getRadiusVehicle();
   void setRadiusVehicle(double radius);
@@ -232,6 +226,12 @@ public:
    * Returns the number of nodes
    */
   int getNumberNodes();
+
+  /**
+   * Set algorithm
+   */
+  void setAlgorithm(Util::Algorithm algorithm);
+
 
   /**
    * Returns only the path nodes
