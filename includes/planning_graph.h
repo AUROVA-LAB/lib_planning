@@ -69,6 +69,11 @@ public:
   Node lastNodeVisited_;
 
   /**
+   * First node of the graph to visit
+   */
+  Node firstNodeGraph_;
+
+  /**
    * Last node of the graph to visit before going to the final goal
    */
   Node lastNodeGraph_;
@@ -236,7 +241,7 @@ public:
   /**
    * Returns only the path nodes
    */
-  vector<Node> bestPathNodes(vector<Node> allNodes);
+  vector<Node> bestPathNodes(Position initPos,vector<Node> allNodes);
 
 };
 
