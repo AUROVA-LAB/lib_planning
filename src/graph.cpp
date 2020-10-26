@@ -173,11 +173,6 @@ Pose Graph::getNextPose(Pose myPose, Pose endGoal)
     this->planning_graph_.setfinalGoal(finalGoal);
     Node n = this->planning_graph_.getNextNode(myPosition);
 
-    // Set a coodinate Z value
-    if (n.getZ() > 10000 || n.getZ() < -10000)
-    {
-      n.setZ(myPose.coordinates[3]);
-    }
     nextPose.coordinates = n.getCoordinates();
     nextPose.matrix = n.getMatrix();
   }
@@ -197,13 +192,8 @@ vector<Pose> Graph::getPathPoses(Pose myPose, Pose endGoal)
 
     vector<Node> nodes = this->planning_graph_.getPathNodes(myPosition);
 
-    // Set a coodinate Z value
     for (unsigned int i = 0; i < nodes.size(); i++)
     {
-      if (nodes[i].getZ() > 10000 || nodes[i].getZ() < -10000)
-      {
-        nodes[i].setZ(myPose.coordinates[3]);
-      }
       Pose pose;
       pose.coordinates = nodes[i].getCoordinates();
       pose.matrix = nodes[i].getMatrix();

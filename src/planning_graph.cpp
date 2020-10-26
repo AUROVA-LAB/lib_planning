@@ -52,11 +52,25 @@ Node PlanningGraph::evaluateNextNode(Position initPos)
         nextNode = initNodes[i];
         minDistance = distance;
         this->bestPath_ = bestpath;
+
+        // Set first and last node from the graph to visit
+        this->firstNodeGraph_ = nextNode;
+        this->lastNodeGraph_ = lastNodePath;
       }
     }
   }
-  // Set last node from the graph to visit
-  this->lastNodeGraph_ = lastNodePath;
+
+  // Set the values with the best path
+  if (this->typeAlgortihm_ == Util::AStar)
+  {
+    distance += calculateAStar(this->firstNodeGraph_, this->lastNodeGraph_,
+        bestpath);
+
+  } else if (this->typeAlgortihm_ == Util::Dijkstra)
+  {
+    distance += calculateDijkstra(this->firstNodeGraph_, this->lastNodeGraph_,
+        bestpath);
+  }
 
   // Check if the closest position is the goal or a node from the graph
   Node endNode(this->finalGoal_);
@@ -142,6 +156,9 @@ double PlanningGraph::calculateDijkstra(Node initNode, Node endNode,
   int selectedNode = 0;
   Node nextNodeToEvaluate;
   vector<Node*> path;
+  double distanceBetweenNodes = 0;
+  double newDistance = 0;
+  Node *childNode;
 
   //Initialize values
   for (unsigned int i = 0; i < this->nodes_.size(); i++)
@@ -156,6 +173,7 @@ double PlanningGraph::calculateDijkstra(Node initNode, Node endNode,
     } else
     {
       path[i]->distance_ = DBL_MAX;
+      path[i]->seen_ = false;
     }
   }
 
@@ -168,10 +186,9 @@ double PlanningGraph::calculateDijkstra(Node initNode, Node endNode,
     for (unsigned int i = 0; i < nextNodeToEvaluate.getLinks().size(); i++)
     {
       // Calculate the distances to reach to the child node
-      double distanceBetweenNodes = nextNodeToEvaluate.getLinks()[i]->distance_;
-      double newDistance = distanceBetweenNodes + nextNodeToEvaluate.distance_;
+      distanceBetweenNodes = nextNodeToEvaluate.getLinks()[i]->distance_;
+      newDistance = distanceBetweenNodes + nextNodeToEvaluate.distance_;
 
-      Node *childNode;
       // Check which it is the node connected
       if (*nextNodeToEvaluate.getLinks()[i]->nodes_[0] == nextNodeToEvaluate)
       {
@@ -203,6 +220,7 @@ double PlanningGraph::calculateDijkstra(Node initNode, Node endNode,
         newDistance = path[i]->distance_;
       }
     }
+
   }
 
   double totalDistance = -1;
@@ -426,7 +444,7 @@ Node PlanningGraph::getNextNode(Position initPos)
   if (this->nodes_.size() > 0)
   {
     nextNode = evaluateNextNode(initPos);
-    vector<Node> bestPathOfNodes = bestPathNodes(this->bestPath_);
+    vector<Node> bestPathOfNodes = bestPathNodes(initPos, this->bestPath_);
     nextNode.setYaw(
         calculateSense(actualPosition, nextNode, bestPathOfNodes[1]));
   } else
@@ -438,8 +456,6 @@ Node PlanningGraph::getNextNode(Position initPos)
 
 vector<Node> PlanningGraph::getPathNodes(Position initPos)
 {
-  // Evaluate the possibilities
-  Node actualPosition(initPos);
   if (this->nodes_.size() > 0)
   {
     evaluateNextNode(initPos);
@@ -453,7 +469,29 @@ vector<Node> PlanningGraph::getPathNodes(Position initPos)
   // Returns only the nodes of the best path
   if (this->bestPath_.size() > 1)
   {
-    bestPathOfNodes = bestPathNodes(this->bestPath_);
+    bestPathOfNodes = bestPathNodes(initPos, this->bestPath_);
+    int tamPath = bestPathOfNodes.size();
+
+    //Calculate sense of the firts node
+    if (tamPath > 1)
+    {
+      bestPathOfNodes[0].setYaw(
+          calculateSense(initPos, bestPathOfNodes[0], bestPathOfNodes[1]));
+    }
+
+    //Calculate sense of the nodes of the path
+    if (tamPath > 2)
+    {
+      for (int i = 1; i < tamPath - 2; i++)
+      {
+        bestPathOfNodes[i].setYaw(
+            calculateSense(bestPathOfNodes[i - 1], bestPathOfNodes[i],
+                bestPathOfNodes[i + 1]));
+      }
+      bestPathOfNodes[tamPath - 1].setYaw(
+          calculateSense(bestPathOfNodes[tamPath - 2],
+              bestPathOfNodes[tamPath - 1], finalGoal_));
+    }
   } else
   {
     Node end(this->finalGoal_);
@@ -463,10 +501,12 @@ vector<Node> PlanningGraph::getPathNodes(Position initPos)
   return bestPathOfNodes;
 }
 
-vector<Node> PlanningGraph::bestPathNodes(vector<Node> allNodes)
+vector<Node> PlanningGraph::bestPathNodes(Position initPos,
+    vector<Node> allNodes)
 {
   vector<Node> minPath;
   Node nextNode;
+  bool finish = false;
 
   // Initialize the values
   Node lastNodeGoal(this->finalGoal_);
@@ -478,10 +518,10 @@ vector<Node> PlanningGraph::bestPathNodes(vector<Node> allNodes)
       nextNode = allNodes[i];
     }
   }
-// Get all the nodes it has to go through starting with the last one
-  while (minPath[0].distance_ != 0)
-  {
 
+// Get all the nodes it has to go through starting with the last one
+  while (!minPath[0].equals(this->firstNodeGraph_))
+  {
     Node auxNode;
     Node minNode;
 
@@ -507,11 +547,25 @@ vector<Node> PlanningGraph::bestPathNodes(vector<Node> allNodes)
     minPath.insert(minPath.begin(), minNode);
     nextNode = minNode;
   }
-
+  // Add last node to the path
   if (!this->lastNodeGraph_.equals(lastNodeGoal))
   {
     minPath.push_back(lastNodeGoal);
   }
+
+  //Skip the first node if necessary
+  if (minPath.size() > 1)
+  {
+    double distanceBetweenNodes = minPath[1].distance_ - minPath[0].distance_;
+    double distanceInitialPosition = this->getDistanceNodePosition(initPos,
+        minPath[1]);
+
+    if (distanceInitialPosition < distanceBetweenNodes)
+    {
+      minPath.erase(minPath.begin());
+    }
+  }
+
   return minPath;
 }
 
