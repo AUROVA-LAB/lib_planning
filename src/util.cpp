@@ -74,7 +74,7 @@ vector<double> Util::LLToUTM(double lat, double lon)
   a.LLtoUTM(RefEllipsoid, lat, lon, UtmY, UtmX, UTMZone);
   coordinates.push_back(UtmX);
   coordinates.push_back(UtmY);
-  coordinates.push_back(-100000000000);
+  coordinates.push_back(0);
   coordinates.push_back(0);
   return coordinates;
 }
