@@ -1,7 +1,7 @@
 #include "../includes/graph.h"
 
-Graph::Graph(string url, vector<vector<double> > matrix, Util::Distances typeDistance,
-    double radiusDistance)
+Graph::Graph(string url, vector<vector<double> > matrix,
+    Util::Distances typeDistance, double radiusDistance)
 {
   xmlReadLatLong(url, matrix);
   this->planning_graph_.setDistances(typeDistance);
