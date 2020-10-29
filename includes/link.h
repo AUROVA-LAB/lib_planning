@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <bits/stdc++.h>
-#include "../includes/util.h"
+#include "util.h"
 
 
 using namespace std;
