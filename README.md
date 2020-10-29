@@ -81,7 +81,7 @@ struct StNodes {
 #### Constructors: 
 
 ```c++	
-Graph(string url, vector<vector<double> > matrix,string typeDistance, double radiusDistance) 
+Graph(string url, vector<vector<double> > matrix, Util::Distances typeDistance, double radiusDistance) 
 ```
 
 Load an OpenStreetMap xml
@@ -91,18 +91,18 @@ Load an OpenStreetMap xml
   
   - matrix: Covariance matrix
   
-  - typeDistance: Can be mahalanobis or euclidean. It is a enum and to use it you have to use Util :: Mahalanobis or Util :: Euclidean.
+  - typeDistance: Can be mahalanobis or euclidean. It is a enum and to use it you have to use Util::Mahalanobis or Util::Euclidean.
   
   - radiusDistance: This value indicates the distance to consider an intermediate position of the trajectory as reached
   
   
 ```c++	
-Graph(string typeDistance,double radiusDistance);
+Graph(Util::Distances typeDistance, double radiusDistance);
 ```
 
 Does not load any data
 
-  - typeDistance: Can be mahalanobis or euclidean. It is a enum and to use it you have to use Util :: Mahalanobis or Util :: Euclidean.
+  - typeDistance: Can be mahalanobis or euclidean. It is a enum and to use it you have to use Util::Mahalanobis or Util::Euclidean.
   
   - radiusDistance: This value indicates the distance to consider an intermediate position of the trajectory as reached
 
