@@ -91,7 +91,7 @@ Load an OpenStreetMap xml
   
   - matrix: Covariance matrix
   
-  - typeDistance: Can be "M" or "E". "M" means mahalanobis distance and "E" means Euclidean distance
+  - typeDistance: Can be mahalanobis or euclidean. It is a enum and to use it you have to use Util :: Mahalanobis or Util :: Euclidean.
   
   - radiusDistance: This value indicates the distance to consider an intermediate position of the trajectory as reached
   
@@ -102,7 +102,7 @@ Graph(string typeDistance,double radiusDistance);
 
 Does not load any data
 
-  - typeDistance: Can be "M" or "E". "M" means mahalanobis distance and "E" means Euclidean distance
+  - typeDistance: Can be mahalanobis or euclidean. It is a enum and to use it you have to use Util :: Mahalanobis or Util :: Euclidean.
   
   - radiusDistance: This value indicates the distance to consider an intermediate position of the trajectory as reached
 
