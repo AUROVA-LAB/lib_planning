@@ -4,8 +4,8 @@
 #include <eigen3/Eigen/Cholesky>
 #include <eigen3/Eigen/Dense>
 #include <bits/stdc++.h>
-#include "../includes/link.h"
-#include "../includes/position.h"
+#include "link.h"
+#include "position.h"
 #include <string>
 #include <vector>
 using namespace std;

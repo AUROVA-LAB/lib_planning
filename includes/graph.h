@@ -1,8 +1,8 @@
 #ifndef INCLUDES_GRAPH_H_
 #define INCLUDES_GRAPH_H_
 
-#include "../includes/planning_graph.h"
-#include "../includes/util.h"
+#include "planning_graph.h"
+#include "util.h"
 #include <iostream>
 #include <vector>
 #include <unistd.h>

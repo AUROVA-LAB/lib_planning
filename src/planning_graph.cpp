@@ -1,4 +1,4 @@
-#include "../includes/planning_graph.h"
+#include "planning_graph.h"
 
 PlanningGraph::PlanningGraph()
 {

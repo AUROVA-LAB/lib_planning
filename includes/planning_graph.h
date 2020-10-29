@@ -5,9 +5,9 @@
 #include <eigen3/Eigen/Dense>
 #include <vector>
 #include <bits/stdc++.h>
-#include "../includes/link.h"
-#include "../includes/node.h"
-#include "../includes/util.h"
+#include "link.h"
+#include "node.h"
+#include "util.h"
 #include <iostream>
 #include <fstream>
 
