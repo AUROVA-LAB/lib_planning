@@ -63,13 +63,11 @@ Node PlanningGraph::evaluateNextNode(Position initPos)
   // Set the values with the best path
   if (this->typeAlgortihm_ == Util::AStar)
   {
-    distance += calculateAStar(this->firstNodeGraph_, this->lastNodeGraph_,
-        bestpath);
+    calculateAStar(this->firstNodeGraph_, this->lastNodeGraph_, bestpath);
 
   } else if (this->typeAlgortihm_ == Util::Dijkstra)
   {
-    distance += calculateDijkstra(this->firstNodeGraph_, this->lastNodeGraph_,
-        bestpath);
+    calculateDijkstra(this->firstNodeGraph_, this->lastNodeGraph_, bestpath);
   }
 
   // Check if the closest position is the goal or a node from the graph
@@ -482,15 +480,12 @@ vector<Node> PlanningGraph::getPathNodes(Position initPos)
     //Calculate sense of the nodes of the path
     if (tamPath > 2)
     {
-      for (int i = 1; i < tamPath - 2; i++)
+      for (int i = 1; i < tamPath - 1; i++)
       {
         bestPathOfNodes[i].setYaw(
             calculateSense(bestPathOfNodes[i - 1], bestPathOfNodes[i],
                 bestPathOfNodes[i + 1]));
       }
-      bestPathOfNodes[tamPath - 1].setYaw(
-          calculateSense(bestPathOfNodes[tamPath - 2],
-              bestPathOfNodes[tamPath - 1], finalGoal_));
     }
   } else
   {

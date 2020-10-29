@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5.1)
 
-project(planning VERSION 1.0)
+project(planning VERSION 1.3)
 FIND_PACKAGE(Eigen3 REQUIRED)
 INCLUDE_DIRECTORIES(${EIGEN_INCLUDE_DIR})
 include(GNUInstallDirs)
