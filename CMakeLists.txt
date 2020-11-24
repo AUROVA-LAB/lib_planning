@@ -13,6 +13,7 @@ add_library(planning SHARED
     src/planning_graph.cpp
     src/position.cpp
     src/util.cpp
+    src/local_planning.cpp
 )
 
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${EIGEN_LIBRARIES})
