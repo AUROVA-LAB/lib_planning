@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5.1)
 
-project(planning VERSION 1.3)
+project(planning VERSION 1.0)
 FIND_PACKAGE(Eigen3 REQUIRED)
 FIND_PACKAGE(PCL REQUIRED COMPONENTS common filters)
 INCLUDE_DIRECTORIES(${EIGEN_INCLUDE_DIR})

@@ -3,9 +3,13 @@
 
 #include <iostream>
 #include <vector>
-
+#include <eigen3/Eigen/Dense>
+#include <math.h>
 #include <pcl/point_types.h>
-#include <pcl/common/projection_matrix.h>
+#include <pcl/point_cloud.h>
+
+#include <bits/stdc++.h>
+#include <string>
 
 #define IMPOSSIBLE_RANGE_VALUE -1.0
 
@@ -77,7 +81,7 @@ public:
                     local_planning_lib::SensorConfiguration lidar_configuration,
                     local_planning_lib::FilteringConfiguration filtering_configuration,
                     float** output_grid);
-
+  
 };
 
 #endif

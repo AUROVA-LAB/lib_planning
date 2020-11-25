@@ -316,3 +316,4 @@ void LocalPlanning::freeSpaceMap(
   
   return;
 }
+
