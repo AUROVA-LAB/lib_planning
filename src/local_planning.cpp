@@ -145,8 +145,13 @@ void LocalPlanning::freeSpaceMap(
     float **input_grid, 
     local_planning_lib::SensorConfiguration lidar_configuration,
     local_planning_lib::FilteringConfiguration filtering_configuration, 
-    float** output_grid)
+    float** output_grid,
+    pcl::PointCloud<pcl::PointXYZ>& perimeter_cloud)
 {
+
+  pcl::PointXYZ point;
+  perimeter_cloud.points.clear();
+
   float range;
   float elevation;
   float azimuth;
@@ -240,6 +245,9 @@ void LocalPlanning::freeSpaceMap(
               else
               {
                 output_grid[i][index_c] = input_grid[i][index_c];
+                point.x = x_c;
+                point.y = y_c;
+                point.z = 0.0;
               }
             } // End of third point found
           } // End of second point found
@@ -247,6 +255,9 @@ void LocalPlanning::freeSpaceMap(
         else
         {
           output_grid[i][index_a] = input_grid[i][index_a];
+          point.x = x_a;
+          point.y = y_a;
+          point.z = 0.0;
         }
 
         j = index_a;
@@ -254,6 +265,7 @@ void LocalPlanning::freeSpaceMap(
       } // End of first point found
       j--;
     } // End of vertical search
+    perimeter_cloud.points.push_back(point);
   } // End of horizontal search
   return;
 }
@@ -262,7 +274,8 @@ void LocalPlanning::freeSpaceMap(
     pcl::PointCloud<pcl::PointXYZ>& input_cloud,
     local_planning_lib::SensorConfiguration lidar_configuration,
     local_planning_lib::FilteringConfiguration filtering_configuration,
-    pcl::PointCloud<pcl::PointXYZ>& output_cloud)
+    pcl::PointCloud<pcl::PointXYZ>& output_cloud,
+    pcl::PointCloud<pcl::PointXYZ>& perimeter_cloud)
 {
   float **input_grid;    // To store the poincloud in an ordered matrix using spherical coordinates
 
@@ -297,7 +310,7 @@ void LocalPlanning::freeSpaceMap(
   {
     pointCloud2SphericalGrid(input_cloud, lidar_configuration, filtering_configuration, input_grid);
 
-    freeSpaceMap(input_grid, lidar_configuration, filtering_configuration, output_grid);
+    freeSpaceMap(input_grid, lidar_configuration, filtering_configuration, output_grid, perimeter_cloud);
 
     sphericalGridToPointCloud(output_grid, lidar_configuration, output_cloud);
 

@@ -75,12 +75,14 @@ public:
   void freeSpaceMap(pcl::PointCloud<pcl::PointXYZ>& input_cloud,
                     local_planning_lib::SensorConfiguration lidar_configuration,
                     local_planning_lib::FilteringConfiguration filtering_configuration,
-                    pcl::PointCloud<pcl::PointXYZ>& output_cloud);
+                    pcl::PointCloud<pcl::PointXYZ>& output_cloud,
+                    pcl::PointCloud<pcl::PointXYZ>& perimeter_cloud);
                     
   void freeSpaceMap(float **input_grid, 
                     local_planning_lib::SensorConfiguration lidar_configuration,
                     local_planning_lib::FilteringConfiguration filtering_configuration,
-                    float** output_grid);
+                    float** output_grid,
+                    pcl::PointCloud<pcl::PointXYZ>& perimeter_cloud);
   
 };
 
