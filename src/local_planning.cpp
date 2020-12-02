@@ -265,7 +265,10 @@ void LocalPlanning::freeSpaceMap(
       } // End of first point found
       j--;
     } // End of vertical search
-    perimeter_cloud.points.push_back(point);
+    if (point.x != 0.0 && point.y != 0.0) // avois first empty case
+    {
+      perimeter_cloud.points.push_back(point);
+    }
   } // End of horizontal search
   return;
 }
