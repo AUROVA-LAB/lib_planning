@@ -268,6 +268,8 @@ void LocalPlanning::freeSpaceMap(
     if (point.x != 0.0 && point.y != 0.0) // avois first empty case
     {
       perimeter_cloud.points.push_back(point);
+      point.x = 0.0;
+      point.y = 0.0;
     }
   } // End of horizontal search
   return;
