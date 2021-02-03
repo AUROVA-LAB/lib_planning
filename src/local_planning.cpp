@@ -378,3 +378,138 @@ void LocalPlanning::freeSpaceMap(pcl::PointCloud<pcl::PointXYZ> &input_cloud,
   return;
 }
 
+void LocalPlanning::groundSegmentation(
+    pcl::PointCloud<pcl::PointXYZ> &input_cloud,
+    local_planning_lib::SensorConfiguration lidar_configuration,
+    local_planning_lib::FilteringConfiguration filtering_configuration,
+    pcl::PointCloud<pcl::PointXYZ> &output_cloud,
+    pcl::PointCloud<pcl::PointXYZ> &perimeter_cloud)
+{
+
+  output_cloud.points.clear();
+  perimeter_cloud.points.clear();
+  pcl::PointXYZ point;
+  float plane_ec;
+  float distance;
+
+  ///////////////////////////////////////////////////////////////////////////
+  // naive objects segmentation
+  for (size_t i = 0; i < input_cloud.points.size(); ++i)
+  {
+    point.x = input_cloud.points[i].x;
+    point.y = input_cloud.points[i].y;
+    point.z = input_cloud.points[i].z;
+
+    distance = sqrt(point.x * point.x + point.y * point.y);
+
+    if (filtering_configuration.a != 0.0 && filtering_configuration.b != 0.0
+        && filtering_configuration.c != 0.0
+        && point.z < filtering_configuration.variance
+        && distance < filtering_configuration.radious)
+    {
+      plane_ec = point.x / filtering_configuration.a
+          + point.y / filtering_configuration.b
+          + point.z / filtering_configuration.c;
+
+      plane_ec = plane_ec - 1;
+
+      if (abs(plane_ec) > filtering_configuration.variance)
+      {
+        output_cloud.points.push_back(point);
+      }
+    }
+
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+  // maximum perimeter calculation
+  float range = filtering_configuration.radious;
+  float azimuth, x, y, z;
+  float elevation = 90.0;
+  /*for (float i = 0; i < 360.0;
+      i += lidar_configuration.grid_azimuth_angular_resolution)
+  {
+    azimuth = i;
+    sphericalInDegrees2Cartesian(range, azimuth, elevation, point.x, point.y,
+        point.z);
+    perimeter_cloud.points.push_back(point);
+  }*/
+
+  ///////////////////////////////////////////////////////////////////////////
+  // objects perimeter calculation
+  float **obstacles_grid;
+  bool error = false;
+  bool no_obstacle = false;
+  try
+  {
+    obstacles_grid = new float*[lidar_configuration.num_of_azimuth_cells];
+    for (int i = 0; i < lidar_configuration.num_of_azimuth_cells; ++i)
+    {
+      obstacles_grid[i] = new float[lidar_configuration.num_of_elevation_cells];
+    }
+  } catch (...)
+  {
+    std::cout << std::endl
+        << "Runtime error in CGeometric_Pointcloud_Processing::groundFiltering!!!";
+    error = true;
+  }
+
+  if (!error)
+  {
+    pointCloud2SphericalGrid(output_cloud, lidar_configuration,
+        filtering_configuration, obstacles_grid);
+
+    for (register int i = 0; i < lidar_configuration.num_of_azimuth_cells; ++i) // We will search in every vertical slice
+    {
+
+      if (no_obstacle)
+      {
+        range = filtering_configuration.radious;
+        sphericalInDegrees2Cartesian(range, azimuth, 90.0, x, y, z);
+        point.x = x;
+        point.y = y;
+        point.z = 0.0;
+        perimeter_cloud.points.push_back(point);
+      }
+
+      azimuth =
+          ((float) i * lidar_configuration.grid_azimuth_angular_resolution)
+              + lidar_configuration.min_azimuth_angle;
+
+      // We will check beginning from the lowest points (180 degrees is looking down, 90 front and 0 degrees up)
+      register int j = lidar_configuration.num_of_elevation_cells - 1;
+      no_obstacle = true;
+      while (j >= 0)
+      {
+        if (obstacles_grid[i][j] != -1.0)
+        {
+          range = obstacles_grid[i][j]; // We extract the x and y coordinates
+          elevation = ((float) j
+              * lidar_configuration.grid_elevation_angular_resolution)
+              + lidar_configuration.min_elevation_angle;
+
+          sphericalInDegrees2Cartesian(range, azimuth, elevation, x, y, z);
+
+          point.x = x;
+          point.y = y;
+          point.z = 0.0;
+
+          perimeter_cloud.points.push_back(point);
+          no_obstacle = false;
+
+          j = -1;
+        }
+        j--;
+      }
+    }
+
+    for (int i = 0; i < lidar_configuration.num_of_azimuth_cells; ++i)
+    {
+      delete[] obstacles_grid[i];
+    }
+    delete[] obstacles_grid;
+  }
+
+  return;
+}
+
