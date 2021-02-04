@@ -50,6 +50,7 @@ struct FilteringConfiguration
   double c; // plane intersection in z axe
   double variance;
   double radious;
+  double var_factor;
 };
 }
 
@@ -93,7 +94,8 @@ public:
       local_planning_lib::SensorConfiguration lidar_configuration,
       local_planning_lib::FilteringConfiguration filtering_configuration,
       pcl::PointCloud<pcl::PointXYZ> &output_cloud,
-      pcl::PointCloud<pcl::PointXYZ> &perimeter_cloud);
+      pcl::PointCloud<pcl::PointXYZ> &obstacles_cloud,
+      pcl::PointCloud<pcl::PointXYZ> &limits_cloud);
 
 };
 

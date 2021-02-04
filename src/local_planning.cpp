@@ -383,14 +383,17 @@ void LocalPlanning::groundSegmentation(
     local_planning_lib::SensorConfiguration lidar_configuration,
     local_planning_lib::FilteringConfiguration filtering_configuration,
     pcl::PointCloud<pcl::PointXYZ> &output_cloud,
-    pcl::PointCloud<pcl::PointXYZ> &perimeter_cloud)
+    pcl::PointCloud<pcl::PointXYZ> &obstacles_cloud,
+    pcl::PointCloud<pcl::PointXYZ> &limits_cloud)
 {
 
   output_cloud.points.clear();
-  perimeter_cloud.points.clear();
+  obstacles_cloud.points.clear();
+  limits_cloud.points.clear();
   pcl::PointXYZ point;
   float plane_ec;
   float distance;
+  float var_factor;
 
   ///////////////////////////////////////////////////////////////////////////
   // naive objects segmentation
@@ -402,9 +405,11 @@ void LocalPlanning::groundSegmentation(
 
     distance = sqrt(point.x * point.x + point.y * point.y);
 
+    var_factor = distance * filtering_configuration.var_factor;
+
     if (filtering_configuration.a != 0.0 && filtering_configuration.b != 0.0
         && filtering_configuration.c != 0.0
-        && point.z < filtering_configuration.variance
+        && point.z < filtering_configuration.variance * var_factor
         && distance < filtering_configuration.radious)
     {
       plane_ec = point.x / filtering_configuration.a
@@ -413,7 +418,7 @@ void LocalPlanning::groundSegmentation(
 
       plane_ec = plane_ec - 1;
 
-      if (abs(plane_ec) > filtering_configuration.variance)
+      if (abs(plane_ec) > filtering_configuration.variance * var_factor)
       {
         output_cloud.points.push_back(point);
       }
@@ -427,13 +432,13 @@ void LocalPlanning::groundSegmentation(
   float azimuth, x, y, z;
   float elevation = 90.0;
   /*for (float i = 0; i < 360.0;
-      i += lidar_configuration.grid_azimuth_angular_resolution)
-  {
-    azimuth = i;
-    sphericalInDegrees2Cartesian(range, azimuth, elevation, point.x, point.y,
-        point.z);
-    perimeter_cloud.points.push_back(point);
-  }*/
+   i += lidar_configuration.grid_azimuth_angular_resolution)
+   {
+   azimuth = i;
+   sphericalInDegrees2Cartesian(range, azimuth, elevation, point.x, point.y,
+   point.z);
+   perimeter_cloud.points.push_back(point);
+   }*/
 
   ///////////////////////////////////////////////////////////////////////////
   // objects perimeter calculation
@@ -469,7 +474,7 @@ void LocalPlanning::groundSegmentation(
         point.x = x;
         point.y = y;
         point.z = 0.0;
-        perimeter_cloud.points.push_back(point);
+        limits_cloud.points.push_back(point);
       }
 
       azimuth =
@@ -494,7 +499,7 @@ void LocalPlanning::groundSegmentation(
           point.y = y;
           point.z = 0.0;
 
-          perimeter_cloud.points.push_back(point);
+          obstacles_cloud.points.push_back(point);
           no_obstacle = false;
 
           j = -1;
