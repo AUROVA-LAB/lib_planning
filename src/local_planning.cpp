@@ -427,21 +427,10 @@ void LocalPlanning::groundSegmentation(
   }
 
   ///////////////////////////////////////////////////////////////////////////
-  // maximum perimeter calculation
+  // objects perimeter calculation
   float range = filtering_configuration.radious;
   float azimuth, x, y, z;
   float elevation = 90.0;
-  /*for (float i = 0; i < 360.0;
-   i += lidar_configuration.grid_azimuth_angular_resolution)
-   {
-   azimuth = i;
-   sphericalInDegrees2Cartesian(range, azimuth, elevation, point.x, point.y,
-   point.z);
-   perimeter_cloud.points.push_back(point);
-   }*/
-
-  ///////////////////////////////////////////////////////////////////////////
-  // objects perimeter calculation
   float **obstacles_grid;
   bool error = false;
   bool no_obstacle = false;
@@ -515,6 +504,31 @@ void LocalPlanning::groundSegmentation(
     delete[] obstacles_grid;
   }
 
+  return;
+}
+
+void LocalPlanning::localGoalCalculation(pcl::PointXYZ global_goal,
+    pcl::PointCloud<pcl::PointXYZ> obstacles_cloud,
+    pcl::PointCloud<pcl::PointXYZ> limits_cloud, pcl::PointXYZ &local_goal)
+{
+  local_goal.x = 0.0;
+  local_goal.y = 0.0;
+  local_goal.z = 0.0;
+  float min_distance = 10000.0;
+  float distance;
+  float x, y;
+
+  for (int i = 0; i < limits_cloud.points.size(); i++){
+    x = limits_cloud.points[i].x - global_goal.x;
+    y = limits_cloud.points[i].y - global_goal.y;
+    distance = sqrt(x*x + y*y);
+
+    if (distance < min_distance){
+      min_distance = distance;
+      local_goal.x = limits_cloud.points[i].x;
+      local_goal.y = limits_cloud.points[i].y;
+    }
+  }
   return;
 }
 

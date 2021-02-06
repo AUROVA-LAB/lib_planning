@@ -97,6 +97,10 @@ public:
       pcl::PointCloud<pcl::PointXYZ> &obstacles_cloud,
       pcl::PointCloud<pcl::PointXYZ> &limits_cloud);
 
+  void localGoalCalculation(pcl::PointXYZ global_goal,
+      pcl::PointCloud<pcl::PointXYZ> obstacles_cloud,
+      pcl::PointCloud<pcl::PointXYZ> limits_cloud, pcl::PointXYZ &local_goal);
+
 };
 
 #endif
