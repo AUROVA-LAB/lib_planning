@@ -149,235 +149,6 @@ void LocalPlanning::sphericalGridToPointCloud(float **spherical_grid,
   }
 }
 
-void LocalPlanning::freeSpaceMap(float **input_grid,
-    local_planning_lib::SensorConfiguration lidar_configuration,
-    local_planning_lib::FilteringConfiguration filtering_configuration,
-    float **output_grid, pcl::PointCloud<pcl::PointXYZ> &perimeter_cloud)
-{
-
-  pcl::PointXYZ point;
-  perimeter_cloud.points.clear();
-
-  float range;
-  float elevation;
-  float azimuth;
-
-  float x_a;
-  float y_a;
-  float z_a;
-  int index_a;
-  float mod_ab;
-
-  float x_b;
-  float y_b;
-  float z_b;
-
-  float x_c;
-  float y_c;
-  float z_c;
-  int index_c;
-  float mod_bc;
-
-  float dot = 0.0;
-
-  initializeSphericalGrid(output_grid, lidar_configuration);
-
-  // Erasing non obstacle points
-  for (register int i = 0; i < lidar_configuration.num_of_azimuth_cells; ++i) // We will search in every vertical slice
-  {
-    azimuth = ((float) i * lidar_configuration.grid_azimuth_angular_resolution)
-        + lidar_configuration.min_azimuth_angle;
-
-    // We will check beginning from the lowest points (180 degrees is looking down, 90 front and 0 degrees up)
-    register int j = lidar_configuration.num_of_elevation_cells - 1;
-    while (j >= 0)
-    {
-      if (input_grid[i][j] != -1.0) // First point found
-      {
-        range = input_grid[i][j]; // We extract the x and y coordinates
-        elevation = ((float) j
-            * lidar_configuration.grid_elevation_angular_resolution)
-            + lidar_configuration.min_elevation_angle;
-
-        sphericalInDegrees2Cartesian(range, azimuth, elevation, x_a, y_a, z_a);
-
-        index_a = j;
-        float observed_elevation_angle_in_degrees = atan2(
-            z_a + lidar_configuration.sensor_height,
-            sqrt((x_a * x_a) + (y_a * y_a))) * 180.0 / M_PI;
-
-        if (observed_elevation_angle_in_degrees
-            < filtering_configuration.max_ground_elevation_angle_change_in_degrees) // If this point could be ground
-        {
-          j--;  // Then  we point to the next cell
-
-          while (j >= 0 && input_grid[i][j] == -1) // and keep moving until we find a new point
-          {
-            j--;
-          }
-          if (j >= 0) // If we don't have finish the vector, we have found a second point
-          {
-            range = input_grid[i][j]; // We extract the x and y coordinates for this second point
-
-            elevation = ((float) j
-                * lidar_configuration.grid_elevation_angular_resolution)
-                + lidar_configuration.min_elevation_angle;
-
-            sphericalInDegrees2Cartesian(range, azimuth, elevation, x_b, y_b,
-                z_b);
-
-            j--;  // Then  we point to the next cell
-
-            while (j >= 0 && input_grid[i][j] == -1) // and keep moving until we find a new point
-            {
-              j--;
-            }
-            if (j >= 0) // If we don't have finish the vector, then we have found a third point
-            {
-              range = input_grid[i][j]; // We extract the x and y coordinates for this third point
-
-              elevation = ((float) j
-                  * lidar_configuration.grid_elevation_angular_resolution)
-                  + lidar_configuration.min_elevation_angle;
-
-              sphericalInDegrees2Cartesian(range, azimuth, elevation, x_c, y_c,
-                  z_c);
-
-              index_c = j;
-
-              mod_ab = sqrt(
-                  pow((x_b - x_a), 2) + pow((y_b - y_a), 2)
-                      + pow((z_b - z_a), 2));
-
-              mod_bc = sqrt(
-                  pow((x_c - x_b), 2) + pow((y_c - y_b), 2)
-                      + pow((z_c - z_b), 2));
-
-              dot = (x_b - x_a) * (x_c - x_b) + (y_b - y_a) * (y_c - y_b)
-                  + (z_b - z_a) * (z_c - z_b);
-              dot = dot / (mod_ab * mod_bc);
-
-              if (fabs(dot)
-                  > filtering_configuration.min_dot_product_for_ground) // if ground measurement
-              {
-                //ROS_INFO_STREAM(std::endl << "BC modulus = " << mod_bc);
-              } else
-              {
-                output_grid[i][index_c] = input_grid[i][index_c];
-                point.x = x_c;
-                point.y = y_c;
-                point.z = 0.0;
-              }
-            } // End of third point found
-          } // End of second point found
-        } else
-        {
-          output_grid[i][index_a] = input_grid[i][index_a];
-          point.x = x_a;
-          point.y = y_a;
-          point.z = 0.0;
-        }
-
-        j = index_a;
-
-      } // End of first point found
-      j--;
-    } // End of vertical search
-  } // End of horizontal search
-
-  for (register int i = 0; i < lidar_configuration.num_of_azimuth_cells; ++i) // We will search in every vertical slice
-  {
-    azimuth = ((float) i * lidar_configuration.grid_azimuth_angular_resolution)
-        + lidar_configuration.min_azimuth_angle;
-
-    // We will check beginning from the lowest points (180 degrees is looking down, 90 front and 0 degrees up)
-    register int j = lidar_configuration.num_of_elevation_cells - 1;
-    while (j >= 0)
-    {
-      if (output_grid[i][j] != -1.0)
-      {
-        range = input_grid[i][j]; // We extract the x and y coordinates
-        elevation = ((float) j
-            * lidar_configuration.grid_elevation_angular_resolution)
-            + lidar_configuration.min_elevation_angle;
-
-        sphericalInDegrees2Cartesian(range, azimuth, elevation, x_a, y_a, z_a);
-
-        point.x = x_a;
-        point.y = y_a;
-        point.z = z_a;
-
-        perimeter_cloud.points.push_back(point);
-
-        j = -1;
-      }
-      j--;
-    }
-  }
-  return;
-}
-
-void LocalPlanning::freeSpaceMap(pcl::PointCloud<pcl::PointXYZ> &input_cloud,
-    local_planning_lib::SensorConfiguration lidar_configuration,
-    local_planning_lib::FilteringConfiguration filtering_configuration,
-    pcl::PointCloud<pcl::PointXYZ> &output_cloud,
-    pcl::PointCloud<pcl::PointXYZ> &perimeter_cloud)
-{
-  float **input_grid; // To store the poincloud in an ordered matrix using spherical coordinates
-
-  float **output_grid; // This matrix is the output of the ground filtering step
-                       // it will contains (hopefully) only obstacle points and is
-                       // implemented using the dot product, inspired in the work of
-                       // Petrovskaya and Thrun 2009
-                       // "Model based vehicle detection and tracking for autonomous urban driving"
-
-  bool error = false;                     // To check problems in dynamic memory
-
-  //std::cout << std::endl << "Starting memory reserve";
-  try
-  {
-    input_grid = new float*[lidar_configuration.num_of_azimuth_cells];
-    output_grid = new float*[lidar_configuration.num_of_azimuth_cells];
-
-    for (int i = 0; i < lidar_configuration.num_of_azimuth_cells; ++i)
-    {
-      input_grid[i] = new float[lidar_configuration.num_of_elevation_cells];
-      output_grid[i] = new float[lidar_configuration.num_of_elevation_cells];
-    }
-  } catch (...)
-  {
-    std::cout << std::endl
-        << "Runtime error in CGeometric_Pointcloud_Processing::groundFiltering!!!";
-    error = true;
-  }
-  //std::cout << std::endl << "Reserve done";
-
-  if (!error)
-  {
-    pointCloud2SphericalGrid(input_cloud, lidar_configuration,
-        filtering_configuration, input_grid);
-
-    freeSpaceMap(input_grid, lidar_configuration, filtering_configuration,
-        output_grid, perimeter_cloud);
-
-    sphericalGridToPointCloud(output_grid, lidar_configuration, output_cloud);
-
-    //std::cout << std::endl << "Starting freeing";
-    for (int i = 0; i < lidar_configuration.num_of_azimuth_cells; ++i)
-    {
-      delete[] input_grid[i];
-      delete[] output_grid[i];
-    }
-    //std::cout << std::endl << "First freeing done";
-
-    delete[] input_grid;
-    delete[] output_grid;
-    //std::cout << std::endl << "Second freeing done";
-  }
-
-  return;
-}
-
 void LocalPlanning::groundSegmentation(
     pcl::PointCloud<pcl::PointXYZ> &input_cloud,
     local_planning_lib::SensorConfiguration lidar_configuration,
@@ -518,17 +289,75 @@ void LocalPlanning::localGoalCalculation(pcl::PointXYZ global_goal,
   float distance;
   float x, y;
 
-  for (int i = 0; i < limits_cloud.points.size(); i++){
+  for (int i = 0; i < limits_cloud.points.size(); i++)
+  {
     x = limits_cloud.points[i].x - global_goal.x;
     y = limits_cloud.points[i].y - global_goal.y;
-    distance = sqrt(x*x + y*y);
+    distance = sqrt(x * x + y * y);
 
-    if (distance < min_distance){
+    if (distance < min_distance)
+    {
       min_distance = distance;
       local_goal.x = limits_cloud.points[i].x;
       local_goal.y = limits_cloud.points[i].y;
     }
   }
+  return;
+}
+
+void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
+    local_planning_lib::Pose2D base_in_lidarf,
+    pcl::PointCloud<pcl::PointXYZ> obstacles_cloud,
+    pcl::PointCloud<pcl::PointXYZ> &collision_risk,
+    local_planning_lib::AckermannControl &ackermann_control)
+{
+  pcl::PointXYZ point;
+  static pcl::PointCloud<pcl::PointXYZ> obstacles_cloud_tf;
+  collision_risk.points.clear();
+
+  float pose_yaw_prev = base_in_lidarf.yaw;
+  float pose_x_prev = base_in_lidarf.x;
+  float pose_y_prev = base_in_lidarf.y;
+
+  for (float st = -1 * ackermann_control.max_angle;
+      st <= 0.0/*ackermann_control.max_angle*/; st +=
+          5/*ackermann_control.delta_angle*/)
+  {
+
+    //float st = -25.0;
+
+    float steering_radians = st * M_PI / 180.0;
+
+    float lineal_speed = ackermann_control.v_max; // - abs(st) * k_sp;
+    float angular_speed_yaw = (lineal_speed / ackermann_control.v_length)
+        * sin(steering_radians);
+
+    float pose_yaw = pose_yaw_prev
+        + angular_speed_yaw * ackermann_control.delta_time;
+
+    float lineal_speed_x = lineal_speed * cos(pose_yaw) * cos(steering_radians);
+    float lineal_speed_y = lineal_speed * sin(pose_yaw) * cos(steering_radians);
+    float pose_x = pose_x_prev + lineal_speed_x * ackermann_control.delta_time;
+    float pose_y = pose_y_prev + lineal_speed_y * ackermann_control.delta_time;
+
+    obstacles_cloud_tf.points.clear();
+    Eigen::Affine3f transform = Eigen::Affine3f::Identity();
+    transform.translation() << -pose_x, -pose_y, 0.0;
+    transform.rotate(Eigen::AngleAxisf(-pose_yaw, Eigen::Vector3f::UnitZ()));
+    pcl::transformPointCloud(obstacles_cloud, obstacles_cloud_tf, transform);
+
+    /*point.x = pose_x;
+    point.y = pose_y;
+    point.z = pose_yaw;
+    collision_risk.points.push_back(point);
+    point.x = pose_x_prev;
+    point.y = pose_y_prev;
+    point.z = pose_yaw_prev;
+    collision_risk.points.push_back(point);*/
+
+    collision_risk += obstacles_cloud_tf;
+  }
+
   return;
 }
 

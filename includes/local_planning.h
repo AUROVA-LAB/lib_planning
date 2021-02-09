@@ -7,11 +7,13 @@
 #include <math.h>
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
+#include <pcl/common/transforms.h>
 
 #include <bits/stdc++.h>
 #include <string>
 
 #define IMPOSSIBLE_RANGE_VALUE -1.0
+#define PI 3.141592
 
 using namespace std;
 
@@ -52,6 +54,27 @@ struct FilteringConfiguration
   double radious;
   double var_factor;
 };
+
+struct AckermannControl
+{
+  float max_angle;
+  float delta_angle;
+  float v_min;
+  float v_max;
+  float v_length;
+  float delta_time;
+
+  float steering;
+  float direction;
+};
+
+struct Pose2D
+{
+  float x;
+  float y;
+  float yaw;
+};
+
 }
 
 class LocalPlanning
@@ -79,17 +102,6 @@ public:
       local_planning_lib::SensorConfiguration lidar_configuration,
       pcl::PointCloud<pcl::PointXYZ> &output_cloud);
 
-  void freeSpaceMap(pcl::PointCloud<pcl::PointXYZ> &input_cloud,
-      local_planning_lib::SensorConfiguration lidar_configuration,
-      local_planning_lib::FilteringConfiguration filtering_configuration,
-      pcl::PointCloud<pcl::PointXYZ> &output_cloud,
-      pcl::PointCloud<pcl::PointXYZ> &perimeter_cloud);
-
-  void freeSpaceMap(float **input_grid,
-      local_planning_lib::SensorConfiguration lidar_configuration,
-      local_planning_lib::FilteringConfiguration filtering_configuration,
-      float **output_grid, pcl::PointCloud<pcl::PointXYZ> &perimeter_cloud);
-
   void groundSegmentation(pcl::PointCloud<pcl::PointXYZ> &input_cloud,
       local_planning_lib::SensorConfiguration lidar_configuration,
       local_planning_lib::FilteringConfiguration filtering_configuration,
@@ -100,6 +112,12 @@ public:
   void localGoalCalculation(pcl::PointXYZ global_goal,
       pcl::PointCloud<pcl::PointXYZ> obstacles_cloud,
       pcl::PointCloud<pcl::PointXYZ> limits_cloud, pcl::PointXYZ &local_goal);
+
+  void controlActionCalculation(pcl::PointXYZ local_goal,
+      local_planning_lib::Pose2D base_in_lidarf,
+      pcl::PointCloud<pcl::PointXYZ> obstacles_cloud,
+      pcl::PointCloud<pcl::PointXYZ> &collision_risk,
+      local_planning_lib::AckermannControl &ackermann_control);
 
 };
 
