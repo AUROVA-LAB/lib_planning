@@ -312,19 +312,38 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
     local_planning_lib::AckermannControl &ackermann_control)
 {
   pcl::PointXYZ point;
+  pcl::PointXYZ point2;
+  static pcl::PointCloud<pcl::PointXYZ> local_goal_;
+  static pcl::PointCloud<pcl::PointXYZ> local_goal_tf;
   static pcl::PointCloud<pcl::PointXYZ> obstacles_cloud_tf;
+  bool flag_collision_risk = false;
+
   collision_risk.points.clear();
 
   float pose_yaw_prev = base_in_lidarf.yaw;
   float pose_x_prev = base_in_lidarf.x;
   float pose_y_prev = base_in_lidarf.y;
 
-  for (float st = -1 * ackermann_control.max_angle;
-      st <= 0.0/*ackermann_control.max_angle*/; st +=
-          5/*ackermann_control.delta_angle*/)
-  {
+  ackermann_control.steering = 0.0;
+  ackermann_control.velocity = 0.0;
 
-    //float st = -25.0;
+  //////////////////////////////////////////////////////////////////////////////////////////
+  //// Initial angle error calculation
+  local_goal_tf.points.clear();
+  local_goal_.points.clear();
+  local_goal_.points.push_back(local_goal);
+  Eigen::Affine3f transform = Eigen::Affine3f::Identity();
+  transform.translation() << -pose_x_prev, -pose_y_prev, 0.0;
+  transform.rotate(Eigen::AngleAxisf(-pose_yaw_prev, Eigen::Vector3f::UnitZ()));
+  pcl::transformPointCloud(local_goal_, local_goal_tf, transform);
+  point = local_goal_tf.points[0];
+  float min_ang_err = abs(atan2(point.y, point.x) * 180.0 / M_PI);
+
+  //////////////////////////////////////////////////////////////////////////////////////////
+  //// CHECK FRONT POSIBLE CONTROL ACTIONS
+  for (float st = -1 * ackermann_control.max_angle;
+      st <= ackermann_control.max_angle; st += ackermann_control.delta_angle)
+  {
 
     float steering_radians = st * M_PI / 180.0;
 
@@ -341,22 +360,51 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
     float pose_y = pose_y_prev + lineal_speed_y * ackermann_control.delta_time;
 
     obstacles_cloud_tf.points.clear();
+    local_goal_tf.points.clear();
     Eigen::Affine3f transform = Eigen::Affine3f::Identity();
     transform.translation() << -pose_x, -pose_y, 0.0;
     transform.rotate(Eigen::AngleAxisf(-pose_yaw, Eigen::Vector3f::UnitZ()));
     pcl::transformPointCloud(obstacles_cloud, obstacles_cloud_tf, transform);
+    pcl::transformPointCloud(local_goal_, local_goal_tf, transform);
 
-    /*point.x = pose_x;
-    point.y = pose_y;
-    point.z = pose_yaw;
-    collision_risk.points.push_back(point);
-    point.x = pose_x_prev;
-    point.y = pose_y_prev;
-    point.z = pose_yaw_prev;
-    collision_risk.points.push_back(point);*/
+    flag_collision_risk = false;
+    for (int i = 0; i < obstacles_cloud_tf.points.size(); i++)
+    {
+      if (obstacles_cloud_tf.points[i].x < ackermann_control.margin_front
+          && obstacles_cloud_tf.points[i].x > ackermann_control.margin_rear
+          && obstacles_cloud_tf.points[i].y < ackermann_control.margin_left
+          && obstacles_cloud_tf.points[i].y > ackermann_control.margin_right)
+      {
+        collision_risk.points.push_back(obstacles_cloud.points[i]);
+        flag_collision_risk = true;
+      }
+    }
 
-    collision_risk += obstacles_cloud_tf;
+    if (!flag_collision_risk)
+    {
+      point2 = local_goal_tf.points[0];
+      float ang_err = abs(atan2(point2.y, point2.x) * 180.0 / M_PI);
+
+      /*if (ang_err < min_ang_err)
+       {
+       min_ang_err = ang_err;
+       ackermann_control.steering = steering_radians;
+       ackermann_control.velocity = lineal_speed;
+       }*/
+
+      std::cout << "x_g: " << point.x << ", y_g: " << point.y << std::endl;
+      std::cout << "x_a: " << point2.x << ", y_a: " << point2.y << std::endl;
+      std::cout << "ang_err: " << ang_err << ", min_ang_err: " << min_ang_err
+          << std::endl;
+    }
   }
+
+  //////////////////////////////////////////////////////////////////////////////////////////
+  //// CHECK REAR POSIBLE CONTROL ACTIONS
+  /*if (ackermann_control.velocity == 0.0)
+   {
+   std::cout << "No front action" << std::endl;
+   }*/
 
   return;
 }

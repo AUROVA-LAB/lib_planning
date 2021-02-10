@@ -64,8 +64,13 @@ struct AckermannControl
   float v_length;
   float delta_time;
 
+  float margin_front; //from base_link
+  float margin_rear;
+  float margin_left;
+  float margin_right;
+
   float steering;
-  float direction;
+  float velocity;
 };
 
 struct Pose2D
