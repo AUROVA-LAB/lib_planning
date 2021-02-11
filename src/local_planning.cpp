@@ -337,7 +337,8 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
   transform.rotate(Eigen::AngleAxisf(-pose_yaw_prev, Eigen::Vector3f::UnitZ()));
   pcl::transformPointCloud(local_goal_, local_goal_tf, transform);
   point = local_goal_tf.points[0];
-  float min_ang_err = abs(atan2(point.y, point.x) * 180.0 / M_PI);
+  //float min_ang_err = abs(atan2(point.y, point.x) * 180.0 / M_PI);
+  float min_ang_err = 360.0;
 
   //////////////////////////////////////////////////////////////////////////////////////////
   //// CHECK FRONT POSIBLE CONTROL ACTIONS
@@ -385,26 +386,31 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
       point2 = local_goal_tf.points[0];
       float ang_err = abs(atan2(point2.y, point2.x) * 180.0 / M_PI);
 
-      /*if (ang_err < min_ang_err)
-       {
-       min_ang_err = ang_err;
-       ackermann_control.steering = steering_radians;
-       ackermann_control.velocity = lineal_speed;
-       }*/
+      if (ang_err < min_ang_err)
+      {
+        min_ang_err = ang_err;
+        ackermann_control.steering = steering_radians;
+        ackermann_control.velocity = lineal_speed;
+      }
 
-      std::cout << "x_g: " << point.x << ", y_g: " << point.y << std::endl;
-      std::cout << "x_a: " << point2.x << ", y_a: " << point2.y << std::endl;
-      std::cout << "ang_err: " << ang_err << ", min_ang_err: " << min_ang_err
-          << std::endl;
+      //std::cout << "x_g: " << point.x << ", y_g: " << point.y << std::endl;
+      //std::cout << "x_a: " << point2.x << ", y_a: " << point2.y << std::endl;
+      //std::cout << "ang_err: " << ang_err << ", min_ang_err: " << min_ang_err
+      //    << std::endl;
     }
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
   //// CHECK REAR POSIBLE CONTROL ACTIONS
-  /*if (ackermann_control.velocity == 0.0)
-   {
-   std::cout << "No front action" << std::endl;
-   }*/
+  if (ackermann_control.velocity == 0.0)
+  {
+    std::cout << "No front action" << std::endl;
+  }
+
+  float k_sp = (ackermann_control.v_max - ackermann_control.v_min)
+      / ackermann_control.max_angle;
+  ackermann_control.velocity = ackermann_control.v_max
+      - abs(ackermann_control.steering) * k_sp;
 
   return;
 }
