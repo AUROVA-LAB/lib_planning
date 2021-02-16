@@ -400,6 +400,9 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
     }
   }
 
+  std::cout << "Steering: " << ackermann_control.steering * 180.0 / M_PI << std::endl;
+
+
   //////////////////////////////////////////////////////////////////////////////////////////
   //// CHECK REAR POSIBLE CONTROL ACTIONS
   if (ackermann_control.velocity == 0.0)
