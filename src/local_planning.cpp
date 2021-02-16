@@ -309,6 +309,8 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
     local_planning_lib::Pose2D base_in_lidarf,
     pcl::PointCloud<pcl::PointXYZ> obstacles_cloud,
     pcl::PointCloud<pcl::PointXYZ> &collision_risk,
+    pcl::PointCloud<pcl::PointXYZ> &collision_actions,
+    pcl::PointCloud<pcl::PointXYZ> &free_actions,
     local_planning_lib::AckermannControl &ackermann_control)
 {
   pcl::PointXYZ point;
@@ -316,9 +318,12 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
   static pcl::PointCloud<pcl::PointXYZ> local_goal_;
   static pcl::PointCloud<pcl::PointXYZ> local_goal_tf;
   static pcl::PointCloud<pcl::PointXYZ> obstacles_cloud_tf;
+  static pcl::PointCloud<pcl::PointXYZ> action_arc;
   bool flag_collision_risk = false;
 
   collision_risk.points.clear();
+  collision_actions.points.clear();
+  free_actions.points.clear();
 
   float pose_yaw_prev = base_in_lidarf.yaw;
   float pose_x_prev = base_in_lidarf.x;
@@ -353,9 +358,8 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
   {
 
     float steering_radians = st * M_PI / 180.0;
-    //float lineal_speed = ackermann_control.v_max; // - abs(st) * k_sp;
-
     flag_collision_risk = false;
+    action_arc.points.clear();
 
     for (float lineal_speed = 0.5; lineal_speed < ackermann_control.v_max * 2.0;
         lineal_speed += 0.5)
@@ -376,26 +380,26 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
       float pose_y = pose_y_prev
           + lineal_speed_y * ackermann_control.delta_time;
 
-      obstacles_cloud_tf.points.clear();
-      local_goal_tf.points.clear();
-      Eigen::Affine3f transform = Eigen::Affine3f::Identity();
-      transform.translation() << -pose_x, -pose_y, 0.0;
-      transform.rotate(Eigen::AngleAxisf(-pose_yaw, Eigen::Vector3f::UnitZ()));
-      pcl::transformPointCloud(obstacles_cloud, obstacles_cloud_tf, transform);
-      pcl::transformPointCloud(local_goal_, local_goal_tf, transform);
+      /*obstacles_cloud_tf.points.clear();
+       local_goal_tf.points.clear();
+       Eigen::Affine3f transform = Eigen::Affine3f::Identity();
+       transform.translation() << -pose_x, -pose_y, 0.0;
+       transform.rotate(Eigen::AngleAxisf(-pose_yaw, Eigen::Vector3f::UnitZ()));
+       pcl::transformPointCloud(obstacles_cloud, obstacles_cloud_tf, transform);
+       pcl::transformPointCloud(local_goal_, local_goal_tf, transform);*/
 
       // DEBUG!!!
       point2.x = pose_x;
       point2.y = pose_y;
       point2.z = pose_yaw;
-      collision_risk.points.push_back(point2);
+      action_arc.points.push_back(point2);
 
-      for (int i = 0; i < obstacles_cloud_tf.points.size(); i++)
+      for (int i = 0; i < obstacles_cloud.points.size(); i++)
       {
-        if (obstacles_cloud_tf.points[i].x < ackermann_control.margin_front
-            && obstacles_cloud_tf.points[i].x > ackermann_control.margin_rear
-            && obstacles_cloud_tf.points[i].y < ackermann_control.margin_left
-            && obstacles_cloud_tf.points[i].y > ackermann_control.margin_right)
+        if (obstacles_cloud.points[i].x < pose_x + ackermann_control.margin_front
+            && obstacles_cloud.points[i].x > pose_x - ackermann_control.margin_front
+            && obstacles_cloud.points[i].y < pose_y + ackermann_control.margin_front
+            && obstacles_cloud.points[i].y > pose_y - ackermann_control.margin_front)
         {
           collision_risk.points.push_back(obstacles_cloud.points[i]);
           flag_collision_risk = true;
@@ -405,7 +409,9 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
 
     if (!flag_collision_risk)
     {
-      point2 = local_goal_tf.points[0];
+      free_actions += action_arc;
+
+      /*point2 = local_goal_tf.points[0];
       float ang_err = abs(atan2(point2.y, point2.x) * 180.0 / M_PI);
 
       if (ang_err < min_ang_err)
@@ -413,17 +419,20 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
         min_ang_err = ang_err;
         ackermann_control.steering = steering_radians;
         ackermann_control.velocity = ackermann_control.v_max;
-      }
+      }*/
 
       //std::cout << "x_g: " << point.x << ", y_g: " << point.y << std::endl;
       //std::cout << "x_a: " << point2.x << ", y_a: " << point2.y << std::endl;
       //std::cout << "ang_err: " << ang_err << ", min_ang_err: " << min_ang_err
       //    << std::endl;
+    } else
+    {
+      collision_actions += action_arc;
     }
   }
 
-  std::cout << "Steering: " << ackermann_control.steering * 180.0 / M_PI
-      << std::endl;
+  //std::cout << "Steering: " << ackermann_control.steering * 180.0 / M_PI
+  //    << std::endl;
 
   //////////////////////////////////////////////////////////////////////////////////////////
   //// CHECK REAR POSIBLE CONTROL ACTIONS

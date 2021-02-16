@@ -122,6 +122,8 @@ public:
       local_planning_lib::Pose2D base_in_lidarf,
       pcl::PointCloud<pcl::PointXYZ> obstacles_cloud,
       pcl::PointCloud<pcl::PointXYZ> &collision_risk,
+      pcl::PointCloud<pcl::PointXYZ> &collision_actions,
+      pcl::PointCloud<pcl::PointXYZ> &free_actions,
       local_planning_lib::AckermannControl &ackermann_control);
 
 };
