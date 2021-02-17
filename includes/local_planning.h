@@ -63,6 +63,9 @@ struct AckermannControl
   float v_max;
   float v_length;
   float delta_time;
+  float max_time;
+  float vel_action;
+  float kp;
 
   float margin_front; //from base_link
   float margin_rear;
