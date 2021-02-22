@@ -157,7 +157,10 @@ void LocalPlanning::groundSegmentation(
     pcl::PointCloud<pcl::PointXYZ> &obstacles_cloud,
     pcl::PointCloud<pcl::PointXYZ> &limits_cloud)
 {
-
+  static pcl::PointCloud<pcl::PointXYZ> free_limits;
+  static pcl::PointCloud<pcl::PointXYZ> obstacles_limits;
+  free_limits.points.clear();
+  obstacles_limits.points.clear();
   output_cloud.points.clear();
   obstacles_cloud.points.clear();
   limits_cloud.points.clear();
@@ -168,6 +171,37 @@ void LocalPlanning::groundSegmentation(
 
   ///////////////////////////////////////////////////////////////////////////
   // naive objects segmentation
+  //// TODO: implement conditional
+  /*for (size_t i = 0; i < input_cloud.points.size(); ++i)
+   {
+   point.x = input_cloud.points[i].x;
+   point.y = input_cloud.points[i].y;
+   point.z = input_cloud.points[i].z;
+
+   distance = sqrt(point.x * point.x + point.y * point.y);
+
+   var_factor = distance * filtering_configuration.var_factor;
+
+   if (filtering_configuration.a != 0.0 && filtering_configuration.b != 0.0
+   && filtering_configuration.c != 0.0
+   && point.z < filtering_configuration.variance * var_factor
+   && distance < filtering_configuration.radious)
+   {
+   plane_ec = point.x / filtering_configuration.a
+   + point.y / filtering_configuration.b
+   + point.z / filtering_configuration.c;
+
+   plane_ec = plane_ec - 1;
+
+   if (abs(plane_ec) > filtering_configuration.variance * var_factor)
+   {
+   output_cloud.points.push_back(point);
+   }
+   }
+
+   }*/
+
+  //// TODO: get limits from params
   for (size_t i = 0; i < input_cloud.points.size(); ++i)
   {
     point.x = input_cloud.points[i].x;
@@ -176,25 +210,11 @@ void LocalPlanning::groundSegmentation(
 
     distance = sqrt(point.x * point.x + point.y * point.y);
 
-    var_factor = distance * filtering_configuration.var_factor;
-
-    if (filtering_configuration.a != 0.0 && filtering_configuration.b != 0.0
-        && filtering_configuration.c != 0.0
-        && point.z < filtering_configuration.variance * var_factor
+    if (point.z < 0.0 && point.z > -0.5
         && distance < filtering_configuration.radious)
     {
-      plane_ec = point.x / filtering_configuration.a
-          + point.y / filtering_configuration.b
-          + point.z / filtering_configuration.c;
-
-      plane_ec = plane_ec - 1;
-
-      if (abs(plane_ec) > filtering_configuration.variance * var_factor)
-      {
-        output_cloud.points.push_back(point);
-      }
+      output_cloud.points.push_back(point);
     }
-
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -234,7 +254,7 @@ void LocalPlanning::groundSegmentation(
         point.x = x;
         point.y = y;
         point.z = 0.0;
-        limits_cloud.points.push_back(point);
+        free_limits.points.push_back(point);
       }
 
       azimuth =
@@ -262,6 +282,14 @@ void LocalPlanning::groundSegmentation(
           obstacles_cloud.points.push_back(point);
           no_obstacle = false;
 
+          // aux cloud for margin calculation
+          range = filtering_configuration.radious;
+          sphericalInDegrees2Cartesian(range, azimuth, 90.0, x, y, z);
+          point.x = x;
+          point.y = y;
+          point.z = 0.0;
+          obstacles_limits.points.push_back(point);
+
           j = -1;
         }
         j--;
@@ -273,6 +301,29 @@ void LocalPlanning::groundSegmentation(
       delete[] obstacles_grid[i];
     }
     delete[] obstacles_grid;
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+  // deleting security margins
+  for (int i = 0; i < free_limits.points.size(); i++)
+  {
+    float min_distance = filtering_configuration.radious;
+    for (int j = 0; j < obstacles_limits.points.size(); j++)
+    {
+      point.x = free_limits.points[i].x - obstacles_limits.points[j].x;
+      point.y = free_limits.points[i].y - obstacles_limits.points[j].y;
+
+      distance = sqrt(point.x * point.x + point.y * point.y);
+      if (distance < min_distance)
+      {
+        min_distance = distance;
+      }
+    }
+
+    if (min_distance > 3.0)  //TODO: get margin from parameter
+    {
+      limits_cloud.points.push_back(free_limits.points[i]);
+    }
   }
 
   return;
@@ -314,6 +365,7 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
     local_planning_lib::AckermannControl &ackermann_control)
 {
   pcl::PointXYZ point;
+  pcl::PointXYZ point_front;
   static pcl::PointCloud<pcl::PointXYZ> action_arc;
   std::vector<float> steering_options;
   std::vector<float> direction_options;
@@ -331,150 +383,106 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
   ackermann_control.steering = 0.0;
   ackermann_control.velocity = 0.0;
 
-  // DEBUG!!!
-  point.x = pose_x_prev;
-  point.y = pose_y_prev;
-  point.z = pose_yaw_prev;
-  collision_risk.points.push_back(point);
-
   //////////////////////////////////////////////////////////////////////////////////////////
   //// CHECK POSIBLE CONTROL ACTIONS
   for (float st = -1 * ackermann_control.max_angle;
       st <= ackermann_control.max_angle; st += ackermann_control.delta_angle)
   {
 
-    //// CHECK FRONT ACTIONS
-    float steering_radians = st * M_PI / 180.0;
-    float lineal_speed = ackermann_control.vel_action;
-    flag_collision_risk = false;
-    action_arc.points.clear();
-
-    for (float time = ackermann_control.delta_time;
-        time <= ackermann_control.max_time; time +=
-            ackermann_control.delta_time)
+    //// CHECK REAR-FRONT ACTIONS
+    for (float dir = -1.0; dir <= 1.0; dir += 2.0)
     {
+      float steering_radians = st * M_PI / 180.0;
+      flag_collision_risk = false;
+      action_arc.points.clear();
 
-      float angular_speed_yaw = (lineal_speed / ackermann_control.v_length)
-          * sin(steering_radians);
-
-      float pose_yaw = pose_yaw_prev + angular_speed_yaw * time;
-
-      float lineal_speed_x = lineal_speed * cos(pose_yaw)
-          * cos(steering_radians);
-      float lineal_speed_y = lineal_speed * sin(pose_yaw)
-          * cos(steering_radians);
-      float pose_x = pose_x_prev + lineal_speed_x * time;
-      float pose_y = pose_y_prev + lineal_speed_y * time;
-
-      point.x = pose_x;
-      point.y = pose_y;
-      point.z = pose_yaw;
-      action_arc.points.push_back(point);
-
-      for (int i = 0; i < obstacles_cloud.points.size(); i++)
+      for (float arc = ackermann_control.delta_time;
+          arc <= ackermann_control.max_time; arc +=
+              ackermann_control.delta_time)
       {
-        if (obstacles_cloud.points[i].x
-            < pose_x + ackermann_control.margin_front
-            && obstacles_cloud.points[i].x
-                > pose_x - ackermann_control.margin_front
-            && obstacles_cloud.points[i].y
-                < pose_y + ackermann_control.margin_front
-            && obstacles_cloud.points[i].y
-                > pose_y - ackermann_control.margin_front)
+        if (steering_radians != 0.0)
         {
-          collision_risk.points.push_back(obstacles_cloud.points[i]);
-          flag_collision_risk = true;
+          float r = ackermann_control.v_length / tan(steering_radians);
+
+          float x_center = base_in_lidarf.x - r * sin(base_in_lidarf.yaw);
+          float y_center = base_in_lidarf.y - r * cos(base_in_lidarf.yaw);
+
+          float w_current = base_in_lidarf.yaw + (arc * dir) / r ;
+          float x_current = r * sin(w_current) + x_center;
+          float y_current = r * cos(w_current) + y_center;
+
+          point.x = x_current;
+          point.y = y_current;
+          point.z = w_current;
+          action_arc.points.push_back(point);
+        } else
+        {
+          float x_current, y_current, z_current;
+          sphericalInDegrees2Cartesian(arc * dir, (base_in_lidarf.yaw * 180.0 / M_PI),
+              90.0, x_current, y_current, z_current);
+
+          point.x = base_in_lidarf.x + x_current;
+          point.y = base_in_lidarf.y + y_current;
+          point.z = base_in_lidarf.yaw;
+          action_arc.points.push_back(point);
+        }
+
+        float x, y, z; //TODO:from parameter
+        sphericalInDegrees2Cartesian(2.0, (-point.z * 180.0 / M_PI), 90.0, x, y,
+            z);
+
+        point_front.x = point.x + x;
+        point_front.y = point.y + y;
+        point_front.z = point.z;
+
+        for (int i = 0; i < obstacles_cloud.points.size(); i++)
+        {
+          if (obstacles_cloud.points[i].x
+              < point.x + ackermann_control.margin_front
+              && obstacles_cloud.points[i].x
+                  > point.x - ackermann_control.margin_front
+              && obstacles_cloud.points[i].y
+                  < point.y + ackermann_control.margin_front
+              && obstacles_cloud.points[i].y
+                  > point.y - ackermann_control.margin_front)
+          {
+            collision_risk.points.push_back(obstacles_cloud.points[i]);
+            flag_collision_risk = true;
+          }
         }
       }
-    }
 
-    if (!flag_collision_risk)
-    {
-      // Error evaluation
-      float error = sqrt(
-          pow(local_goal.x - point.x, 2) + pow(local_goal.y - point.y, 2));
-      steering_options.push_back(steering_radians);
-      direction_options.push_back(1.0);
-      error_values.push_back(error);
-
-      // DEBUG!!!
-      for (int k = 0; k < action_arc.points.size(); k++)
+      if (!flag_collision_risk)
       {
-        free_actions.points.push_back(action_arc.points[k]);
-      }
-    } else
-    {
-      // DEBUG!!!
-      for (int k = 0; k < action_arc.points.size(); k++)
-      {
-        collision_actions.points.push_back(action_arc.points[k]);
-      }
-    }
+        // Error evaluation
+        float d_front = sqrt(
+                pow(local_goal.x - point_front.x, 2) + pow(local_goal.y - point_front.y, 2));
+        float d_rear = sqrt(
+                        pow(local_goal.x - point.x, 2) + pow(local_goal.y - point.y, 2));
+        float e_ang = d_front - d_rear;
+        float e_dist = d_rear;
+        float error = e_ang + e_dist*0.3;
 
-    //// CHECK REAR ACTIONS
-    lineal_speed = -1 * ackermann_control.vel_action;
-    flag_collision_risk = false;
-    action_arc.points.clear();
+        steering_options.push_back(-steering_radians);
+        direction_options.push_back(dir);
+        error_values.push_back(error);
 
-    for (float time = ackermann_control.delta_time;
-        time <= ackermann_control.max_time; time +=
-            ackermann_control.delta_time)
-    {
-
-      float angular_speed_yaw = (lineal_speed / ackermann_control.v_length)
-          * sin(steering_radians);
-
-      float pose_yaw = pose_yaw_prev + angular_speed_yaw * time;
-
-      float lineal_speed_x = lineal_speed * cos(pose_yaw)
-          * cos(steering_radians);
-      float lineal_speed_y = lineal_speed * sin(pose_yaw)
-          * cos(steering_radians);
-      float pose_x = pose_x_prev + lineal_speed_x * time;
-      float pose_y = pose_y_prev + lineal_speed_y * time;
-
-      point.x = pose_x;
-      point.y = pose_y;
-      point.z = pose_yaw;
-      action_arc.points.push_back(point);
-
-      for (int i = 0; i < obstacles_cloud.points.size(); i++)
-      {
-        if (obstacles_cloud.points[i].x
-            < pose_x + ackermann_control.margin_front
-            && obstacles_cloud.points[i].x
-                > pose_x - ackermann_control.margin_front
-            && obstacles_cloud.points[i].y
-                < pose_y + ackermann_control.margin_front
-            && obstacles_cloud.points[i].y
-                > pose_y - ackermann_control.margin_front)
+        // DEBUG!!!
+        for (int k = 0; k < action_arc.points.size(); k++)
         {
-          collision_risk.points.push_back(obstacles_cloud.points[i]);
-          flag_collision_risk = true;
+          action_arc.points[k].z = error;
+          free_actions.points.push_back(action_arc.points[k]);
         }
-      }
-    }
-
-    if (!flag_collision_risk)
-    {
-      // Error evaluation
-      float error = sqrt(
-          pow(local_goal.x - point.x, 2) + pow(local_goal.y - point.y, 2));
-      steering_options.push_back(steering_radians);
-      direction_options.push_back(-1.0);
-      error_values.push_back(error);
-
-      // DEBUG!!!
-      for (int k = 0; k < action_arc.points.size(); k++)
+        //free_actions.points.push_back(point_front);
+      } else
       {
-        free_actions.points.push_back(action_arc.points[k]);
-      }
-    } else
-    {
-      // DEBUG!!!
-      for (int k = 0; k < action_arc.points.size(); k++)
-      {
-        collision_actions.points.push_back(action_arc.points[k]);
+        // DEBUG!!!
+        for (int k = 0; k < action_arc.points.size(); k++)
+        {
+          action_arc.points[k].z = 0.0;
+          collision_actions.points.push_back(action_arc.points[k]);
+        }
+        //collision_actions.points.push_back(point_front);
       }
     }
   }
