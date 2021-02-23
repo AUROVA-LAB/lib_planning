@@ -34,8 +34,6 @@ struct SensorConfiguration
   // 1 + (max_azimuth_angle - min_azimuth_angle) / grid_azimuth_angular_resolution;
   int num_of_azimuth_cells;
   int num_of_elevation_cells;
-
-  float sensor_height;
 };
 
 struct FilteringConfiguration
@@ -43,8 +41,6 @@ struct FilteringConfiguration
   float max_range; // Points above the threshold are discarded
   float min_range; // Points below this threshold will get discarded
                    // (to filter reflections in the Ego-vehicle).
-  float min_dot_product_for_ground;             // Only used in ground filtering
-  float max_ground_elevation_angle_change_in_degrees; // Only used in ground filtering
 
   // canonical parameters of plane
   double a; // plane intersection in x axe
@@ -53,6 +49,10 @@ struct FilteringConfiguration
   double variance;
   double radious;
   double var_factor;
+
+  float ground_in_sim;
+
+  bool is_simulation;
 };
 
 struct AckermannControl
@@ -62,15 +62,10 @@ struct AckermannControl
   float v_min;
   float v_max;
   float v_length;
-  float delta_time;
-  float max_time;
-  float vel_action;
+  float delta_arc;
+  float max_arc;
   float kp;
-
-  float margin_front; //from base_link
-  float margin_rear;
-  float margin_left;
-  float margin_right;
+  float margin; //from base_link
 
   float steering;
   float velocity;

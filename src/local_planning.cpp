@@ -157,10 +157,6 @@ void LocalPlanning::groundSegmentation(
     pcl::PointCloud<pcl::PointXYZ> &obstacles_cloud,
     pcl::PointCloud<pcl::PointXYZ> &limits_cloud)
 {
-  static pcl::PointCloud<pcl::PointXYZ> free_limits;
-  static pcl::PointCloud<pcl::PointXYZ> obstacles_limits;
-  free_limits.points.clear();
-  obstacles_limits.points.clear();
   output_cloud.points.clear();
   obstacles_cloud.points.clear();
   limits_cloud.points.clear();
@@ -170,55 +166,57 @@ void LocalPlanning::groundSegmentation(
   float var_factor;
 
   ///////////////////////////////////////////////////////////////////////////
-  // naive objects segmentation
-  //// TODO: implement conditional
-  /*for (size_t i = 0; i < input_cloud.points.size(); ++i)
-   {
-   point.x = input_cloud.points[i].x;
-   point.y = input_cloud.points[i].y;
-   point.z = input_cloud.points[i].z;
-
-   distance = sqrt(point.x * point.x + point.y * point.y);
-
-   var_factor = distance * filtering_configuration.var_factor;
-
-   if (filtering_configuration.a != 0.0 && filtering_configuration.b != 0.0
-   && filtering_configuration.c != 0.0
-   && point.z < filtering_configuration.variance * var_factor
-   && distance < filtering_configuration.radious)
-   {
-   plane_ec = point.x / filtering_configuration.a
-   + point.y / filtering_configuration.b
-   + point.z / filtering_configuration.c;
-
-   plane_ec = plane_ec - 1;
-
-   if (abs(plane_ec) > filtering_configuration.variance * var_factor)
-   {
-   output_cloud.points.push_back(point);
-   }
-   }
-
-   }*/
-
-  //// TODO: get limits from params
-  for (size_t i = 0; i < input_cloud.points.size(); ++i)
+  // 1) Naive objects segmentation
+  if (filtering_configuration.is_simulation)
   {
-    point.x = input_cloud.points[i].x;
-    point.y = input_cloud.points[i].y;
-    point.z = input_cloud.points[i].z;
-
-    distance = sqrt(point.x * point.x + point.y * point.y);
-
-    if (point.z < 0.0 && point.z > -0.5
-        && distance < filtering_configuration.radious)
+    for (size_t i = 0; i < input_cloud.points.size(); ++i)
     {
-      output_cloud.points.push_back(point);
+      point.x = input_cloud.points[i].x;
+      point.y = input_cloud.points[i].y;
+      point.z = input_cloud.points[i].z;
+
+      distance = sqrt(point.x * point.x + point.y * point.y);
+
+      if (point.z < 0.0 && point.z > filtering_configuration.ground_in_sim
+          && distance < filtering_configuration.radious)
+      {
+        output_cloud.points.push_back(point);
+      }
+    }
+  } else
+  {
+    for (size_t i = 0; i < input_cloud.points.size(); ++i)
+    {
+      point.x = input_cloud.points[i].x;
+      point.y = input_cloud.points[i].y;
+      point.z = input_cloud.points[i].z;
+
+      distance = sqrt(point.x * point.x + point.y * point.y);
+
+      var_factor = distance * filtering_configuration.var_factor;
+
+      if (filtering_configuration.a != 0.0 && filtering_configuration.b != 0.0
+          && filtering_configuration.c != 0.0
+          && point.z < filtering_configuration.variance * var_factor
+          && distance < filtering_configuration.radious)
+      {
+        plane_ec = point.x / filtering_configuration.a
+            + point.y / filtering_configuration.b
+            + point.z / filtering_configuration.c;
+
+        plane_ec = plane_ec - 1;
+
+        if (abs(plane_ec) > filtering_configuration.variance * var_factor)
+        {
+          output_cloud.points.push_back(point);
+        }
+      }
+
     }
   }
 
   ///////////////////////////////////////////////////////////////////////////
-  // objects perimeter calculation
+  // 2) Objects perimeter calculation
   float range = filtering_configuration.radious;
   float azimuth, x, y, z;
   float elevation = 90.0;
@@ -254,7 +252,7 @@ void LocalPlanning::groundSegmentation(
         point.x = x;
         point.y = y;
         point.z = 0.0;
-        free_limits.points.push_back(point);
+        limits_cloud.points.push_back(point);
       }
 
       azimuth =
@@ -281,15 +279,6 @@ void LocalPlanning::groundSegmentation(
 
           obstacles_cloud.points.push_back(point);
           no_obstacle = false;
-
-          // aux cloud for margin calculation
-          range = filtering_configuration.radious;
-          sphericalInDegrees2Cartesian(range, azimuth, 90.0, x, y, z);
-          point.x = x;
-          point.y = y;
-          point.z = 0.0;
-          obstacles_limits.points.push_back(point);
-
           j = -1;
         }
         j--;
@@ -301,29 +290,6 @@ void LocalPlanning::groundSegmentation(
       delete[] obstacles_grid[i];
     }
     delete[] obstacles_grid;
-  }
-
-  ///////////////////////////////////////////////////////////////////////////
-  // deleting security margins
-  for (int i = 0; i < free_limits.points.size(); i++)
-  {
-    float min_distance = filtering_configuration.radious;
-    for (int j = 0; j < obstacles_limits.points.size(); j++)
-    {
-      point.x = free_limits.points[i].x - obstacles_limits.points[j].x;
-      point.y = free_limits.points[i].y - obstacles_limits.points[j].y;
-
-      distance = sqrt(point.x * point.x + point.y * point.y);
-      if (distance < min_distance)
-      {
-        min_distance = distance;
-      }
-    }
-
-    if (min_distance > 3.0)  //TODO: get margin from parameter
-    {
-      limits_cloud.points.push_back(free_limits.points[i]);
-    }
   }
 
   return;
@@ -376,15 +342,11 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
   collision_actions.points.clear();
   free_actions.points.clear();
 
-  float pose_yaw_prev = base_in_lidarf.yaw;
-  float pose_x_prev = base_in_lidarf.x;
-  float pose_y_prev = base_in_lidarf.y;
-
   ackermann_control.steering = 0.0;
   ackermann_control.velocity = 0.0;
 
   //////////////////////////////////////////////////////////////////////////////////////////
-  //// CHECK POSIBLE CONTROL ACTIONS
+  //// 1) CHECK POSIBLE CONTROL ACTIONS
   for (float st = -1 * ackermann_control.max_angle;
       st <= ackermann_control.max_angle; st += ackermann_control.delta_angle)
   {
@@ -396,9 +358,9 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
       flag_collision_risk = false;
       action_arc.points.clear();
 
-      for (float arc = ackermann_control.delta_time;
-          arc <= ackermann_control.max_time; arc +=
-              ackermann_control.delta_time)
+      //// CALCULATE TRAJECTORY ARC FROM STEERING
+      for (float arc = ackermann_control.delta_arc;
+          arc <= ackermann_control.max_arc; arc += ackermann_control.delta_arc)
       {
         if (steering_radians != 0.0)
         {
@@ -407,7 +369,7 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
           float x_center = base_in_lidarf.x - r * sin(base_in_lidarf.yaw);
           float y_center = base_in_lidarf.y - r * cos(base_in_lidarf.yaw);
 
-          float w_current = base_in_lidarf.yaw + (arc * dir) / r ;
+          float w_current = base_in_lidarf.yaw + (arc * dir) / r;
           float x_current = r * sin(w_current) + x_center;
           float y_current = r * cos(w_current) + y_center;
 
@@ -418,8 +380,9 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
         } else
         {
           float x_current, y_current, z_current;
-          sphericalInDegrees2Cartesian(arc * dir, (base_in_lidarf.yaw * 180.0 / M_PI),
-              90.0, x_current, y_current, z_current);
+          sphericalInDegrees2Cartesian(arc * dir,
+              (base_in_lidarf.yaw * 180.0 / M_PI), 90.0, x_current, y_current,
+              z_current);
 
           point.x = base_in_lidarf.x + x_current;
           point.y = base_in_lidarf.y + y_current;
@@ -435,16 +398,16 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
         point_front.y = point.y + y;
         point_front.z = point.z;
 
+        //// CHECK IF COLLISION RISK
         for (int i = 0; i < obstacles_cloud.points.size(); i++)
         {
-          if (obstacles_cloud.points[i].x
-              < point.x + ackermann_control.margin_front
+          if (obstacles_cloud.points[i].x < point.x + ackermann_control.margin
               && obstacles_cloud.points[i].x
-                  > point.x - ackermann_control.margin_front
+                  > point.x - ackermann_control.margin
               && obstacles_cloud.points[i].y
-                  < point.y + ackermann_control.margin_front
+                  < point.y + ackermann_control.margin
               && obstacles_cloud.points[i].y
-                  > point.y - ackermann_control.margin_front)
+                  > point.y - ackermann_control.margin)
           {
             collision_risk.points.push_back(obstacles_cloud.points[i]);
             flag_collision_risk = true;
@@ -454,29 +417,43 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
 
       if (!flag_collision_risk)
       {
-        // Error evaluation
+        //// ERROR FUNCTION (TO MINIMIZE) FOR FREE ACTIONS
         float d_front = sqrt(
-                pow(local_goal.x - point_front.x, 2) + pow(local_goal.y - point_front.y, 2));
+            pow(local_goal.x - point_front.x, 2)
+                + pow(local_goal.y - point_front.y, 2));
         float d_rear = sqrt(
-                        pow(local_goal.x - point.x, 2) + pow(local_goal.y - point.y, 2));
+            pow(local_goal.x - point.x, 2) + pow(local_goal.y - point.y, 2));
         float e_ang = d_front - d_rear;
         float e_dist = d_rear;
-        float error = e_ang + e_dist*0.3;
+
+        // TODO?: get from params?
+        float min_x = -3.0;
+        float k_dist;
+        float k_ang;
+        if (local_goal.x < min_x)
+        {
+          k_dist = 0.1;
+          k_ang = 2.0;
+        } else
+        {
+          k_dist = 0.5;
+          k_ang = 1.0;
+        }
+
+        float error = e_ang * k_ang + e_dist * k_dist;
 
         steering_options.push_back(-steering_radians);
         direction_options.push_back(dir);
         error_values.push_back(error);
 
-        // DEBUG!!!
         for (int k = 0; k < action_arc.points.size(); k++)
         {
-          action_arc.points[k].z = error;
+          action_arc.points[k].z = 0.0;
           free_actions.points.push_back(action_arc.points[k]);
         }
         //free_actions.points.push_back(point_front);
       } else
       {
-        // DEBUG!!!
         for (int k = 0; k < action_arc.points.size(); k++)
         {
           action_arc.points[k].z = 0.0;
@@ -488,7 +465,7 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////
-  //// FIND BEST CONTROL ACTION
+  //// 2) FIND BEST CONTROL ACTION
   float min_error = 1000;
   float k_sp = (ackermann_control.v_max - ackermann_control.v_min)
       / ackermann_control.max_angle;
