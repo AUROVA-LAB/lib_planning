@@ -297,28 +297,134 @@ void LocalPlanning::groundSegmentation(
 
 void LocalPlanning::localGoalCalculation(pcl::PointXYZ global_goal,
     pcl::PointCloud<pcl::PointXYZ> obstacles_cloud,
-    pcl::PointCloud<pcl::PointXYZ> limits_cloud, pcl::PointXYZ &local_goal)
+    pcl::PointCloud<pcl::PointXYZ> limits_cloud,
+    pcl::PointCloud<pcl::PointXYZ> &local_path)
 {
+  local_path.points.clear();
+
+  pcl::PointXYZ local_goal;
   local_goal.x = 0.0;
   local_goal.y = 0.0;
   local_goal.z = 0.0;
-  float min_distance = 10000.0;
-  float distance;
+  float distance_a;
+  float distance_r;
+  float force_a;
+  float force_r;
+  float force;
   float x, y;
 
-  for (int i = 0; i < limits_cloud.points.size(); i++)
+  // TODO: get from param
+  float wa = 100.0;
+  float wr = 1.0;
+  float ar = 0.8;
+  float aa = 0.3;
+
+  ///////////////////////////////////////////////////////////////////////////////////
+  //// 1) PATH POINT IN RADIOUS LIMIT
+  float min_force = wr / pow(0.1, ar) - wa / pow(100.0, aa) + 1000;
+  float min_distance = 10000.0;
+  for (int i = 0; i < limits_cloud.points.size(); i += 2)
   {
+    // goal weight calculation
     x = limits_cloud.points[i].x - global_goal.x;
     y = limits_cloud.points[i].y - global_goal.y;
-    distance = sqrt(x * x + y * y);
+    distance_a = sqrt(x * x + y * y);
+    if (distance_a < 0.1)
+      distance_a = 0.1;
 
-    if (distance < min_distance)
+    force_a = wa / pow(distance_a, aa);
+
+    // min obstacle weight calculation
+    min_distance = 10000.0;
+    for (int j = 0; j < obstacles_cloud.points.size(); j += 2)
     {
-      min_distance = distance;
+      x = limits_cloud.points[i].x - obstacles_cloud.points[j].x;
+      y = limits_cloud.points[i].y - obstacles_cloud.points[j].y;
+      distance_r = sqrt(x * x + y * y);
+      if (distance_r < 0.1)
+        distance_r = 0.1;
+
+      if (distance_r < min_distance)
+      {
+        min_distance = distance_r;
+        force_r = wr / pow(distance_r, ar);
+      }
+    }
+
+    force = force_r - force_a;
+
+    if (force < min_force)
+    {
+      min_force = force;
       local_goal.x = limits_cloud.points[i].x;
       local_goal.y = limits_cloud.points[i].y;
     }
   }
+  local_path.points.push_back(local_goal);
+  ///////////////////////////////////////////////////////////////////////////////////
+
+  ///////////////////////////////////////////////////////////////////////////////////
+  //// 2) PATH POINT IN INNER RINGS
+  // TODO: get from param
+  float wa2 = 3.0;
+  float wr2 = 1.0;
+  float ar2 = 0.8;
+  float aa2 = 0.3;
+  float radious = 6.0;
+  float delta_rad = radious / 3.0;
+  float azimuth, elevation, range;
+  float x_in, y_in, z_in;
+  for (float rad = radious; rad >= delta_rad; rad -= delta_rad)
+  {
+    min_force = wr / pow(0.1, ar) - wa / pow(100.0, aa) + 1000;
+    min_distance = 10000.0;
+    for (int i = 0; i < limits_cloud.points.size(); i += 2)
+    {
+      x = limits_cloud.points[i].x;
+      y = limits_cloud.points[i].y;
+      cartesian2SphericalInDegrees(x, y, 0.0, range, azimuth, elevation);
+      sphericalInDegrees2Cartesian(rad, azimuth, 90.0, x_in, y_in, z_in);
+
+      // goal obstacle weight calculation
+      x = x_in - local_path.points[0].x;
+      y = y_in - local_path.points[0].y;
+      distance_a = sqrt(x * x + y * y);
+      if (distance_a < 0.1)
+        distance_a = 0.1;
+
+      force_a = wa2 / pow(distance_a, aa2);
+
+      // min obstacle weight calculation
+      min_distance = 10000.0;
+      for (int j = 0; j < obstacles_cloud.points.size(); j += 2)
+      {
+        x = x_in - obstacles_cloud.points[j].x;
+        y = y_in - obstacles_cloud.points[j].y;
+        distance_r = sqrt(x * x + y * y);
+        if (distance_r < 0.1)
+          distance_r = 0.1;
+
+        if (distance_r < min_distance)
+        {
+          min_distance = distance_r;
+          force_r = wr2 / pow(distance_r, ar2);
+        }
+      }
+
+      force = force_r - force_a;
+
+      // point selection
+      if (force < min_force)
+      {
+        min_force = force;
+        local_goal.x = x_in;
+        local_goal.y = y_in;
+      }
+    }
+    local_path.points.push_back(local_goal);
+  }
+  ///////////////////////////////////////////////////////////////////////////////////
+
   return;
 }
 
@@ -390,9 +496,9 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
           action_arc.points.push_back(point);
         }
 
-        float x, y, z; //TODO:from parameter
-        sphericalInDegrees2Cartesian(2.0, (-point.z * 180.0 / M_PI), 90.0, x, y,
-            z);
+        float x, y, z;
+        sphericalInDegrees2Cartesian(ackermann_control.delta_arc,
+            (-point.z * 180.0 / M_PI), 90.0, x, y, z);
 
         point_front.x = point.x + x;
         point_front.y = point.y + y;
@@ -427,7 +533,7 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
         float e_dist = d_rear;
 
         // TODO?: get from params?
-        float min_x = -3.0;
+        float min_x = -1.0;
         float k_dist;
         float k_ang;
         if (local_goal.x < min_x)

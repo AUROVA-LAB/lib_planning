@@ -42,7 +42,7 @@ struct FilteringConfiguration
   float min_range; // Points below this threshold will get discarded
                    // (to filter reflections in the Ego-vehicle).
 
-  // canonical parameters of plane
+                   // canonical parameters of plane
   double a; // plane intersection in x axe
   double b; // plane intersection in y axe
   double c; // plane intersection in z axe
@@ -114,7 +114,8 @@ public:
 
   void localGoalCalculation(pcl::PointXYZ global_goal,
       pcl::PointCloud<pcl::PointXYZ> obstacles_cloud,
-      pcl::PointCloud<pcl::PointXYZ> limits_cloud, pcl::PointXYZ &local_goal);
+      pcl::PointCloud<pcl::PointXYZ> limits_cloud,
+      pcl::PointCloud<pcl::PointXYZ> &local_path);
 
   void controlActionCalculation(pcl::PointXYZ local_goal,
       local_planning_lib::Pose2D base_in_lidarf,
