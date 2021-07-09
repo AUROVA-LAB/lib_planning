@@ -102,12 +102,12 @@ Load an OpenStreetMap xml
   
   
 ```c++	
-Graph(Util::Distances typeDistance, double radiusDistance);
+Graph(string typeDistance, double radiusDistance);
 ```
 
 Does not load any data
 
-  - typeDistance: Can be mahalanobis or euclidean. It is a enum and to use it you have to use Util::Mahalanobis or Util::Euclidean.
+  - typeDistance: Can be mahalanobis or euclidean. It is a enum and to use it you have to use "M" or "E".
   
   - radiusDistance: This value indicates the distance to consider an intermediate position of the trajectory as reached
 
