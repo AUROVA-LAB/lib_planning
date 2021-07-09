@@ -1,6 +1,5 @@
 # lib_planning
 
-
 ## Dependencies
 
 This package requires of the following system libraries and packages
@@ -331,3 +330,8 @@ void controlActionCalculation(pcl::PointXYZ local_goal,
       pcl::PointCloud<pcl::PointXYZ> &free_actions,
       local_planning_lib::AckermannControl &ackermann_control);	
 ```
+
+### Example of usage:
+
+You can run an example following the instructions in: [application_navigation](https://github.com/AUROVA-LAB/application_navigation) and [application_localization](https://github.com/AUROVA-LAB/application_localization).
+
