@@ -333,5 +333,5 @@ void controlActionCalculation(pcl::PointXYZ local_goal,
 
 ### Example of usage:
 
-You can run an example following the instructions in [applications](https://github.com/AUROVA-LAB/applications) (Example 2).
+You can run an example following the instructions in [applications](https://github.com/AUROVA-LAB/applications) (Examples).
 
