@@ -46,6 +46,9 @@ struct FilteringConfiguration
   double a; // plane intersection in x axe
   double b; // plane intersection in y axe
   double c; // plane intersection in z axe
+
+  double lidar_protect; // to prevent LiDAR near artifacts
+
   double variance;
   double radious;
   double var_factor;
@@ -66,6 +69,9 @@ struct AckermannControl
   float max_arc;
   float kp;
   float margin; //from base_link
+
+  bool carrot_ctrl;
+  float carrot_distance;
 
   float steering;
   float velocity;
@@ -118,6 +124,7 @@ public:
       pcl::PointCloud<pcl::PointXYZ> &local_path);
 
   void controlActionCalculation(pcl::PointXYZ local_goal,
+      pcl::PointXYZ semilocal_goal,
       local_planning_lib::Pose2D base_in_lidarf,
       pcl::PointCloud<pcl::PointXYZ> obstacles_cloud,
       pcl::PointCloud<pcl::PointXYZ> &collision_risk,

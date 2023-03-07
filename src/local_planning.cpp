@@ -197,8 +197,9 @@ void LocalPlanning::groundSegmentation(
 
       if (filtering_configuration.a != 0.0 && filtering_configuration.b != 0.0
           && filtering_configuration.c != 0.0
-          && point.z < filtering_configuration.variance * var_factor
-          && distance < filtering_configuration.radious)
+          && point.z < filtering_configuration.variance * var_factor // LiDAR horizontal mounting assumption
+          && distance < filtering_configuration.radious
+          && distance > filtering_configuration.lidar_protect)
       {
         plane_ec = point.x / filtering_configuration.a
             + point.y / filtering_configuration.b
@@ -429,6 +430,7 @@ void LocalPlanning::localGoalCalculation(pcl::PointXYZ global_goal,
 }
 
 void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
+    pcl::PointXYZ semilocal_goal,
     local_planning_lib::Pose2D base_in_lidarf,
     pcl::PointCloud<pcl::PointXYZ> obstacles_cloud,
     pcl::PointCloud<pcl::PointXYZ> &collision_risk,
@@ -580,8 +582,20 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
     if (error_values[i] < min_error)
     {
       ackermann_control.steering = steering_options[i];
-      ackermann_control.velocity = (ackermann_control.v_max
-          - abs(ackermann_control.steering) * k_sp) * direction_options[i];
+      ackermann_control.velocity = (ackermann_control.v_max - abs(ackermann_control.steering) * k_sp) * direction_options[i];
+
+      if (ackermann_control.carrot_ctrl){
+        float goal_distance = sqrt(pow(semilocal_goal.x, 2) + pow(semilocal_goal.y, 2));
+
+        std::cout << "goal_distance = " << goal_distance << std::endl; //Debug
+        std::cout << "carrot_distance = " << ackermann_control.carrot_distance << std::endl; //Debug
+
+        if (goal_distance < ackermann_control.carrot_distance){
+          ackermann_control.velocity = (goal_distance / ackermann_control.carrot_distance) * ackermann_control.velocity;
+        }
+        if (goal_distance < 1.0) ackermann_control.velocity = 0.0;
+      }
+      
       min_error = error_values[i];
     }
   }
