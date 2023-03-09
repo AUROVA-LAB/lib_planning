@@ -593,7 +593,10 @@ void LocalPlanning::controlActionCalculation(pcl::PointXYZ local_goal,
         if (goal_distance < ackermann_control.carrot_distance){
           ackermann_control.velocity = (goal_distance / ackermann_control.carrot_distance) * ackermann_control.velocity;
         }
-        if (goal_distance < 1.0) ackermann_control.velocity = 0.0;
+        if (goal_distance < 1.0){
+          ackermann_control.velocity = 0.0;
+          ackermann_control.steering = 0.0;
+        } 
       }
       
       min_error = error_values[i];
