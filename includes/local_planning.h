@@ -72,6 +72,7 @@ struct AckermannControl
 
   bool carrot_ctrl;
   float carrot_distance;
+  float carrot_stop_distance;
 
   float steering;
   float velocity;
