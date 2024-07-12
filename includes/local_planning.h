@@ -90,8 +90,8 @@ struct Pose2D
 class LocalPlanning
 {
 public:
-
-  LocalPlanning();
+  float wa, wr, aa, ar, wa2;
+  LocalPlanning(float, float, float, float, float);
   virtual ~LocalPlanning();
 
   void sphericalInDegrees2Cartesian(float range, float azimuth, float elevation,

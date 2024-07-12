@@ -1,7 +1,17 @@
 #include "../includes/local_planning.h"
 
-LocalPlanning::LocalPlanning()
+LocalPlanning::LocalPlanning(float wa, float wr, float aa, float ar, float wa2)
 {
+  // Parameters to calculate the forces of the goal (wa, aa) and obstacles (wr, ar)
+  // float wa = 100.0;
+  // float wr = 1.0;
+  // float ar = 0.8;
+  // float aa = 0.3;
+  this->wa=wa;
+  this->wr=wr;
+  this->aa=aa;
+  this->ar=ar;
+  this->wa2=wa2;
 }
 
 LocalPlanning::~LocalPlanning()
@@ -314,12 +324,6 @@ void LocalPlanning::localGoalCalculation(pcl::PointXYZ global_goal,
   float force;
   float x, y;
 
-  // TODO: get from param
-  float wa = 100.0;
-  float wr = 1.0;
-  float ar = 0.8;
-  float aa = 0.3;
-
   ///////////////////////////////////////////////////////////////////////////////////
   //// 1) PATH POINT IN RADIOUS LIMIT
   float min_force = wr / pow(0.1, ar) - wa / pow(100.0, aa) + 1000;
@@ -367,10 +371,6 @@ void LocalPlanning::localGoalCalculation(pcl::PointXYZ global_goal,
   ///////////////////////////////////////////////////////////////////////////////////
   //// 2) PATH POINT IN INNER RINGS
   // TODO: get from param
-  float wa2 = 3.0;
-  float wr2 = 1.0;
-  float ar2 = 0.8;
-  float aa2 = 0.3;
   float radious = 6.0;
   float delta_rad = radious / 3.0;
   float azimuth, elevation, range;
@@ -393,7 +393,7 @@ void LocalPlanning::localGoalCalculation(pcl::PointXYZ global_goal,
       if (distance_a < 0.1)
         distance_a = 0.1;
 
-      force_a = wa2 / pow(distance_a, aa2);
+      force_a = wa2 / pow(distance_a, aa);
 
       // min obstacle weight calculation
       min_distance = 10000.0;
@@ -408,7 +408,7 @@ void LocalPlanning::localGoalCalculation(pcl::PointXYZ global_goal,
         if (distance_r < min_distance)
         {
           min_distance = distance_r;
-          force_r = wr2 / pow(distance_r, ar2);
+          force_r = wr / pow(distance_r, ar);
         }
       }
 
